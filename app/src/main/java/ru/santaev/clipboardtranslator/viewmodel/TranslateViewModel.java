@@ -8,15 +8,16 @@ import android.os.Handler;
 
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import ru.santaev.clipboardtranslator.api.ApiService;
 import ru.santaev.clipboardtranslator.api.TranslateRequest;
-import ru.santaev.clipboardtranslator.api.TranslateResponse;
 import ru.santaev.clipboardtranslator.db.AppDatabase;
 import ru.santaev.clipboardtranslator.db.entity.Translation;
 import ru.santaev.clipboardtranslator.model.Language;
 import ru.santaev.clipboardtranslator.util.AppPreference;
-import ru.santaev.clipboardtranslator.util.RxHelper;
-import rx.Subscription;
+
 
 public class TranslateViewModel extends ViewModel{
 
@@ -28,7 +29,7 @@ public class TranslateViewModel extends ViewModel{
     private MutableLiveData<Language> originLang = new MutableLiveData<>();
     private MutableLiveData<Language> targetLang = new MutableLiveData<>();
 
-    private Subscription subscription;
+    private Disposable disposable;
     private String originText;
     private Handler handler;
     private Runnable runTranslate;
@@ -92,8 +93,8 @@ public class TranslateViewModel extends ViewModel{
         if (originText.isEmpty()){
             return;
         }
-        if (subscription != null){
-            subscription.unsubscribe();
+        if (disposable != null){
+            disposable.dispose();
         }
 
         if (runTranslate != null){
@@ -107,24 +108,27 @@ public class TranslateViewModel extends ViewModel{
             Language finalOriginLang = originLang.getValue();
             Language finalTargetLang = targetLang.getValue();
 
-            subscription = RxHelper.makeRequest(new TranslateRequest(originText,
-                            originLang.getValue().getCode(), targetLang.getValue().getCode()),
-                    request -> {
-                        TranslateResponse translate = ApiService.getInstance().translate(request);
-                        String targetText = translate.getText().size() == 0
-                                ? "" : translate.getText().get(0);
-                        saveTransition(finalOriginText, targetText, finalOriginLang, finalTargetLang);
-                        return translate;
-                    },
-                    throwable -> {
-                        translatedText.setValue(throwable.getMessage());
-                        progress.setValue(false);
-                    }, response -> {
+            TranslateRequest translateRequest = new TranslateRequest(originText,
+                    originLang.getValue().getCode(), targetLang.getValue().getCode());
+
+            disposable = ApiService.getInstance().translate(translateRequest)
+                    .map(response -> {
                         String targetText = response.getText().size() == 0
                                 ? "" : response.getText().get(0);
+                        saveTransition(finalOriginText, targetText, finalOriginLang, finalTargetLang);
+                        return response;
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(translateResponse -> {
+                        String targetText = translateResponse.getText().size() == 0
+                                ? "" : translateResponse.getText().get(0);
                         translatedText.setValue(targetText);
                         progress.setValue(false);
-                    }, null);
+                    }, throwable -> {
+                        translatedText.setValue(throwable.getMessage());
+                        progress.setValue(false);
+                    });
         };
 
         handler.postDelayed(runTranslate, TRANSLATE_DELAY_MILLIS);
@@ -155,8 +159,8 @@ public class TranslateViewModel extends ViewModel{
     @Override
     protected void onCleared() {
         super.onCleared();
-        if (null != subscription){
-            subscription.unsubscribe();
+        if (null != disposable){
+            disposable.dispose();
         }
         if (runTranslate != null){
             handler.removeCallbacks(runTranslate);

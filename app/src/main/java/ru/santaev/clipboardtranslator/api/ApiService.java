@@ -3,8 +3,9 @@ package ru.santaev.clipboardtranslator.api;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
+import io.reactivex.Single;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -36,14 +37,16 @@ public class ApiService {
         return instance;
     }
 
-    public TranslateResponse translate(TranslateRequest request) {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Call<TranslateResponse> call = api.translate(request.originText, request.lang, API_KEY);
-        return makeRequest(call);
+    public Single<TranslateResponse> translate(TranslateRequest request) {
+        return wrapSingle(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Call<TranslateResponse> call = api.translate(request.originText, request.lang, API_KEY);
+            return makeRequest(call);
+        });
     }
 
     private <T> T makeRequest(Call<T> httpCall) {
@@ -65,5 +68,16 @@ public class ApiService {
 
     private void throwApiError(String msg) {
         throw new RuntimeException(msg);
+    }
+
+    private <T> Single<T> wrapSingle(Callable<T> func){
+        return Single.create(singleSubscriber -> {
+            try {
+                T t = func.call();
+                singleSubscriber.onSuccess(t);
+            } catch (Exception e) {
+                singleSubscriber.onError(e);
+            }
+        });
     }
 }
