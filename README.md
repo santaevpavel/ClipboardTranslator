@@ -1,0 +1,2 @@
+# ClipboardTranslator
+ClipboardTranslator Anrdoid Application
