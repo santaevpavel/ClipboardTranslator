@@ -7,7 +7,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "santaev.ru.clipboardtranslator"
+        applicationId "ru.santaev.clipboardtranslator"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
