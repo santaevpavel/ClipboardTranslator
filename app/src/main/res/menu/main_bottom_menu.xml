@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_translate"
+        android:enabled="true"
+        android:icon="@drawable/ic_favorite_border_black_24dp"
+        android:title="Переводчик"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/item_history"
+        android:enabled="true"
+        android:icon="@drawable/ic_content_copy_black_24dp"
+        android:title="История"
+        app:showAsAction="ifRoom" />
+
+</menu>
