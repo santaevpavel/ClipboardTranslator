@@ -75,8 +75,10 @@ public class ApiService {
             try {
                 T t = func.call();
                 singleSubscriber.onSuccess(t);
-            } catch (Exception e) {
-                singleSubscriber.onError(e);
+            } catch (Throwable e) {
+                if (!singleSubscriber.isDisposed()) {
+                    singleSubscriber.onError(e);
+                }
             }
         });
     }
