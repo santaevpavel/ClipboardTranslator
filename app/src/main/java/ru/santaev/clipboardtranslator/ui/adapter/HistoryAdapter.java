@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import ru.santaev.clipboardtranslator.R;
-import ru.santaev.clipboardtranslator.TranslatorApp;
 import ru.santaev.clipboardtranslator.databinding.HistoryItemLayoutBinding;
 import ru.santaev.clipboardtranslator.db.entity.Translation;
 
@@ -67,10 +66,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             }
         });
 
-        /*int colorRes = 0 != holder.getLayoutPosition() % 2
-                ? R.color.history_item_bg
-                : android.R.color.transparent;
-        holder.binding.getRoot().setBackgroundColor(TranslatorApp.getAppContext().getResources().getColor(colorRes));*/
     }
 
     @Override

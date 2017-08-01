@@ -58,9 +58,11 @@ public class TranslateFragment extends LifecycleFragment {
             @Override
             public void afterTextChanged(Editable s) {
                 viewModel.onOriginTextChanged(s.toString());
+                binding.clear.setVisibility(s.length() == 0 ? View.INVISIBLE : View.VISIBLE);
             }
         });
 
+        binding.clear.setOnClickListener(v -> binding.originTextView.setText(""));
 
         Language[] languages = Language.values();
         String[] languagesString = new String[languages.length];
@@ -77,13 +79,9 @@ public class TranslateFragment extends LifecycleFragment {
                 .setItems(languagesString, (dialog, which) -> viewModel.onTargetLangSelected(languages[which]))
                 .show());
 
-        binding.startService.setOnClickListener(v -> {
-            getActivity().startService(new Intent(getContext(), TranslateService.class));
-        });
+        binding.startService.setOnClickListener(v -> getActivity().startService(new Intent(getContext(), TranslateService.class)));
 
-        binding.stopService.setOnClickListener(v -> {
-            getActivity().stopService(new Intent(getContext(), TranslateService.class));
-        });
+        binding.stopService.setOnClickListener(v -> getActivity().stopService(new Intent(getContext(), TranslateService.class)));
 
         return binding.getRoot();
     }

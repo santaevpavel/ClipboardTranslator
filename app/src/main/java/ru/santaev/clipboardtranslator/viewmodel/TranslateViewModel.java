@@ -90,7 +90,7 @@ public class TranslateViewModel extends ViewModel{
     }
 
     private void translate(){
-        if (originText.isEmpty()){
+        if (originText.trim().isEmpty()){
             return;
         }
         if (disposable != null){

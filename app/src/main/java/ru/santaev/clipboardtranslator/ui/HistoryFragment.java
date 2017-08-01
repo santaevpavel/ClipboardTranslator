@@ -1,15 +1,11 @@
 package ru.santaev.clipboardtranslator.ui;
 
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -18,10 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ru.santaev.clipboardtranslator.R;
-import ru.santaev.clipboardtranslator.TranslatorApp;
 import ru.santaev.clipboardtranslator.databinding.FragmentHistoryBinding;
 import ru.santaev.clipboardtranslator.ui.adapter.HistoryAdapter;
-import ru.santaev.clipboardtranslator.util.NotificationHelper;
 import ru.santaev.clipboardtranslator.viewmodel.HistoryViewModel;
 
 

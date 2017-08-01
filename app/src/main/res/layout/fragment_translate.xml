@@ -1,6 +1,6 @@
 <layout>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -11,6 +11,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingBottom="4dp"
             android:animateLayoutChanges="true"
             android:orientation="vertical">
 
@@ -42,7 +43,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:background="#d1d1d1"></View>
+                        android:background="#d1d1d1" />
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/target_lang_text"
@@ -58,10 +59,17 @@
 
             </android.support.v7.widget.CardView>
 
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextSectionStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text="Перевод"
+                android:minLines="1" />
+
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 app:cardBackgroundColor="#fff"
                 app:cardCornerRadius="0dp"
                 app:cardElevation="4dp"
@@ -70,14 +78,34 @@
                 app:contentPaddingRight="16dp"
                 app:contentPaddingTop="8dp">
 
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/origin_text_view"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:gravity="top"
-                    android:hint="Введите текст"
-                    android:minLines="1" />
+                    android:animateLayoutChanges="true">
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/origin_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="top"
+                        android:hint="Введите текст"
+                        android:textColorHint="@color/textColorGrayLight"
+                        android:minLines="1"
+                        android:layout_weight="1"
+                        android:textColor="@color/textColorGray"/>
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/clear"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginLeft="4dp"
+                        android:animateLayoutChanges="true"
+                        android:tint="@color/textColorGray"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/ic_clear_black_24dp" />
+                </LinearLayout>
+
 
             </android.support.v7.widget.CardView>
 
@@ -101,36 +129,28 @@
                     android:layout_height="24dp"
                     android:layout_gravity="top|end"/>
 
-                <android.support.v7.widget.AppCompatEditText
+                <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/translated_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="top"
-                    android:hint=""
-                    android:minLines="1"
+                    android:textSize="16sp"
                     android:textColor="#fff"
                     android:textColorHint="#72ffffff" />
             </android.support.v7.widget.CardView>
 
-
-            <!--<android.support.v7.widget.AppCompatButton
-                android:id="@+id/start_service"
-                android:layout_width="wrap_content"
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextSectionStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="start"/>
+                android:background="@null"
+                android:text="Дополнительно"
+                android:minLines="1" />
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/stop_service"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:backgroundTint="@color/colorAccent"
-                android:text="stop"/>
--->
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 app:cardBackgroundColor="#fff"
                 app:cardCornerRadius="0dp"
                 app:cardElevation="4dp"
@@ -194,5 +214,7 @@
 
             </android.support.v7.widget.CardView>
         </LinearLayout>
-    </FrameLayout>
+
+    </ScrollView>
+
 </layout>
