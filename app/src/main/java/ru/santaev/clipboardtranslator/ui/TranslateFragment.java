@@ -83,6 +83,8 @@ public class TranslateFragment extends LifecycleFragment {
 
         binding.stopService.setOnClickListener(v -> getActivity().stopService(new Intent(getContext(), TranslateService.class)));
 
+        binding.retry.setOnClickListener(v -> viewModel.onClickRetry());
+
         return binding.getRoot();
     }
 
@@ -116,6 +118,12 @@ public class TranslateFragment extends LifecycleFragment {
         viewModel.getTargetLang().observe(this, language -> {
             if (null != binding) {
                 binding.targetLangText.setText(language.toString());
+            }
+        });
+
+        viewModel.getFailed().observe(this, isFailed -> {
+            if (null != binding) {
+                binding.retry.setVisibility(isFailed ? View.VISIBLE : View.GONE);
             }
         });
     }

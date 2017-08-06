@@ -111,9 +111,10 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/translate_layout"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
                 app:cardBackgroundColor="@color/colorPrimary"
                 app:cardCornerRadius="0dp"
                 app:cardElevation="4dp"
@@ -134,10 +135,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:gravity="top"
+                    android:layout_gravity="center_vertical"
                     android:textSize="16sp"
                     android:textColor="#fff"
                     android:textColorHint="#72ffffff" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/retry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_gravity="top|end"
+                    android:text="Retry"
+                    android:visibility="gone"
+                    android:textColor="#fff"
+                    android:background="@null"/>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.AppCompatTextView

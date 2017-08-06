@@ -25,6 +25,7 @@ public class TranslateViewModel extends ViewModel{
 
     private MutableLiveData<String> translatedText = new MutableLiveData<>();
     private MutableLiveData<Boolean> progress = new MutableLiveData<>();
+    private MutableLiveData<Boolean> failed = new MutableLiveData<>();
 
     private MutableLiveData<Language> originLang = new MutableLiveData<>();
     private MutableLiveData<Language> targetLang = new MutableLiveData<>();
@@ -40,7 +41,7 @@ public class TranslateViewModel extends ViewModel{
     public TranslateViewModel() {
         translatedText.setValue("");
         progress.setValue(false);
-
+        failed.setValue(false);
         appPreference = AppPreference.getInstance();
 
         originLang.setValue(appPreference.getOriginLang());
@@ -73,12 +74,20 @@ public class TranslateViewModel extends ViewModel{
         }
     }
 
+    public void onClickRetry() {
+        translate();
+    }
+
     public LiveData<String> getTranslatedText(){
         return translatedText;
     }
 
     public LiveData<Boolean> getProgress(){
         return progress;
+    }
+
+    public MutableLiveData<Boolean> getFailed() {
+        return failed;
     }
 
     public LiveData<Language> getOriginLang() {
@@ -103,6 +112,7 @@ public class TranslateViewModel extends ViewModel{
 
         runTranslate = () -> {
             progress.setValue(true);
+            failed.setValue(false);
 
             String finalOriginText = originText;
             Language finalOriginLang = originLang.getValue();
@@ -128,6 +138,7 @@ public class TranslateViewModel extends ViewModel{
                     }, throwable -> {
                         translatedText.setValue(throwable.getMessage());
                         progress.setValue(false);
+                        failed.setValue(true);
                     });
         };
 
