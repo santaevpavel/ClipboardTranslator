@@ -16,6 +16,7 @@ import ru.santaev.clipboardtranslator.api.TranslateRequest;
 import ru.santaev.clipboardtranslator.db.AppDatabase;
 import ru.santaev.clipboardtranslator.db.entity.Translation;
 import ru.santaev.clipboardtranslator.model.Language;
+import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider;
 import ru.santaev.clipboardtranslator.util.AppPreference;
 
 
@@ -37,12 +38,14 @@ public class TranslateViewModel extends ViewModel{
     private Translation lastTranslation;
 
     private AppPreference appPreference;
+    private TranslateDirectionProvider translateDirectionProvider;
 
     public TranslateViewModel() {
         translatedText.setValue("");
         progress.setValue(false);
         failed.setValue(false);
         appPreference = AppPreference.getInstance();
+        translateDirectionProvider = new TranslateDirectionProvider();
 
         originLang.setValue(appPreference.getOriginLang());
         targetLang.setValue(appPreference.getTargetLang());
@@ -56,22 +59,30 @@ public class TranslateViewModel extends ViewModel{
         translate();
     }
 
-    public void onOriginLangSelected(Language lang){
+    public boolean onOriginLangSelected(Language lang){
         Language oldLang = originLang.getValue();
         originLang.setValue(lang);
         appPreference.setOriginLang(lang);
-        if (lang != oldLang){
+
+        boolean support = translateDirectionProvider.isSupportTranslate(lang, targetLang.getValue());
+
+        if (lang != oldLang && support){
             translate();
         }
+        return support;
     }
 
-    public void onTargetLangSelected(Language lang){
+    public boolean onTargetLangSelected(Language lang){
         Language oldLang = targetLang.getValue();
         targetLang.setValue(lang);
         appPreference.setTargetLang(lang);
-        if (lang != oldLang){
+
+        boolean support = translateDirectionProvider.isSupportTranslate(originLang.getValue(), lang);
+
+        if (lang != oldLang && support){
             translate();
         }
+        return support;
     }
 
     public void onClickRetry() {

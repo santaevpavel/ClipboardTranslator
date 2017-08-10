@@ -1,12 +1,12 @@
 package ru.santaev.clipboardtranslator.ui;
 
 
+import android.app.Activity;
 import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -16,13 +16,18 @@ import android.view.ViewGroup;
 import ru.santaev.clipboardtranslator.R;
 import ru.santaev.clipboardtranslator.databinding.FragmentTranslateBinding;
 import ru.santaev.clipboardtranslator.model.Language;
+import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider;
 import ru.santaev.clipboardtranslator.service.TranslateService;
 import ru.santaev.clipboardtranslator.viewmodel.TranslateViewModel;
 
 public class TranslateFragment extends LifecycleFragment {
 
+    private static final int REQUEST_CODE_ORIGIN_LANG = 0;
+    private static final int REQUEST_CODE_TARGET_LANG = 1;
+
     private TranslateViewModel viewModel;
     private FragmentTranslateBinding binding;
+    private TranslateDirectionProvider translateDirectionProvider;
 
     public TranslateFragment() {
         // Required empty public constructor
@@ -38,6 +43,7 @@ public class TranslateFragment extends LifecycleFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        translateDirectionProvider = new TranslateDirectionProvider();
         viewModel = ViewModelProviders.of(this).get(TranslateViewModel.class);
         observeModel();
     }
@@ -64,20 +70,9 @@ public class TranslateFragment extends LifecycleFragment {
 
         binding.clear.setOnClickListener(v -> binding.originTextView.setText(""));
 
-        Language[] languages = Language.values();
-        String[] languagesString = new String[languages.length];
-        for (int i = 0; i < languages.length; i++) {
-            languagesString[i] = languages[i].toString();
-        }
-        binding.originLangText.setOnClickListener(v -> new AlertDialog.Builder(getActivity())
-                .setTitle("Выберите язык")
-                .setItems(languagesString, (dialog, which) -> viewModel.onOriginLangSelected(languages[which]))
-                .show());
+        binding.originLangText.setOnClickListener(v -> chooseOriginLang());
 
-        binding.targetLangText.setOnClickListener(v -> new AlertDialog.Builder(getActivity())
-                .setTitle("Выберите язык")
-                .setItems(languagesString, (dialog, which) -> viewModel.onTargetLangSelected(languages[which]))
-                .show());
+        binding.targetLangText.setOnClickListener(v -> chooseTargetLang());
 
         binding.startService.setOnClickListener(v -> getActivity().startService(new Intent(getContext(), TranslateService.class)));
 
@@ -86,6 +81,14 @@ public class TranslateFragment extends LifecycleFragment {
         binding.retry.setOnClickListener(v -> viewModel.onClickRetry());
 
         return binding.getRoot();
+    }
+
+    private void chooseOriginLang(){
+        startActivityForResult(new Intent(getContext(), ChooseLanguageActivity.class), REQUEST_CODE_ORIGIN_LANG);
+    }
+
+    private void chooseTargetLang(){
+        startActivityForResult(new Intent(getContext(), ChooseLanguageActivity.class), REQUEST_CODE_TARGET_LANG);
     }
 
     private void observeModel(){
@@ -111,13 +114,13 @@ public class TranslateFragment extends LifecycleFragment {
 
         viewModel.getOriginLang().observe(this, language -> {
             if (null != binding) {
-                binding.originLangText.setText(language.toString());
+                binding.originLangText.setText(language.getTextRes());
             }
         });
 
         viewModel.getTargetLang().observe(this, language -> {
             if (null != binding) {
-                binding.targetLangText.setText(language.toString());
+                binding.targetLangText.setText(language.getTextRes());
             }
         });
 
@@ -128,4 +131,21 @@ public class TranslateFragment extends LifecycleFragment {
         });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK){
+            return;
+        }
+        switch (requestCode){
+            case REQUEST_CODE_ORIGIN_LANG:
+                Language lang = (Language) data.getSerializableExtra(ChooseLanguageActivity.RESULT_KEY_LANG);
+                viewModel.onOriginLangSelected(lang);
+                break;
+            case REQUEST_CODE_TARGET_LANG:
+                lang = (Language) data.getSerializableExtra(ChooseLanguageActivity.RESULT_KEY_LANG);
+                viewModel.onTargetLangSelected(lang);
+                break;
+        }
+    }
 }
