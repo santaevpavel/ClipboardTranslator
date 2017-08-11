@@ -30,4 +30,7 @@ public interface TranslationDao {
 
     @Delete
     void delete(Translation translation);
+
+    @Query("DELETE from " + TranslationContract.TABLE_NAME)
+    void deleteAll();
 }

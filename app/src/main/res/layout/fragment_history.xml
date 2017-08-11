@@ -23,7 +23,7 @@
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="There is no history"
+                android:text="@string/there_is_no_history"
                 android:layout_gravity="center"
                 android:textColor="@color/textColorGray"
                 android:textSize="24sp" />
@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Translate any text to see history"
+                android:text="@string/no_history_subtitle"
                 android:textColor="@color/textColorGrayLight"
                 android:textSize="14sp" />
 

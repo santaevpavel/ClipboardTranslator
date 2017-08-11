@@ -10,6 +10,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -51,6 +54,7 @@ public class HistoryFragment extends LifecycleFragment {
                 }
             }
         });
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -81,4 +85,19 @@ public class HistoryFragment extends LifecycleFragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_history_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.item_delete_all:
+                viewModel.clearHistory();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

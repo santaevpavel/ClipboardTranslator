@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import ru.santaev.clipboardtranslator.R;
@@ -32,9 +33,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         .commit();
             }
         } else {
-            /*BottomNavigationView v;
-            v.getMenu().*/
             binding.toolbar.setTitle("Быстрый переводчик");
+            setSupportActionBar(binding.toolbar);
+
             binding.viewPager.setAdapter(new MainActivityViewPagerAdapter(getSupportFragmentManager()));
             binding.bottomNavigation.setOnNavigationItemSelectedListener(this);
             binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -69,6 +70,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 binding.viewPager.setCurrentItem(1, true);
                 break;
         }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main_menu, menu);
         return true;
     }
 }
