@@ -105,7 +105,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
             });
         } else {
             SectionViewHolder viewHolder = (SectionViewHolder) holder;
-            viewHolder.binding.text.setText(0 == position ? "Все языки" : "Неподдержиаемые языки");
+            viewHolder.binding.text.setText(0 == position ? "Все языки" : "Неподдерживаемые языки");
             viewHolder.binding.getRoot().setOnClickListener(v -> {});
         }
     }
