@@ -111,7 +111,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
     }
 
     private Language getLangByPos(int position){
-        if (position == 0 || position == languages.size()){
+        if (position == 0 || position == languages.size() + 1){
             return null;
         }
         return position < languages.size() + 2
