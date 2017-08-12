@@ -4,7 +4,8 @@
 
     <string name="activity_main_bottom_translate">Переводчик</string>
     <string name="activity_main_bottom_history">История</string>
-    <string name="there_is_no_history">There is no history</string>
-    <string name="no_history_subtitle">Translate any text to see history</string>
-    <string name="fragment_history_item_clear">Clear history</string>
+    <string name="there_is_no_history">Нет истории</string>
+    <string name="no_history_subtitle">Переведите текст чтобы увидеть историю</string>
+    <string name="fragment_history_item_clear">Очистить историю</string>
+    <string name="action_settings">Настройки</string>
 </resources>

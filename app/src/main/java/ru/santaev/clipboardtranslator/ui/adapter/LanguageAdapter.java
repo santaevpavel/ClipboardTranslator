@@ -123,26 +123,26 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
         }
     }
 
-    class SectionViewHolder extends ViewHolder{
+    private class SectionViewHolder extends ViewHolder{
 
         LanguageSectionItemLayoutBinding binding;
 
-        public SectionViewHolder(LanguageSectionItemLayoutBinding binding) {
+        SectionViewHolder(LanguageSectionItemLayoutBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
     }
 
-    class LanguageViewHolder extends ViewHolder{
+    private class LanguageViewHolder extends ViewHolder{
 
         LanguageItemLayoutBinding binding;
 
-        public LanguageViewHolder(LanguageItemLayoutBinding binding) {
+        LanguageViewHolder(LanguageItemLayoutBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

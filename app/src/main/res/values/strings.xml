@@ -4,7 +4,7 @@
     <string name="activity_main_bottom_translate">Translate</string>
     <string name="activity_main_bottom_history">History</string>
     <string name="there_is_no_history">There is no history</string>
-    <string name="no_history_subtitle">Translate any text to see history</string>
+    <string name="no_history_subtitle">Translate text to see history</string>
     <string name="fragment_history_item_clear">Clear history</string>
     <string name="action_settings">Settings</string>
 </resources>
