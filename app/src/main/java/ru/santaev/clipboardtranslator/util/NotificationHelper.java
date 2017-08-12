@@ -15,11 +15,10 @@ public class NotificationHelper {
                 .setAutoCancel(true)
                 .setColor(ResourcesCompat.getColor(context.getResources(), R.color.colorAccent, null))
                 .setOngoing(true)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.icon_status_bar)
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle("Clipboard translator")
                 .setContentText("Clipboard translator is running...")
-                //.setContentInfo(langText)
                 .setSubText(langText)
                 .build();
     }
@@ -29,7 +28,7 @@ public class NotificationHelper {
                 .setAutoCancel(true)
                 .setColor(ResourcesCompat.getColor(context.getResources(), R.color.colorAccent, null))
                 .setOngoing(false)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.icon_status_bar)
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle("Translate from clipboard")
                 .setContentInfo(langText)
