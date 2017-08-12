@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Быстрый переводчик</string>
+
+    <string name="activity_main_bottom_translate">Переводчик</string>
+    <string name="activity_main_bottom_history">История</string>
+    <string name="there_is_no_history">There is no history</string>
+    <string name="no_history_subtitle">Translate any text to see history</string>
+    <string name="fragment_history_item_clear">Clear history</string>
+</resources>

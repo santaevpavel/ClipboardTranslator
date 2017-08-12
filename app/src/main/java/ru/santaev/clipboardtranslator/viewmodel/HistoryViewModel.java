@@ -46,4 +46,11 @@ public class HistoryViewModel extends ViewModel {
             return null;
         }, Throwable::printStackTrace, null, null);
     }
+
+    public void clearHistory() {
+        RxHelper.runOnIoThread(() -> {
+            translationDao.deleteAll();
+            return null;
+        }, Throwable::printStackTrace, null, null);
+    }
 }
