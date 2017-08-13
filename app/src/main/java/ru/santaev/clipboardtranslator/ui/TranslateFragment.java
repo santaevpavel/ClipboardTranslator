@@ -84,11 +84,17 @@ public class TranslateFragment extends LifecycleFragment {
     }
 
     private void chooseOriginLang(){
-        startActivityForResult(new Intent(getContext(), ChooseLanguageActivity.class), REQUEST_CODE_ORIGIN_LANG);
+        Intent intent = ChooseLanguageActivity.getIntent(getContext(),
+                viewModel.getOriginLang().getValue(),
+                viewModel.getTargetLang().getValue(), true);
+        startActivityForResult(intent, REQUEST_CODE_ORIGIN_LANG);
     }
 
     private void chooseTargetLang(){
-        startActivityForResult(new Intent(getContext(), ChooseLanguageActivity.class), REQUEST_CODE_TARGET_LANG);
+        Intent intent = ChooseLanguageActivity.getIntent(getContext(),
+                viewModel.getOriginLang().getValue(),
+                viewModel.getTargetLang().getValue(), false);
+        startActivityForResult(intent, REQUEST_CODE_TARGET_LANG);
     }
 
     private void observeModel(){

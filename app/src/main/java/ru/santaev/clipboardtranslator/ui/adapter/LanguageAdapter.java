@@ -118,7 +118,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
     public int getItemCount() {
         int countLang = languages == null ? 0 : languages.size();
         int countUnsupportedLang = unsupportedLanguages == null ? 0 : unsupportedLanguages.size();
-        return countLang + countUnsupportedLang + 2;
+        return countLang + countUnsupportedLang + (countUnsupportedLang == 0 ? 1 : 2);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
