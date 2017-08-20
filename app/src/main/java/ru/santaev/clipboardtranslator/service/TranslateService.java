@@ -18,6 +18,7 @@ import java.util.Random;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import ru.santaev.clipboardtranslator.R;
 import ru.santaev.clipboardtranslator.api.ApiService;
 import ru.santaev.clipboardtranslator.api.TranslateRequest;
 import ru.santaev.clipboardtranslator.db.AppDatabase;
@@ -81,7 +82,8 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
         String originLang = translationSettingsProvider.getOriginLang().getCode();
         String targetLang = translationSettingsProvider.getTargetLang().getCode();
 
-        String langText = String.format("Translate from %s to %s", originLang, targetLang);
+        String langText = String.format(getString(R.string.translate_notification_lang_text),
+                originLang.toUpperCase(), targetLang.toUpperCase());
 
         Notification notification = NotificationHelper.buildAppNotification(getApplicationContext(), langText);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Application.NOTIFICATION_SERVICE);
@@ -115,8 +117,8 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
         String targetLang = translationSettingsProvider.getTargetLang().getCode();
 
         int id = new Random().nextInt();
-        String langText = String.format("%s-%s", originLang, targetLang);
-        showNotification(String.format("Translating \"%s\"", text), langText, id);
+        String langText = String.format("%s-%s", originLang.toUpperCase(), targetLang.toUpperCase());
+        showNotification(String.format(getString(R.string.translate_notification_translating), text), langText, id);
 
         TranslateRequest request = new TranslateRequest(text, originLang,
                 targetLang);
@@ -131,7 +133,7 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(translateResponse -> showNotification(translateResponse.second, langText, id), throwable -> {
-                    showNotification("Translate failed", langText, id);
+                    showNotification(getString(R.string.translate_notification_failed), langText, id);
                 });
     }
 

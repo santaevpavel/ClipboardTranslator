@@ -52,7 +52,7 @@ public class ChooseLanguageActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.toolbar);
 
-        getSupportActionBar().setTitle("Выберите язык");
+        getSupportActionBar().setTitle(R.string.choose_lang_activity_title);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

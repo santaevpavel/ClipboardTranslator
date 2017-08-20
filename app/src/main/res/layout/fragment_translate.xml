@@ -64,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:text="Перевод"
+                android:text="@string/translate_fragment_subheader_translate"
                 android:minLines="1" />
 
             <android.support.v7.widget.CardView
@@ -156,7 +156,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:text="Дополнительно"
+                android:text="@string/translate_fragment_subheader_extra"
                 android:minLines="1" />
 
             <android.support.v7.widget.CardView

@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         .commit();
             }
         } else {
-            binding.toolbar.setTitle("Быстрый переводчик");
+            binding.toolbar.setTitle(R.string.app_name);
             setSupportActionBar(binding.toolbar);
 
             binding.viewPager.setAdapter(new MainActivityViewPagerAdapter(getSupportFragmentManager()));

@@ -74,7 +74,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     }
 
     private String buildLangText(Translation translation){
-        return translation.getLangSource() + "-" + translation.getLangTarget();
+        return translation.getLangSource().toUpperCase() +
+                "-" + translation.getLangTarget().toUpperCase();
     }
 
     class HistoryViewHolder extends RecyclerView.ViewHolder{

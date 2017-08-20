@@ -1,6 +1,7 @@
 package ru.santaev.clipboardtranslator.ui.adapter;
 
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -100,7 +101,10 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
             });
         } else {
             SectionViewHolder viewHolder = (SectionViewHolder) holder;
-            viewHolder.binding.text.setText(0 == position ? "Все языки" : "Неподдерживаемые языки");
+            Context context = TranslatorApp.getAppContext();
+            viewHolder.binding.text.setText(0 == position ?
+                    context.getString(R.string.choose_lang_activity_subheader_suppored_langs) :
+                    TranslatorApp.getAppContext().getString(R.string.choose_lang_activity_subheader_unsuppored_langs));
             viewHolder.binding.getRoot().setOnClickListener(v -> {});
         }
     }
