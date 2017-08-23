@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#f4511e</color>
-    <color name="colorPrimaryDark">#b91400</color>
-    <color name="colorAccent">#2195f2</color>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#e8e8e8</color>
+    <color name="colorAccent">#ff5722</color>
+
+    <color name="colorWhite">#ffffff</color>
 
     <color name="textColorBlackLight">#1e1e1e</color>
     <color name="textColorGrayDark">#313131</color>
     <color name="textColorGray">#5f5f5f</color>
     <color name="textColorGrayLight">#a0a0a0</color>
 
-    <color name="history_item_bg">#0f000000</color>
-    <color name="main_background">#0f000000</color>
+    <color name="history_item_bg">@color/colorWhite</color>
+    <color name="main_background">@color/colorWhite</color>
 </resources>
 

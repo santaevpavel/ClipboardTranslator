@@ -6,12 +6,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardCornerRadius="0dp"
-        app:cardElevation="4dp">
+        app:cardElevation="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="72dp"
-            android:background="#f6f6f6"
+            android:background="@null"
             android:orientation="horizontal">
 
             <View
@@ -39,8 +39,9 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="Origin Text"
-                    android:textColor="@color/textColorGrayDark"
-                    android:textSize="16sp" />
+                    android:textStyle="bold"
+                    android:textColor="@color/textColorBlackLight"
+                    android:textSize="18sp" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/targetText"
@@ -50,7 +51,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="Origin Text"
-                    android:textColor="@color/textColorGray"
+                    android:textColor="@color/textColorGrayLight"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -68,7 +69,12 @@
                 android:textColor="@color/textColorGray"
                 android:textSize="14sp" />
 
-             
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/textColorGrayLight"
+                android:layout_alignParentBottom="true"/>
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

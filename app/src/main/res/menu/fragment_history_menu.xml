@@ -7,6 +7,6 @@
         android:enabled="true"
         android:icon="@drawable/ic_delete_sweep_black_24dp"
         android:title="@string/fragment_history_item_clear"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
 
 </menu>
