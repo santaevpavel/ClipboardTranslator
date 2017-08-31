@@ -14,9 +14,10 @@
         <item name="android:layout_marginBottom">12dp</item>
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/textColorBlackLight</item>
+
     </style>
 
     <style name="AppTheme.WhiteAccent">

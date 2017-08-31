@@ -6,7 +6,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardCornerRadius="0dp"
-        app:cardElevation="0dp">
+        app:cardElevation="1dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -66,14 +66,14 @@
                 android:layout_marginRight="16dp"
                 android:maxLines="1"
                 android:text="ru-en"
-                android:textColor="@color/textColorGray"
+                android:textColor="@color/colorAccent"
                 android:textSize="14sp" />
 
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/textColorGrayLight"
+                android:background="@color/dividerColor"
                 android:layout_alignParentBottom="true"/>
 
         </RelativeLayout>

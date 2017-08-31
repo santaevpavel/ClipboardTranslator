@@ -1,28 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/text"
+        style="@style/TextSectionStyle"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="vertical">
+        android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="bottom"
+        android:text="Text"
+        android:textColor="@color/colorAccent"
+        app:textAllCaps="true" />
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/text"
-            style="@style/TextSectionStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
-            android:textColor="@color/colorAccent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="Text" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/textColorGrayLight"
-            android:layout_alignParentBottom="true"/>
-
-    </RelativeLayout>
 </layout>

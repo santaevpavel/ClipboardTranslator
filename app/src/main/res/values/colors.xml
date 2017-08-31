@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ffffff</color>
-    <color name="colorPrimaryDark">#e8e8e8</color>
+    <color name="colorPrimary">#111</color>
+    <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#ff5722</color>
 
     <color name="colorWhite">#ffffff</color>
+
+    <color name="dividerColor">#28000000</color>
 
     <color name="textColorBlackLight">#1e1e1e</color>
     <color name="textColorGrayDark">#313131</color>
@@ -12,6 +14,6 @@
     <color name="textColorGrayLight">#a0a0a0</color>
 
     <color name="history_item_bg">@color/colorWhite</color>
-    <color name="main_background">@color/colorWhite</color>
+    <color name="main_background">#f5f5f5</color>
 </resources>
 
