@@ -29,14 +29,4 @@
         <item name="colorControlNormal">@color/textColorBlackLight</item>
     </style>
 
-    <!--
-    android:textColor="#898989"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:hint="Перевод"
-            android:textStyle="bold"
-            app:textAllCaps="true"
-    -->
 </resources>

@@ -24,17 +24,17 @@
             <android.support.v7.widget.AppCompatImageView
                 android:layout_width="128dp"
                 android:layout_height="128dp"
-                app:srcCompat="@drawable/ic_restore_black_128dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="4dp"
-                android:tint="@color/colorPrimary"/>
+                android:tint="@color/textColorGrayDark"
+                app:srcCompat="@drawable/ic_restore_black_128dp"/>
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/there_is_no_history"
                 android:layout_gravity="center"
-                android:textColor="@color/textColorGray"
+                android:textColor="@color/textColorGrayDark"
                 android:textSize="24sp" />
 
             <android.support.v7.widget.AppCompatTextView
@@ -43,7 +43,8 @@
                 android:layout_gravity="center"
                 android:text="@string/no_history_subtitle"
                 android:textColor="@color/textColorGrayLight"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:id="@+id/appCompatTextView2" />
 
         </LinearLayout>
 
