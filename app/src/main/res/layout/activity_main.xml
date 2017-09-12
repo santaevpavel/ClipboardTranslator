@@ -11,14 +11,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:background="@color/colorPrimary"
+            app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:visibility="visible"
-                app:layout_collapseMode="pin" />
+                android:background="@color/textColorBlackLight"
+                app:titleTextColor="@color/colorWhite"
+                app:elevation="0dp"
+                app:theme="@style/ToolbarColored" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/textColorGrayLight"/>
 
         </android.support.design.widget.AppBarLayout>
 
@@ -35,8 +45,8 @@
                 android:layout_gravity="bottom"
                 android:background="@color/colorPrimary"
                 app:itemBackground="@color/colorPrimary"
-                app:itemIconTint="#fff"
-                app:itemTextColor="#fff"
+                app:itemIconTint="@color/colorAccent"
+                app:itemTextColor="@color/colorAccent"
                 app:menu="@menu/main_bottom_menu" />
 
             <android.support.v4.view.ViewPager
