@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ru.santaev.clipboardtranslator.R;
+import ru.santaev.clipboardtranslator.TranslatorApp;
 import ru.santaev.clipboardtranslator.databinding.FragmentTranslateBinding;
 import ru.santaev.clipboardtranslator.model.Language;
 import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider;
@@ -44,7 +45,8 @@ public class TranslateFragment extends LifecycleFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         translateDirectionProvider = new TranslateDirectionProvider();
-        viewModel = ViewModelProviders.of(this).get(TranslateViewModel.class);
+        TranslateViewModelFactory factory = new TranslateViewModelFactory(TranslatorApp.getInstance().getDataModel());
+        viewModel = ViewModelProviders.of(this, factory).get(TranslateViewModel.class);
         observeModel();
     }
 
@@ -154,4 +156,5 @@ public class TranslateFragment extends LifecycleFragment {
                 break;
         }
     }
+
 }

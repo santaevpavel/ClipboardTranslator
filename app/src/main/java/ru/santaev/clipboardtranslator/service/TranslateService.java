@@ -19,10 +19,11 @@ import java.util.Random;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import ru.santaev.clipboardtranslator.R;
-import ru.santaev.clipboardtranslator.api.ApiService;
+import ru.santaev.clipboardtranslator.TranslatorApp;
 import ru.santaev.clipboardtranslator.api.TranslateRequest;
 import ru.santaev.clipboardtranslator.db.AppDatabase;
 import ru.santaev.clipboardtranslator.db.entity.Translation;
+import ru.santaev.clipboardtranslator.model.IDataModel;
 import ru.santaev.clipboardtranslator.service.uitl.ClipboardFilter;
 import ru.santaev.clipboardtranslator.service.uitl.IClipboardFilter;
 import ru.santaev.clipboardtranslator.service.uitl.ITranslationSettingsProvider;
@@ -36,6 +37,7 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
     private ClipboardManager clipboardManager;
     private IClipboardFilter filter;
     private ITranslationSettingsProvider translationSettingsProvider;
+    private IDataModel dataModel;
 
     public TranslateService() {
     }
@@ -54,6 +56,7 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
         filter = new ClipboardFilter();
         translationSettingsProvider =  AppPreference.getInstance();
         AppPreference.getAppSharedPreference().registerOnSharedPreferenceChangeListener(this);
+        dataModel = TranslatorApp.getInstance().getDataModel();
 
         initClipboardListener();
         showAppNotification();
@@ -66,6 +69,7 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
         hideAppNotification();
         releaseClipboardListener();
         AppPreference.getAppSharedPreference().unregisterOnSharedPreferenceChangeListener(this);
+        dataModel = null;
     }
 
     private void initClipboardListener(){
@@ -122,7 +126,7 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
 
         TranslateRequest request = new TranslateRequest(text, originLang,
                 targetLang);
-        ApiService.getInstance().translate(request)
+        dataModel.translate(request)
                 .map(translateResponse -> {
                     ArrayList<String> strings = translateResponse.getText();
                     String translatedText = strings.size() > 0 ? strings.get(0) : "";

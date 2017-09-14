@@ -11,10 +11,10 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import ru.santaev.clipboardtranslator.api.ApiService;
 import ru.santaev.clipboardtranslator.api.TranslateRequest;
 import ru.santaev.clipboardtranslator.db.AppDatabase;
 import ru.santaev.clipboardtranslator.db.entity.Translation;
+import ru.santaev.clipboardtranslator.model.IDataModel;
 import ru.santaev.clipboardtranslator.model.Language;
 import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider;
 import ru.santaev.clipboardtranslator.util.AppPreference;
@@ -40,7 +40,10 @@ public class TranslateViewModel extends ViewModel{
     private AppPreference appPreference;
     private TranslateDirectionProvider translateDirectionProvider;
 
-    public TranslateViewModel() {
+    private IDataModel dataModel;
+
+    public TranslateViewModel(IDataModel dataModel) {
+        this.dataModel = dataModel;
         translatedText.setValue("");
         progress.setValue(false);
         failed.setValue(false);
@@ -132,7 +135,7 @@ public class TranslateViewModel extends ViewModel{
             TranslateRequest translateRequest = new TranslateRequest(originText,
                     originLang.getValue().getCode(), targetLang.getValue().getCode());
 
-            disposable = ApiService.getInstance().translate(translateRequest)
+            disposable = dataModel.translate(translateRequest)
                     .map(response -> {
                         String targetText = response.getText().size() == 0
                                 ? "" : response.getText().get(0);

@@ -3,8 +3,8 @@ package ru.santaev.clipboardtranslator.api;
 
 public class TranslateRequest {
 
-    String originText;
-    String lang;
+    public String originText;
+    public String lang;
 
     public TranslateRequest(String originText, String originLang, String targetLang) {
         this.originText = originText;

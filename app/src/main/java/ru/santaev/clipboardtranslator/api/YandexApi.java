@@ -17,4 +17,8 @@ public interface YandexApi {
     Call<TranslateResponse> translate(@Field("text") String text,
                                       @Field("lang") String lang,
                                       @Field("key") String apiKey);
+
+    @FormUrlEncoded
+    @POST("api/v1.5/tr.json/translate")
+    Call<TranslateResponse> getLangs(@Field("text") String text);
 }

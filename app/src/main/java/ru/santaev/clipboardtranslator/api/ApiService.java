@@ -15,12 +15,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static ru.santaev.clipboardtranslator.api.YandexApi.API_KEY;
 import static ru.santaev.clipboardtranslator.api.YandexApi.SERVER_URL;
 
-public class ApiService {
+public class ApiService implements IApiService{
 
-    private static ApiService instance;
     private final YandexApi api;
 
-    private ApiService() {
+    public ApiService() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(SERVER_URL)
@@ -30,13 +29,7 @@ public class ApiService {
         api = retrofit.create(YandexApi.class);
     }
 
-    public static ApiService getInstance() {
-        if (instance == null) {
-            instance = new ApiService();
-        }
-        return instance;
-    }
-
+    @Override
     public Single<TranslateResponse> translate(TranslateRequest request) {
         return wrapSingle(() -> {
             try {

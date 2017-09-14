@@ -99,14 +99,6 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         unsupportedList = new ArrayList<>(Arrays.asList(Language.values()));
         unsupportedList.removeAll(supportedList);
 
-        if (chooseOrigin){
-            supportedList.remove(langTarget);
-            unsupportedList.remove(langTarget);
-        } else {
-            supportedList.remove(langOrigin);
-            unsupportedList.remove(langOrigin);
-        }
-
         adapter = new LanguageAdapter(supportedList, unsupportedList);
 
         binding.list.setLayoutManager(new LinearLayoutManager(this));
