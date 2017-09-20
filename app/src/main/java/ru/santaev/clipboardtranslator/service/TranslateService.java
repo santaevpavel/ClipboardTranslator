@@ -13,17 +13,14 @@ import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import ru.santaev.clipboardtranslator.R;
 import ru.santaev.clipboardtranslator.TranslatorApp;
-import ru.santaev.clipboardtranslator.api.TranslateRequest;
-import ru.santaev.clipboardtranslator.db.AppDatabase;
-import ru.santaev.clipboardtranslator.db.entity.Translation;
 import ru.santaev.clipboardtranslator.model.IDataModel;
+import ru.santaev.clipboardtranslator.model.Language;
 import ru.santaev.clipboardtranslator.service.uitl.ClipboardFilter;
 import ru.santaev.clipboardtranslator.service.uitl.IClipboardFilter;
 import ru.santaev.clipboardtranslator.service.uitl.ITranslationSettingsProvider;
@@ -117,23 +114,17 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
     }
 
     private void translate(String text){
-        String originLang = translationSettingsProvider.getOriginLang().getCode();
-        String targetLang = translationSettingsProvider.getTargetLang().getCode();
+        Language originLang = translationSettingsProvider.getOriginLang();
+        Language targetLang = translationSettingsProvider.getTargetLang();
 
         int id = new Random().nextInt();
-        String langText = String.format("%s-%s", originLang.toUpperCase(), targetLang.toUpperCase());
-        showNotification(String.format(getString(R.string.translate_notification_translating), text), langText, id);
+        String langText = String.format("%s-%s", originLang.getCode().toUpperCase(),
+                targetLang.getCode().toUpperCase());
+        showNotification(String.format(getString(R.string.translate_notification_translating), text),
+                langText, id);
 
-        TranslateRequest request = new TranslateRequest(text, originLang,
-                targetLang);
-        dataModel.translate(request)
-                .map(translateResponse -> {
-                    ArrayList<String> strings = translateResponse.getText();
-                    String translatedText = strings.size() > 0 ? strings.get(0) : "";
-                    Translation translation = new Translation(originLang, targetLang, text, translatedText);
-                    AppDatabase.getInstance().getTranslationDao().insert(translation);
-                    return new Pair<>(translateResponse, translatedText);
-                })
+        dataModel.translate(originLang, targetLang, text)
+                .map(translateResponse -> new Pair<>(translateResponse, translateResponse.targetText))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(translateResponse -> showNotification(translateResponse.second, langText, id), throwable -> {

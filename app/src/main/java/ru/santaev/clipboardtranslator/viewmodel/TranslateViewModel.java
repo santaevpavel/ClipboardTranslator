@@ -10,15 +10,10 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import ru.santaev.clipboardtranslator.api.TranslateRequest;
-import ru.santaev.clipboardtranslator.db.AppDatabase;
-import ru.santaev.clipboardtranslator.db.entity.Translation;
 import ru.santaev.clipboardtranslator.model.IDataModel;
 import ru.santaev.clipboardtranslator.model.Language;
 import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider;
 import ru.santaev.clipboardtranslator.util.AppPreference;
-
 
 public class TranslateViewModel extends ViewModel{
 
@@ -35,7 +30,6 @@ public class TranslateViewModel extends ViewModel{
     private String originText;
     private Handler handler;
     private Runnable runTranslate;
-    private Translation lastTranslation;
 
     private AppPreference appPreference;
     private TranslateDirectionProvider translateDirectionProvider;
@@ -128,26 +122,10 @@ public class TranslateViewModel extends ViewModel{
             progress.setValue(true);
             failed.setValue(false);
 
-            String finalOriginText = originText;
-            Language finalOriginLang = originLang.getValue();
-            Language finalTargetLang = targetLang.getValue();
-
-            TranslateRequest translateRequest = new TranslateRequest(originText,
-                    originLang.getValue().getCode(), targetLang.getValue().getCode());
-
-            disposable = dataModel.translate(translateRequest)
-                    .map(response -> {
-                        String targetText = response.getText().size() == 0
-                                ? "" : response.getText().get(0);
-                        saveTransition(finalOriginText, targetText, finalOriginLang, finalTargetLang);
-                        return response;
-                    })
-                    .subscribeOn(Schedulers.io())
+            disposable = dataModel.translate(originLang.getValue(), targetLang.getValue(), originText)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(translateResponse -> {
-                        String targetText = translateResponse.getText().size() == 0
-                                ? "" : translateResponse.getText().get(0);
-                        translatedText.setValue(targetText);
+                        translatedText.setValue(translateResponse.targetText);
                         progress.setValue(false);
                     }, throwable -> {
                         translatedText.setValue(throwable.getMessage());
@@ -158,32 +136,6 @@ public class TranslateViewModel extends ViewModel{
 
         handler.postDelayed(runTranslate, TRANSLATE_DELAY_MILLIS);
     }
-
-    private void saveTransition(String finalOriginText, String targetText,
-                                Language finalOriginLang, Language finalTargetLang) {
-
-        /*if (true){
-            return;
-        }*/
-
-        Translation newTranslation = new Translation(finalOriginLang.getCode(),
-                finalTargetLang.getCode(), finalOriginText, targetText);
-
-        if (lastTranslation != null
-                && finalOriginText.contains(lastTranslation.getTextSource())){
-
-            Translation savedTranslation = AppDatabase.getInstance()
-                    .getTranslationDao().getTranslationSync(lastTranslation.getId());
-            if (savedTranslation != null) {
-                newTranslation.setId(lastTranslation.getId());
-            }
-        }
-        lastTranslation = newTranslation;
-
-        long id = AppDatabase.getInstance().getTranslationDao().insert(lastTranslation);
-        lastTranslation.setId(id);
-    }
-
 
     @Override
     protected void onCleared() {

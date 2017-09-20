@@ -2,11 +2,18 @@ package ru.santaev.clipboardtranslator.model;
 
 
 import io.reactivex.Single;
-import ru.santaev.clipboardtranslator.api.TranslateRequest;
-import ru.santaev.clipboardtranslator.api.TranslateResponse;
 
 public interface IDataModel {
 
-    Single<TranslateResponse> translate(TranslateRequest request);
+    public class TranslateResponse{
+
+        public String targetText;
+
+        public TranslateResponse(String targetText) {
+            this.targetText = targetText;
+        }
+    }
+
+    Single<TranslateResponse> translate(Language origin, Language target, String text);
 
 }
