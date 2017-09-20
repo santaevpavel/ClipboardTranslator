@@ -75,12 +75,13 @@ public class HistoryFragment extends LifecycleFragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getLayoutPosition();
-                viewModel.removeItem(adapter.getTranslations().get(position));
+                viewModel.removeItem(adapter.getTranslation(position));
             }
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(binding.historyList);
+        binding.historyList.setHasFixedSize(false);
 
         return binding.getRoot();
     }

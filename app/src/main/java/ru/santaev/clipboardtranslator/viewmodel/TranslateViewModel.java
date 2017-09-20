@@ -162,6 +162,10 @@ public class TranslateViewModel extends ViewModel{
     private void saveTransition(String finalOriginText, String targetText,
                                 Language finalOriginLang, Language finalTargetLang) {
 
+        /*if (true){
+            return;
+        }*/
+
         Translation newTranslation = new Translation(finalOriginLang.getCode(),
                 finalTargetLang.getCode(), finalOriginText, targetText);
 
