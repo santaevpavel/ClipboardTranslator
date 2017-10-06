@@ -1,14 +1,8 @@
 package ru.santaev.clipboardtranslator.ui.adapter;
 
-
-import android.support.annotation.DrawableRes;
-
-import ru.santaev.clipboardtranslator.R;
-import ru.santaev.clipboardtranslator.model.Language;
-
 public class LanguageIconProvider {
 
-    @DrawableRes
+    /*@DrawableRes
     public int getLanguageIcon(Language language) {
         switch (language) {
             case RUSSIAN:
@@ -34,5 +28,5 @@ public class LanguageIconProvider {
             default:
                 return R.drawable.ic_country_unknown;
         }
-    }
+    }*/
 }

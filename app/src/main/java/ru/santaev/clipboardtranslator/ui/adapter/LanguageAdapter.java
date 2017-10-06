@@ -14,7 +14,7 @@ import java.util.List;
 import ru.santaev.clipboardtranslator.R;
 import ru.santaev.clipboardtranslator.TranslatorApp;
 import ru.santaev.clipboardtranslator.databinding.LanguageItemLayoutBinding;
-import ru.santaev.clipboardtranslator.model.Language;
+import ru.santaev.clipboardtranslator.db.entity.Language;
 
 public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHolder>{
 
@@ -54,8 +54,8 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
         Language language = getLangByPos(position);
         boolean isSupported = position < languages.size();
 
-        viewHolder.binding.text.setText(TranslatorApp.getAppContext().getString(language.getTextRes()));
-        viewHolder.binding.icon.setImageResource(languageIconProvider.getLanguageIcon(language));
+        viewHolder.binding.text.setText(language.getName());
+        //viewHolder.binding.icon.setImageResource(languageIconProvider.getLanguageIcon(language));
 
         int color = isSupported ? R.color.textColorGrayDark : R.color.textColorGrayLight;
         Resources resources = TranslatorApp.getAppContext().getResources();
@@ -71,7 +71,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return languages.size() + unsupportedLanguages.size();
+        return languages != null ? languages.size() + unsupportedLanguages.size() : 0;
     }
 
     private Language getLangByPos(int position){

@@ -42,6 +42,12 @@ public class ApiService implements IApiService{
         });
     }
 
+    @Override
+    public LanguagesResponse getLanguages() {
+        Call<LanguagesResponse> call = api.getLangs(API_KEY, "ru");
+        return makeRequest(call);
+    }
+
     private <T> T makeRequest(Call<T> httpCall) {
         Response<T> response = null;
         try {

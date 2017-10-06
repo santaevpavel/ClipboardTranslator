@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ru.santaev.clipboardtranslator.db.entity.Language;
+
 public class TranslateDirectionProvider {
 
     private static String[] allowedTranslates = { "az-ru", "be-bg", "be-cs",
@@ -39,7 +41,7 @@ public class TranslateDirectionProvider {
     private Map<Language, ArrayList<Language>> supportedInverseDirectionsCache = new HashMap<>();
 
     public List<Language> getSupportedTargetLanguages(Language origin){
-        if (supportedDirectionsCache.containsKey(origin)){
+        /*if (supportedDirectionsCache.containsKey(origin)){
             return supportedDirectionsCache.get(origin);
         }
         ArrayList<Language> res = new ArrayList<>();
@@ -48,11 +50,12 @@ public class TranslateDirectionProvider {
                 res.add(language);
             }
         }
-        return res;
+        return res;*/
+        return null;
     }
 
     public List<Language> getSupportedOriginLanguages(Language target){
-        if (supportedInverseDirectionsCache.containsKey(target)){
+        /*if (supportedInverseDirectionsCache.containsKey(target)){
             return supportedInverseDirectionsCache.get(target);
         }
         ArrayList<Language> res = new ArrayList<>();
@@ -61,7 +64,8 @@ public class TranslateDirectionProvider {
                 res.add(language);
             }
         }
-        return res;
+        return res;*/
+        return null;
     }
 
     public boolean isSupportTranslate(Language langFrom, Language langTo) {

@@ -10,8 +10,8 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import ru.santaev.clipboardtranslator.db.entity.Language;
 import ru.santaev.clipboardtranslator.model.IDataModel;
-import ru.santaev.clipboardtranslator.model.Language;
 import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider;
 import ru.santaev.clipboardtranslator.util.AppPreference;
 

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import ru.santaev.clipboardtranslator.TranslatorApp;
-import ru.santaev.clipboardtranslator.model.Language;
+import ru.santaev.clipboardtranslator.db.entity.Language;
 import ru.santaev.clipboardtranslator.service.uitl.ITranslationSettingsProvider;
 
 public class AppPreference implements ITranslationSettingsProvider{
@@ -43,13 +43,15 @@ public class AppPreference implements ITranslationSettingsProvider{
 
     @Override
     public Language getOriginLang() {
-        String code = sharedPreferences.getString(KEY_ORIGIN_LANG, Language.RUSSIAN.getCode());
-        return Language.byCode(code);
+        /*String code = sharedPreferences.getString(KEY_ORIGIN_LANG, );
+        return Language.byCode(code);*/
+        return new Language(0, "ru", "Русский");
     }
 
     @Override
     public Language getTargetLang() {
-        String code = sharedPreferences.getString(KEY_TARGET_LANG, Language.ENGLISH.getCode());
-        return Language.byCode(code);
+        /*String code = sharedPreferences.getString(KEY_TARGET_LANG, "en");
+        return Language.byCode(code);*/
+        return new Language(0, "en", "Английский");
     }
 }

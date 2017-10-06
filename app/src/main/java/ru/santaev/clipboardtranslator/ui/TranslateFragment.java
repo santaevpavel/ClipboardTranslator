@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import ru.santaev.clipboardtranslator.R;
 import ru.santaev.clipboardtranslator.TranslatorApp;
 import ru.santaev.clipboardtranslator.databinding.FragmentTranslateBinding;
-import ru.santaev.clipboardtranslator.model.Language;
+import ru.santaev.clipboardtranslator.db.entity.Language;
 import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider;
 import ru.santaev.clipboardtranslator.service.TranslateService;
 import ru.santaev.clipboardtranslator.viewmodel.TranslateViewModel;
@@ -122,13 +122,13 @@ public class TranslateFragment extends LifecycleFragment {
 
         viewModel.getOriginLang().observe(this, language -> {
             if (null != binding) {
-                binding.originLangText.setText(language.getTextRes());
+                binding.originLangText.setText(language.getName());
             }
         });
 
         viewModel.getTargetLang().observe(this, language -> {
             if (null != binding) {
-                binding.targetLangText.setText(language.getTextRes());
+                binding.targetLangText.setText(language.getName());
             }
         });
 

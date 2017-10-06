@@ -1,3 +1,4 @@
+/*
 package ru.santaev.clipboardtranslator.model;
 
 import ru.santaev.clipboardtranslator.R;
@@ -41,3 +42,4 @@ public enum Language {
     }
 
 }
+*/

@@ -1,21 +1,29 @@
 package ru.santaev.clipboardtranslator.model;
 
 
+import android.arch.lifecycle.LiveData;
+
+import java.util.List;
+
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import ru.santaev.clipboardtranslator.api.IApiService;
 import ru.santaev.clipboardtranslator.api.TranslateRequest;
 import ru.santaev.clipboardtranslator.db.AppDatabase;
+import ru.santaev.clipboardtranslator.db.entity.Language;
 import ru.santaev.clipboardtranslator.db.entity.Translation;
+import ru.santaev.clipboardtranslator.model.repository.LanguageRepository;
 
 public class DataModel implements IDataModel{
 
     private IApiService apiService;
+    private LanguageRepository languageRepository;
 
     private Translation lastTranslation;
 
     public DataModel(IApiService apiService) {
         this.apiService = apiService;
+        this.languageRepository = new LanguageRepository(apiService);
     }
 
     @Override
@@ -32,6 +40,10 @@ public class DataModel implements IDataModel{
                     saveTransition(originText, targetText, originLang, targetLang);
                     return new TranslateResponse(targetText);
                 }).subscribeOn(Schedulers.io());
+    }
+
+    public LiveData<List<Language>> getLanguages(){
+        return languageRepository.getLanguages();
     }
 
     private void saveTransition(String finalOriginText, String targetText,

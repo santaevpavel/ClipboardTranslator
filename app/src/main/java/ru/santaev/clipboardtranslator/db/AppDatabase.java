@@ -7,10 +7,12 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import ru.santaev.clipboardtranslator.TranslatorApp;
+import ru.santaev.clipboardtranslator.db.dao.LanguageDao;
 import ru.santaev.clipboardtranslator.db.dao.TranslationDao;
+import ru.santaev.clipboardtranslator.db.entity.Language;
 import ru.santaev.clipboardtranslator.db.entity.Translation;
 
-@Database(entities = {Translation.class}, version = 1, exportSchema = false)
+@Database(entities = {Translation.class, Language.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase{
 
     private static final String DB_NAME = "TranslationDB";
@@ -29,4 +31,6 @@ public abstract class AppDatabase extends RoomDatabase{
     }
 
     public abstract TranslationDao getTranslationDao();
+
+    public abstract LanguageDao getLanguageDao();
 }
