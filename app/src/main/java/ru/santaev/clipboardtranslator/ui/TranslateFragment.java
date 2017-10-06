@@ -135,6 +135,7 @@ public class TranslateFragment extends LifecycleFragment {
         viewModel.getFailed().observe(this, isFailed -> {
             if (null != binding) {
                 binding.retry.setVisibility(isFailed ? View.VISIBLE : View.GONE);
+                binding.translatedByYandex.setVisibility(isFailed ? View.GONE : View.VISIBLE);
             }
         });
     }
