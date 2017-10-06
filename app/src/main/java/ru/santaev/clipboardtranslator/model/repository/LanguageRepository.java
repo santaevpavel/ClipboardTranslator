@@ -19,6 +19,8 @@ public class LanguageRepository {
     private IApiService apiService;
     private LanguageDao languageDao;
 
+    private LiveData<List<Language>> languages;
+
     public LanguageRepository(IApiService apiService) {
         this.apiService = apiService;
         languageDao = AppDatabase.getInstance().getLanguageDao();
@@ -26,7 +28,10 @@ public class LanguageRepository {
 
     public LiveData<List<Language>> getLanguages() {
         loadLanguages();
-        return languageDao.getLanguages();
+        if (languages == null) {
+            languages = languageDao.getLanguages();
+        }
+        return languages;
     }
 
     private void loadLanguages(){

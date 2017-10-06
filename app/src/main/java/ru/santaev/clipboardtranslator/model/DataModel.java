@@ -24,6 +24,8 @@ public class DataModel implements IDataModel{
     public DataModel(IApiService apiService) {
         this.apiService = apiService;
         this.languageRepository = new LanguageRepository(apiService);
+
+        getLanguages();
     }
 
     @Override
