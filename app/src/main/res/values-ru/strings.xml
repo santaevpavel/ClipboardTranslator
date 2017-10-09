@@ -18,4 +18,5 @@
     <string name="choose_lang_activity_subheader_unsuppored_langs">Неподдерживаемые языки</string>
     <string name="translate_fragment_subheader_translate">Перевод</string>
     <string name="translate_fragment_subheader_extra">Дополнительно</string>
+    <string name="translated_by_yandex">Переведено сервисом «Яндекс.Переводчик»</string>
 </resources>

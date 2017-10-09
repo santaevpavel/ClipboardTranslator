@@ -6,6 +6,7 @@ import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -82,6 +83,8 @@ public class TranslateFragment extends LifecycleFragment {
 
         binding.retry.setOnClickListener(v -> viewModel.onClickRetry());
 
+        binding.translatedByYandex.setOnClickListener(this::openYandexTranslate);
+
         return binding.getRoot();
     }
 
@@ -156,6 +159,11 @@ public class TranslateFragment extends LifecycleFragment {
                 viewModel.onTargetLangSelected(lang);
                 break;
         }
+    }
+
+    private void openYandexTranslate(View view) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.yandex_translate_url)));
+        startActivity(browserIntent);
     }
 
 }
