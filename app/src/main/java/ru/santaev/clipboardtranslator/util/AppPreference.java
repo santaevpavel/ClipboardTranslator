@@ -12,8 +12,10 @@ public class AppPreference implements ITranslationSettingsProvider{
 
     public static final String APP_PREF = "APP_PREF";
 
-    public static final String KEY_ORIGIN_LANG = "KEY_ORIGIN_LANG";
-    public static final String KEY_TARGET_LANG = "KEY_TARGET_LANG";
+    public static final String KEY_ORIGIN_LANG_NAME = "KEY_ORIGIN_LANG_NAME";
+    public static final String KEY_ORIGIN_LANG_CODE = "KEY_ORIGIN_LANG_CODE";
+    public static final String KEY_TARGET_LANG_NAME = "KEY_TARGET_LANG_NAME";
+    public static final String KEY_TARGET_LANG_CODE = "KEY_TARGET_LANG_CODE";
 
     private SharedPreferences sharedPreferences;
 
@@ -31,27 +33,37 @@ public class AppPreference implements ITranslationSettingsProvider{
 
     public void setOriginLang(Language lang){
         sharedPreferences.edit()
-                .putString(KEY_ORIGIN_LANG, lang.getCode())
+                .putString(KEY_ORIGIN_LANG_NAME, lang.getName())
+                .putString(KEY_ORIGIN_LANG_CODE, lang.getCode())
                 .apply();
     }
 
     public void setTargetLang(Language lang){
         sharedPreferences.edit()
-                .putString(KEY_TARGET_LANG, lang.getCode())
+                .putString(KEY_TARGET_LANG_NAME, lang.getName())
+                .putString(KEY_TARGET_LANG_CODE, lang.getCode())
                 .apply();
     }
 
     @Override
     public Language getOriginLang() {
-        /*String code = sharedPreferences.getString(KEY_ORIGIN_LANG, );
-        return Language.byCode(code);*/
-        return new Language(0, "ru", "Русский");
+        String code = sharedPreferences.getString(KEY_ORIGIN_LANG_CODE, null);
+        String name = sharedPreferences.getString(KEY_ORIGIN_LANG_NAME, null);
+        if (code != null && name != null) {
+            return new Language(code, name);
+        } else {
+            return new Language("ru", "Русский");
+        }
     }
 
     @Override
     public Language getTargetLang() {
-        /*String code = sharedPreferences.getString(KEY_TARGET_LANG, "en");
-        return Language.byCode(code);*/
-        return new Language(0, "en", "Английский");
+        String code = sharedPreferences.getString(KEY_TARGET_LANG_CODE, null);
+        String name = sharedPreferences.getString(KEY_TARGET_LANG_NAME, null);
+        if (code != null && name != null) {
+            return new Language(code, name);
+        } else {
+            return new Language("en", "Английский");
+        }
     }
 }

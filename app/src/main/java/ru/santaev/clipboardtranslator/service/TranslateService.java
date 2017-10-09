@@ -141,8 +141,8 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (AppPreference.KEY_ORIGIN_LANG.equals(key)
-                || AppPreference.KEY_TARGET_LANG.equals(key)){
+        if (AppPreference.KEY_ORIGIN_LANG_CODE.equals(key)
+                || AppPreference.KEY_TARGET_LANG_CODE.equals(key)) {
             showAppNotification();
         }
     }
