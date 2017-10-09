@@ -1,10 +1,9 @@
 package ru.santaev.clipboardtranslator.model;
 
 
-import android.arch.lifecycle.LiveData;
-
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import ru.santaev.clipboardtranslator.api.IApiService;
@@ -44,7 +43,7 @@ public class DataModel implements IDataModel{
                 }).subscribeOn(Schedulers.io());
     }
 
-    public LiveData<List<Language>> getLanguages(){
+    public Flowable<List<Language>> getLanguages() {
         return languageRepository.getLanguages();
     }
 

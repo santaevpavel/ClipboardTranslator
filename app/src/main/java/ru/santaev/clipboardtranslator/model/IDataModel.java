@@ -1,10 +1,9 @@
 package ru.santaev.clipboardtranslator.model;
 
 
-import android.arch.lifecycle.LiveData;
-
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import ru.santaev.clipboardtranslator.db.entity.Language;
 
@@ -21,6 +20,6 @@ public interface IDataModel {
 
     Single<TranslateResponse> translate(Language origin, Language target, String text);
 
-    LiveData<List<Language>> getLanguages();
+    Flowable<List<Language>> getLanguages();
 
 }

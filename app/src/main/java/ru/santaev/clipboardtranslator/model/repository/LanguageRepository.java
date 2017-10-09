@@ -1,11 +1,10 @@
 package ru.santaev.clipboardtranslator.model.repository;
 
-import android.arch.lifecycle.LiveData;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import ru.santaev.clipboardtranslator.api.IApiService;
@@ -19,14 +18,14 @@ public class LanguageRepository {
     private IApiService apiService;
     private LanguageDao languageDao;
 
-    private LiveData<List<Language>> languages;
+    private Flowable<List<Language>> languages;
 
     public LanguageRepository(IApiService apiService) {
         this.apiService = apiService;
         languageDao = AppDatabase.getInstance().getLanguageDao();
     }
 
-    public LiveData<List<Language>> getLanguages() {
+    public Flowable<List<Language>> getLanguages() {
         loadLanguages();
         if (languages == null) {
             languages = languageDao.getLanguages();
