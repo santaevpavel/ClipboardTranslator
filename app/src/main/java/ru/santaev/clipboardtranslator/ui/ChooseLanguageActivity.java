@@ -17,6 +17,7 @@ import ru.santaev.clipboardtranslator.TranslatorApp;
 import ru.santaev.clipboardtranslator.databinding.ActivityChooseLanguageBinding;
 import ru.santaev.clipboardtranslator.db.entity.Language;
 import ru.santaev.clipboardtranslator.ui.adapter.LanguageAdapter;
+import ru.santaev.clipboardtranslator.util.AppPreference;
 import ru.santaev.clipboardtranslator.viewmodel.ChooseLanguageViewModel;
 
 public class ChooseLanguageActivity extends LifecycleActivity {
@@ -25,6 +26,8 @@ public class ChooseLanguageActivity extends LifecycleActivity {
     public static final String ARG_KEY_LANG_TARGET = "ARG_KEY_LANG_TARGET";
     public static final String ARG_KEY_CHOOSE_ORIGIN = "ARG_KEY_CHOOSE_ORIGIN";
     public static final String RESULT_KEY_LANG = "RESULT_KEY_LANG";
+
+    public static final int RECENT_LANGUAGES_MAX_SIZE = 3;
 
     private List<Language> languages;
     private ChooseLanguageViewModel viewModel;
@@ -44,6 +47,7 @@ public class ChooseLanguageActivity extends LifecycleActivity {
     private Language langOrigin;
     private Language langTarget;
     private boolean chooseOrigin;
+    private AppPreference appPreference;
 
     @SuppressWarnings("ConstantConditions")
     @Override
@@ -53,6 +57,7 @@ public class ChooseLanguageActivity extends LifecycleActivity {
 
         viewModel = ViewModelProviders.of(this, new ViewModelFactory(TranslatorApp.getInstance().getDataModel()))
                 .get(ChooseLanguageViewModel.class);
+        appPreference = AppPreference.getInstance();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_choose_language);
 
@@ -104,16 +109,30 @@ public class ChooseLanguageActivity extends LifecycleActivity {
         unsupportedList = new ArrayList<>();
         unsupportedList.removeAll(supportedList);
 
-        adapter = new LanguageAdapter(supportedList, unsupportedList);
+        List<Language> recentLanguages = appPreference.getLastUsedLanguages();
+
+        adapter = new LanguageAdapter(recentLanguages, supportedList, unsupportedList);
 
         binding.list.setLayoutManager(new LinearLayoutManager(this));
         binding.list.setAdapter(adapter);
 
         adapter.setListener(translation -> {
+            addLangToRecent(translation);
             Intent data = new Intent();
             data.putExtra(RESULT_KEY_LANG, translation);
             setResult(RESULT_OK, data);
             finish();
         });
+    }
+
+    private void addLangToRecent(Language language) {
+        List<Language> recentLanguages = appPreference.getLastUsedLanguages();
+        if (!recentLanguages.contains(language)) {
+            if (RECENT_LANGUAGES_MAX_SIZE <= recentLanguages.size()) {
+                recentLanguages.remove(recentLanguages.size() - 1);
+            }
+            recentLanguages.add(0, language);
+            appPreference.setLastUsedLanguages(recentLanguages);
+        }
     }
 }

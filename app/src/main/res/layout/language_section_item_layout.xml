@@ -6,7 +6,7 @@
         android:id="@+id/text"
         style="@style/TextSectionStyle"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="24dp"
         android:layout_gravity="center_vertical"
         android:gravity="bottom"
         android:text="Text"

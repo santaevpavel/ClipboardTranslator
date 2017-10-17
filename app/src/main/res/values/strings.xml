@@ -14,8 +14,8 @@
     <string name="choose_lang_activity_title">Choose language</string>
     <string name="translate_notification_translating">Translating \"%s\"</string>
     <string name="translate_notification_failed">Translate failed</string>
-    <string name="choose_lang_activity_subheader_suppored_langs">Supported languages</string>
-    <string name="choose_lang_activity_subheader_unsuppored_langs">Unsupported languages</string>
+    <string name="choose_lang_activity_subheader_langs">Languages</string>
+    <string name="choose_lang_activity_subheader_recent">Recent languages</string>
     <string name="translate_fragment_subheader_translate">Translate</string>
     <string name="translate_fragment_subheader_extra">Extra</string>
     <string name="yandex_translate_url" translatable="false">http://translate.yandex.ru/</string>
