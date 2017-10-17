@@ -25,12 +25,10 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
     private List<Language> languages;
     private List<Language> unsupportedLanguages;
     private OnItemClickedListener listener;
-    private LanguageIconProvider languageIconProvider;
 
     public LanguageAdapter(List<Language> languages, List<Language> unsupportedLanguages) {
         this.languages = languages;
         this.unsupportedLanguages = unsupportedLanguages;
-        languageIconProvider = new LanguageIconProvider();
     }
 
     public OnItemClickedListener getListener() {
