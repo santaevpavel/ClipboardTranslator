@@ -2,7 +2,6 @@ package ru.santaev.clipboardtranslator.model;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +68,8 @@ public class TranslateDirectionProvider {
     }
 
     public boolean isSupportTranslate(Language langFrom, Language langTo) {
-        return 0 <= Arrays.binarySearch(allowedTranslates, langFrom.getCode() + "-" + langTo.getCode());
+        //return 0 <= Arrays.binarySearch(allowedTranslates, langFrom.getCode() + "-" + langTo.getCode());
+        return true;
     }
 
 }
