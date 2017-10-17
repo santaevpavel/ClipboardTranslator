@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import ru.santaev.clipboardtranslator.R;
 import ru.santaev.clipboardtranslator.TranslatorApp;
@@ -49,6 +50,8 @@ public class TranslateFragment extends LifecycleFragment {
         ViewModelFactory factory = new ViewModelFactory(TranslatorApp.getInstance().getDataModel());
         viewModel = ViewModelProviders.of(this, factory).get(TranslateViewModel.class);
         observeModel();
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
     @Override
