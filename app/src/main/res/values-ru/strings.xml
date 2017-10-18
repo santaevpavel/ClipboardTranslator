@@ -19,4 +19,5 @@
     <string name="translate_fragment_subheader_extra">Дополнительно</string>
     <string name="translated_by_yandex">Переведено сервисом «Яндекс.Переводчик»</string>
     <string name="choose_lang_activity_subheader_recent">Недавно использованные языки</string>
+    <string name="settings_activity_title">Настройки</string>
 </resources>

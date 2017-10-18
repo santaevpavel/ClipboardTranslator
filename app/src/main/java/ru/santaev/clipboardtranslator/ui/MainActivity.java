@@ -1,5 +1,6 @@
 package ru.santaev.clipboardtranslator.ui;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -76,6 +77,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                break;
+        }
         return true;
     }
 }

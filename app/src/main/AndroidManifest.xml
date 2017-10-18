@@ -24,7 +24,9 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".ui.ChooseLanguageActivity"></activity>
+        <activity android:name=".ui.ChooseLanguageActivity" />
+        <activity android:name=".ui.SettingsActivity" />
+
     </application>
 
 </manifest>

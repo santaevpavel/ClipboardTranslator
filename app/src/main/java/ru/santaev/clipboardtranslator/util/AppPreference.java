@@ -59,6 +59,13 @@ public class AppPreference implements ITranslationSettingsProvider{
                 .apply();
     }
 
+    public void setNotifcation(List<Language> codes) {
+        sharedPreferences.edit()
+                .putString(KEY_LAST_USER_LANGUAGES, new Gson().toJson(codes))
+                .apply();
+    }
+
+
     public List<Language> getLastUsedLanguages() {
         String languages = sharedPreferences.getString(KEY_LAST_USER_LANGUAGES, "");
 

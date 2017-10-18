@@ -12,4 +12,6 @@
 
     <dimen name="history_item_height">72dp</dimen>
     <dimen name="history_item_height_expanded">-1dp</dimen>
+
+    <dimen name="settings_item_height">72dp</dimen>
 </resources>
