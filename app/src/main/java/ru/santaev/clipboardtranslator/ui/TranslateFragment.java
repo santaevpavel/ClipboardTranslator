@@ -1,12 +1,14 @@
 package ru.santaev.clipboardtranslator.ui;
 
 
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -88,6 +90,7 @@ public class TranslateFragment extends LifecycleFragment {
 
         binding.translatedByYandex.setOnClickListener(this::openYandexTranslate);
 
+        enableAnimation();
         return binding.getRoot();
     }
 
@@ -169,4 +172,9 @@ public class TranslateFragment extends LifecycleFragment {
         startActivity(browserIntent);
     }
 
+    private void enableAnimation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            binding.rootLinear.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        }
+    }
 }
