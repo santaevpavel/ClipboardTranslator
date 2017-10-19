@@ -85,8 +85,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.action_settings:
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-                break;
+                return true;
         }
-        return true;
+        return false;
     }
 }
