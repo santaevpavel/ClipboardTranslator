@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="settings_item_notif_text">
+        <item>@string/settings_item_notif_push</item>
+        <item>@string/settings_item_notif_toast</item>
+    </string-array>
+
+    <array name="settings_item_notif_value">
+        <item>1</item>
+        <item>2</item>
+    </array>
+
+</resources>

@@ -21,4 +21,14 @@
     <string name="yandex_translate_url" translatable="false">http://translate.yandex.ru/</string>
     <string name="translated_by_yandex">Translated by service \"Yandex.Translate\"</string>
     <string name="settings_activity_title">Settings</string>
+
+    <string name="settings_item_notif_title">Translate notification</string>
+    <string name="settings_item_notif_push">Status bar</string>
+    <string name="settings_item_notif_toast">Toast notification</string>
+    <string name="settings_section_general">General</string>
+    <string name="settings_section_other">Other</string>
+    <string name="settings_item_feedback_title">Give feedback</string>
+    <string name="settings_item_feedback_subtitle">Write to developer</string>
+    <string name="settings_item_rate_title">Rate app</string>
+    <string name="settings_item_rate_subtitle">Click to go Google Play</string>
 </resources>

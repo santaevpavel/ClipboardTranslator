@@ -24,8 +24,9 @@ import ru.santaev.clipboardtranslator.model.IDataModel;
 import ru.santaev.clipboardtranslator.service.uitl.ClipboardFilter;
 import ru.santaev.clipboardtranslator.service.uitl.IClipboardFilter;
 import ru.santaev.clipboardtranslator.service.uitl.ITranslationSettingsProvider;
-import ru.santaev.clipboardtranslator.util.AppPreference;
 import ru.santaev.clipboardtranslator.util.NotificationHelper;
+import ru.santaev.clipboardtranslator.util.settings.AppPreference;
+import ru.santaev.clipboardtranslator.util.settings.ISettings;
 
 public class TranslateService extends Service implements ClipboardManager.OnPrimaryClipChangedListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -35,6 +36,7 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
     private IClipboardFilter filter;
     private ITranslationSettingsProvider translationSettingsProvider;
     private IDataModel dataModel;
+    private ISettings settings;
 
     public TranslateService() {
     }
@@ -52,6 +54,7 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
 
         filter = new ClipboardFilter();
         translationSettingsProvider =  AppPreference.getInstance();
+        settings = AppPreference.getInstance();
         AppPreference.getAppSharedPreference().registerOnSharedPreferenceChangeListener(this);
         dataModel = TranslatorApp.getInstance().getDataModel();
 
@@ -133,10 +136,13 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
     }
 
     private void showNotification(String text, String langText, int id){
-        Notification notification = NotificationHelper.buildTranslateNotification(getApplicationContext(), text, langText);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Application.NOTIFICATION_SERVICE);
-        notificationManager.notify(id, notification);
-        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+        if (ISettings.NOTIFICATION_TYPE_PUSH == settings.getNotificationType()) {
+            Notification notification = NotificationHelper.buildTranslateNotification(getApplicationContext(), text, langText);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Application.NOTIFICATION_SERVICE);
+            notificationManager.notify(id, notification);
+        } else {
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

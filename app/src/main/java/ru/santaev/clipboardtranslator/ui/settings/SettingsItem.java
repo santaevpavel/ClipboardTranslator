@@ -1,4 +1,4 @@
-package ru.santaev.clipboardtranslator.ui.util;
+package ru.santaev.clipboardtranslator.ui.settings;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;

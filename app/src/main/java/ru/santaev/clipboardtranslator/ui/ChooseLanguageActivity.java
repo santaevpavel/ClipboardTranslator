@@ -17,7 +17,7 @@ import ru.santaev.clipboardtranslator.TranslatorApp;
 import ru.santaev.clipboardtranslator.databinding.ActivityChooseLanguageBinding;
 import ru.santaev.clipboardtranslator.db.entity.Language;
 import ru.santaev.clipboardtranslator.ui.adapter.LanguageAdapter;
-import ru.santaev.clipboardtranslator.util.AppPreference;
+import ru.santaev.clipboardtranslator.util.settings.AppPreference;
 import ru.santaev.clipboardtranslator.viewmodel.ChooseLanguageViewModel;
 
 public class ChooseLanguageActivity extends LifecycleActivity {

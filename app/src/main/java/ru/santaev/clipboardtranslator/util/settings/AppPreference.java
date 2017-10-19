@@ -1,4 +1,4 @@
-package ru.santaev.clipboardtranslator.util;
+package ru.santaev.clipboardtranslator.util.settings;
 
 
 import android.content.Context;
@@ -15,7 +15,7 @@ import ru.santaev.clipboardtranslator.TranslatorApp;
 import ru.santaev.clipboardtranslator.db.entity.Language;
 import ru.santaev.clipboardtranslator.service.uitl.ITranslationSettingsProvider;
 
-public class AppPreference implements ITranslationSettingsProvider{
+public class AppPreference implements ITranslationSettingsProvider, ISettings {
 
     public static final String APP_PREF = "APP_PREF";
 
@@ -24,6 +24,7 @@ public class AppPreference implements ITranslationSettingsProvider{
     public static final String KEY_TARGET_LANG_NAME = "KEY_TARGET_LANG_NAME";
     public static final String KEY_TARGET_LANG_CODE = "KEY_TARGET_LANG_CODE";
     public static final String KEY_LAST_USER_LANGUAGES = "KEY_LAST_USER_LANGUAGES";
+    public static final String KEY_NOTIFICATION_TYPE = "KEY_NOTIFICATION_TYPE";
 
     private SharedPreferences sharedPreferences;
 
@@ -96,5 +97,18 @@ public class AppPreference implements ITranslationSettingsProvider{
         } else {
             return new Language("en", "Английский");
         }
+    }
+
+    @Override
+    public int getNotificationType() {
+        return sharedPreferences.getInt(KEY_NOTIFICATION_TYPE, ISettings.NOTIFICATION_TYPE_PUSH);
+    }
+
+    @Override
+    public void setNotificationType(int type) {
+        sharedPreferences
+                .edit()
+                .putInt(KEY_NOTIFICATION_TYPE, type)
+                .apply();
     }
 }

@@ -13,7 +13,7 @@ import io.reactivex.disposables.Disposable;
 import ru.santaev.clipboardtranslator.db.entity.Language;
 import ru.santaev.clipboardtranslator.model.IDataModel;
 import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider;
-import ru.santaev.clipboardtranslator.util.AppPreference;
+import ru.santaev.clipboardtranslator.util.settings.AppPreference;
 
 public class TranslateViewModel extends ViewModel{
 

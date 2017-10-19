@@ -20,4 +20,14 @@
     <string name="translated_by_yandex">Переведено сервисом «Яндекс.Переводчик»</string>
     <string name="choose_lang_activity_subheader_recent">Недавно использованные языки</string>
     <string name="settings_activity_title">Настройки</string>
+
+    <string name="settings_item_notif_title">Уведомления при переводе</string>
+    <string name="settings_item_notif_push">Панель уведомлений</string>
+    <string name="settings_item_notif_toast">Всплывающее сообщение</string>
+    <string name="settings_section_general">Общие</string>
+    <string name="settings_section_other">Другое</string>
+    <string name="settings_item_feedback_title">Оставить отзыв</string>
+    <string name="settings_item_feedback_subtitle">Написать разработчику</string>
+    <string name="settings_item_rate_title">Оценить приложение</string>
+    <string name="settings_item_rate_subtitle">Нажмите чтобы открыть Google Play</string>
 </resources>
