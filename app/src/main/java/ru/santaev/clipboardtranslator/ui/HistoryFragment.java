@@ -1,27 +1,24 @@
 package ru.santaev.clipboardtranslator.ui;
 
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import ru.santaev.clipboardtranslator.R;
-import ru.santaev.clipboardtranslator.TranslatorApp;
 import ru.santaev.clipboardtranslator.databinding.FragmentHistoryBinding;
 import ru.santaev.clipboardtranslator.ui.adapter.HistoryAdapter;
-import ru.santaev.clipboardtranslator.util.NotificationHelper;
 import ru.santaev.clipboardtranslator.viewmodel.HistoryViewModel;
 
 
@@ -57,6 +54,7 @@ public class HistoryFragment extends LifecycleFragment {
                 }
             }
         });
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -77,14 +75,30 @@ public class HistoryFragment extends LifecycleFragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getLayoutPosition();
-                viewModel.removeItem(adapter.getTranslations().get(position));
+                viewModel.removeItem(adapter.getTranslation(position));
             }
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(binding.historyList);
+        binding.historyList.setHasFixedSize(false);
 
         return binding.getRoot();
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_history_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.item_delete_all:
+                viewModel.clearHistory();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

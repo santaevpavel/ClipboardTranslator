@@ -1,28 +1,38 @@
 package ru.santaev.clipboardtranslator.ui;
 
 
+import android.animation.LayoutTransition;
+import android.app.Activity;
 import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import ru.santaev.clipboardtranslator.R;
+import ru.santaev.clipboardtranslator.TranslatorApp;
 import ru.santaev.clipboardtranslator.databinding.FragmentTranslateBinding;
-import ru.santaev.clipboardtranslator.model.Language;
+import ru.santaev.clipboardtranslator.db.entity.Language;
+import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider;
 import ru.santaev.clipboardtranslator.service.TranslateService;
 import ru.santaev.clipboardtranslator.viewmodel.TranslateViewModel;
 
 public class TranslateFragment extends LifecycleFragment {
 
+    private static final int REQUEST_CODE_ORIGIN_LANG = 0;
+    private static final int REQUEST_CODE_TARGET_LANG = 1;
+
     private TranslateViewModel viewModel;
     private FragmentTranslateBinding binding;
+    private TranslateDirectionProvider translateDirectionProvider;
 
     public TranslateFragment() {
         // Required empty public constructor
@@ -38,8 +48,12 @@ public class TranslateFragment extends LifecycleFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(TranslateViewModel.class);
+        translateDirectionProvider = new TranslateDirectionProvider();
+        ViewModelFactory factory = new ViewModelFactory(TranslatorApp.getInstance().getDataModel());
+        viewModel = ViewModelProviders.of(this, factory).get(TranslateViewModel.class);
         observeModel();
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
     @Override
@@ -58,34 +72,40 @@ public class TranslateFragment extends LifecycleFragment {
             @Override
             public void afterTextChanged(Editable s) {
                 viewModel.onOriginTextChanged(s.toString());
+                binding.clear.setVisibility(s.length() == 0 ? View.INVISIBLE : View.VISIBLE);
             }
         });
 
+        binding.clear.setOnClickListener(v -> binding.originTextView.setText(""));
 
-        Language[] languages = Language.values();
-        String[] languagesString = new String[languages.length];
-        for (int i = 0; i < languages.length; i++) {
-            languagesString[i] = languages[i].toString();
-        }
-        binding.originLangText.setOnClickListener(v -> new AlertDialog.Builder(getActivity())
-                .setTitle("Выберите язык")
-                .setItems(languagesString, (dialog, which) -> viewModel.onOriginLangSelected(languages[which]))
-                .show());
+        binding.originLangText.setOnClickListener(v -> chooseOriginLang());
 
-        binding.targetLangText.setOnClickListener(v -> new AlertDialog.Builder(getActivity())
-                .setTitle("Выберите язык")
-                .setItems(languagesString, (dialog, which) -> viewModel.onTargetLangSelected(languages[which]))
-                .show());
+        binding.targetLangText.setOnClickListener(v -> chooseTargetLang());
 
-        binding.startService.setOnClickListener(v -> {
-            getActivity().startService(new Intent(getContext(), TranslateService.class));
-        });
+        binding.startService.setOnClickListener(v -> getActivity().startService(new Intent(getContext(), TranslateService.class)));
 
-        binding.stopService.setOnClickListener(v -> {
-            getActivity().stopService(new Intent(getContext(), TranslateService.class));
-        });
+        binding.stopService.setOnClickListener(v -> getActivity().stopService(new Intent(getContext(), TranslateService.class)));
 
+        binding.retry.setOnClickListener(v -> viewModel.onClickRetry());
+
+        binding.translatedByYandex.setOnClickListener(this::openYandexTranslate);
+
+        enableAnimation();
         return binding.getRoot();
+    }
+
+    private void chooseOriginLang(){
+        Intent intent = ChooseLanguageActivity.getIntent(getContext(),
+                viewModel.getOriginLang().getValue(),
+                viewModel.getTargetLang().getValue(), true);
+        startActivityForResult(intent, REQUEST_CODE_ORIGIN_LANG);
+    }
+
+    private void chooseTargetLang(){
+        Intent intent = ChooseLanguageActivity.getIntent(getContext(),
+                viewModel.getOriginLang().getValue(),
+                viewModel.getTargetLang().getValue(), false);
+        startActivityForResult(intent, REQUEST_CODE_TARGET_LANG);
     }
 
     private void observeModel(){
@@ -111,15 +131,50 @@ public class TranslateFragment extends LifecycleFragment {
 
         viewModel.getOriginLang().observe(this, language -> {
             if (null != binding) {
-                binding.originLangText.setText(language.toString());
+                binding.originLangText.setText(language.getName());
             }
         });
 
         viewModel.getTargetLang().observe(this, language -> {
             if (null != binding) {
-                binding.targetLangText.setText(language.toString());
+                binding.targetLangText.setText(language.getName());
+            }
+        });
+
+        viewModel.getFailed().observe(this, isFailed -> {
+            if (null != binding) {
+                binding.retry.setVisibility(isFailed ? View.VISIBLE : View.GONE);
+                binding.translatedByYandex.setVisibility(isFailed ? View.GONE : View.VISIBLE);
             }
         });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK){
+            return;
+        }
+        switch (requestCode){
+            case REQUEST_CODE_ORIGIN_LANG:
+                Language lang = (Language) data.getSerializableExtra(ChooseLanguageActivity.RESULT_KEY_LANG);
+                viewModel.onOriginLangSelected(lang);
+                break;
+            case REQUEST_CODE_TARGET_LANG:
+                lang = (Language) data.getSerializableExtra(ChooseLanguageActivity.RESULT_KEY_LANG);
+                viewModel.onTargetLangSelected(lang);
+                break;
+        }
+    }
+
+    private void openYandexTranslate(View view) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.yandex_translate_url)));
+        startActivity(browserIntent);
+    }
+
+    private void enableAnimation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            binding.rootLinear.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        }
+    }
 }

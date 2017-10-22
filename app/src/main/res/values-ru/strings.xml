@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Быстрый переводчик</string>
+
+    <string name="activity_main_bottom_translate">Переводчик</string>
+    <string name="activity_main_bottom_history">История</string>
+    <string name="there_is_no_history">Нет истории</string>
+    <string name="no_history_subtitle">Переведите текст чтобы увидеть историю</string>
+    <string name="fragment_history_item_clear">Очистить историю</string>
+    <string name="action_settings">Настройки</string>
+    <string name="app_notification_title">@string/app_name</string>
+    <string name="app_notification_content_text">Перевод с буфера обмена включена</string>
+    <string name="translate_notification_title">Перевод с буфера обмена</string>
+    <string name="choose_lang_activity_title">Выберите язык</string>
+    <string name="translate_notification_translating">Идет перевод \"%s\"</string>
+    <string name="translate_notification_failed">Не удалось перевести текст</string>
+    <string name="choose_lang_activity_subheader_langs">Все языки</string>
+    <string name="translate_fragment_subheader_translate">Перевод</string>
+    <string name="translate_fragment_subheader_extra">Дополнительно</string>
+    <string name="translated_by_yandex">Переведено сервисом «Яндекс.Переводчик»</string>
+    <string name="choose_lang_activity_subheader_recent">Недавно использованные языки</string>
+    <string name="settings_activity_title">Настройки</string>
+
+    <string name="settings_item_notif_title">Уведомления при переводе</string>
+    <string name="settings_item_notif_push">Панель уведомлений</string>
+    <string name="settings_item_notif_toast">Всплывающее сообщение</string>
+    <string name="settings_section_general">Общие</string>
+    <string name="settings_section_other">Другое</string>
+    <string name="settings_item_feedback_title">Оставить отзыв</string>
+    <string name="settings_item_feedback_subtitle">Написать разработчику</string>
+    <string name="settings_item_rate_title">Оценить приложение</string>
+    <string name="settings_item_rate_subtitle">Нажмите чтобы открыть Google Play</string>
+</resources>

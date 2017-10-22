@@ -1,2 +1,2 @@
 # ClipboardTranslator
-ClipboardTranslator Anrdoid Application
+ClipboardTranslator Android Application

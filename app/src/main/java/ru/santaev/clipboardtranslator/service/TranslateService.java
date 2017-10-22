@@ -8,29 +8,25 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.util.Log;
+import android.util.Pair;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Random;
 
-import ru.santaev.clipboardtranslator.api.ApiService;
-import ru.santaev.clipboardtranslator.api.TranslateRequest;
-import ru.santaev.clipboardtranslator.api.TranslateResponse;
-import ru.santaev.clipboardtranslator.db.AppDatabase;
-import ru.santaev.clipboardtranslator.db.entity.Translation;
-import ru.santaev.clipboardtranslator.model.Language;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import ru.santaev.clipboardtranslator.R;
+import ru.santaev.clipboardtranslator.TranslatorApp;
+import ru.santaev.clipboardtranslator.db.entity.Language;
+import ru.santaev.clipboardtranslator.model.IDataModel;
 import ru.santaev.clipboardtranslator.service.uitl.ClipboardFilter;
 import ru.santaev.clipboardtranslator.service.uitl.IClipboardFilter;
 import ru.santaev.clipboardtranslator.service.uitl.ITranslationSettingsProvider;
-import ru.santaev.clipboardtranslator.util.AppPreference;
 import ru.santaev.clipboardtranslator.util.NotificationHelper;
-import ru.santaev.clipboardtranslator.util.RxHelper;
-import rx.Observable;
-import rx.Single;
+import ru.santaev.clipboardtranslator.util.settings.AppPreference;
+import ru.santaev.clipboardtranslator.util.settings.ISettings;
 
 public class TranslateService extends Service implements ClipboardManager.OnPrimaryClipChangedListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -39,6 +35,8 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
     private ClipboardManager clipboardManager;
     private IClipboardFilter filter;
     private ITranslationSettingsProvider translationSettingsProvider;
+    private IDataModel dataModel;
+    private ISettings settings;
 
     public TranslateService() {
     }
@@ -56,7 +54,9 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
 
         filter = new ClipboardFilter();
         translationSettingsProvider =  AppPreference.getInstance();
+        settings = AppPreference.getInstance();
         AppPreference.getAppSharedPreference().registerOnSharedPreferenceChangeListener(this);
+        dataModel = TranslatorApp.getInstance().getDataModel();
 
         initClipboardListener();
         showAppNotification();
@@ -69,6 +69,7 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
         hideAppNotification();
         releaseClipboardListener();
         AppPreference.getAppSharedPreference().unregisterOnSharedPreferenceChangeListener(this);
+        dataModel = null;
     }
 
     private void initClipboardListener(){
@@ -85,7 +86,8 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
         String originLang = translationSettingsProvider.getOriginLang().getCode();
         String targetLang = translationSettingsProvider.getTargetLang().getCode();
 
-        String langText = String.format("Translate from %s to %s", originLang, targetLang);
+        String langText = String.format(getString(R.string.translate_notification_lang_text),
+                originLang.toUpperCase(), targetLang.toUpperCase());
 
         Notification notification = NotificationHelper.buildAppNotification(getApplicationContext(), langText);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Application.NOTIFICATION_SERVICE);
@@ -115,40 +117,38 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
     }
 
     private void translate(String text){
-        String originLang = translationSettingsProvider.getOriginLang().getCode();
-        String targetLang = translationSettingsProvider.getTargetLang().getCode();
+        Language originLang = translationSettingsProvider.getOriginLang();
+        Language targetLang = translationSettingsProvider.getTargetLang();
 
         int id = new Random().nextInt();
-        String langText = String.format("%s-%s", originLang, targetLang);
-        showNotification(String.format("Translating \"%s\"", text), langText, id);
+        String langText = String.format("%s-%s", originLang.getCode().toUpperCase(),
+                targetLang.getCode().toUpperCase());
+        showNotification(String.format(getString(R.string.translate_notification_translating), text),
+                langText, id);
 
-        RxHelper.make(() -> {
-            TranslateRequest request = new TranslateRequest(text, originLang,
-                    targetLang);
-            TranslateResponse response = ApiService.getInstance().translate(request);
-            ArrayList<String> strings = response.getText();
-            String translatedText = strings.size() > 0 ? strings.get(0) : "";
-            showNotification(translatedText, langText, id);
-
-            Translation translation = new Translation(originLang, targetLang, text, translatedText);
-            AppDatabase.getInstance().getTranslationDao().insert(translation);
-            return response;
-        }, throwable -> showNotification("Translate failed", langText, id), null, null);
+        dataModel.translate(originLang, targetLang, text)
+                .map(translateResponse -> new Pair<>(translateResponse, translateResponse.targetText))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(translateResponse -> showNotification(translateResponse.second, langText, id), throwable -> {
+                    showNotification(getString(R.string.translate_notification_failed), langText, id);
+                });
     }
 
     private void showNotification(String text, String langText, int id){
-        Notification notification = NotificationHelper.buildTranslateNotification(getApplicationContext(), text, langText);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Application.NOTIFICATION_SERVICE);
-        notificationManager.notify(id, notification);
-
-        new Handler(Looper.getMainLooper()).post(() ->
-                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show());
+        if (ISettings.NOTIFICATION_TYPE_PUSH == settings.getNotificationType()) {
+            Notification notification = NotificationHelper.buildTranslateNotification(getApplicationContext(), text, langText);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Application.NOTIFICATION_SERVICE);
+            notificationManager.notify(id, notification);
+        } else {
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (AppPreference.KEY_ORIGIN_LANG.equals(key)
-                || AppPreference.KEY_TARGET_LANG.equals(key)){
+        if (AppPreference.KEY_ORIGIN_LANG_CODE.equals(key)
+                || AppPreference.KEY_TARGET_LANG_CODE.equals(key)) {
             showAppNotification();
         }
     }

@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/textColorBlackLight</item>
     </style>
 
     <style name="TextSectionStyle">
@@ -13,22 +14,19 @@
         <item name="android:layout_marginBottom">12dp</item>
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#898989</item>
+        <item name="android:textColor">@color/textColorBlackLight</item>
+
     </style>
 
     <style name="AppTheme.WhiteAccent">
         <item name="colorAccent">#fff</item>
     </style>
 
-    <!--
-    android:textColor="#898989"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:hint="Перевод"
-            android:textStyle="bold"
-            app:textAllCaps="true"
-    -->
+    <style name="ToolbarColored" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/textColorBlackLight</item>
+        <item name="colorControlNormal">@color/textColorBlackLight</item>
+    </style>
+
 </resources>

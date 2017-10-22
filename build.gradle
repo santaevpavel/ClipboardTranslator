@@ -29,6 +29,10 @@ task clean(type: Delete) {
 }
 
 ext {
-    archLifecycleVersion = "1.0.0-alpha3"
-    archRoomVersion = "1.0.0-alpha3"
+    archLifecycleVersion = "1.0.0-alpha7"
+    archRoomVersion = "1.0.0-alpha7"
+
+    supportLibVersion = "26.0.0"
+    runnerVersion = "0.5"
+    rulesVersion = "0.5"
 }

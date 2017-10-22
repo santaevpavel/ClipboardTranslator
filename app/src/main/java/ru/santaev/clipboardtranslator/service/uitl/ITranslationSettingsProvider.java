@@ -1,7 +1,7 @@
 package ru.santaev.clipboardtranslator.service.uitl;
 
 
-import ru.santaev.clipboardtranslator.model.Language;
+import ru.santaev.clipboardtranslator.db.entity.Language;
 
 public interface ITranslationSettingsProvider {
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="lang_russian">Русский</string>
+    <string name="lang_english">Английский</string>
+    <string name="lang_ukrainian">Украинский</string>
+    <string name="lang_german">Немецкий</string>
+    <string name="lang_belorussian">Белорусский</string>
+    <string name="lang_italian">Итальянский</string>
+    <string name="lang_spain">Испанский</string>
+    <string name="lang_french">Французский</string>
+    <string name="lang_holland">Голландский</string>
+    <string name="lang_portugal">Португальский</string>
+</resources>

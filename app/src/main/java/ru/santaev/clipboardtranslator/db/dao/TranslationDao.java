@@ -9,6 +9,7 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
+import io.reactivex.Single;
 import ru.santaev.clipboardtranslator.db.entity.Translation;
 import ru.santaev.clipboardtranslator.db.entity.TranslationContract;
 
@@ -18,6 +19,9 @@ public interface TranslationDao {
     @Query("SELECT * FROM " + TranslationContract.TABLE_NAME + " WHERE id=:id")
     Translation getTranslationSync(long id);
 
+    @Query("SELECT * FROM " + TranslationContract.TABLE_NAME + " WHERE id=:id")
+    Single<Translation> getTranslation(long id);
+
     @Query("SELECT * FROM " + TranslationContract.TABLE_NAME + " ORDER BY id DESC")
     LiveData<List<Translation>> getTranslations();
 
@@ -26,4 +30,7 @@ public interface TranslationDao {
 
     @Delete
     void delete(Translation translation);
+
+    @Query("DELETE from " + TranslationContract.TABLE_NAME)
+    void deleteAll();
 }

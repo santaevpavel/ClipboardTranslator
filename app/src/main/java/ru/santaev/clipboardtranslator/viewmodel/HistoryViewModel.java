@@ -7,11 +7,9 @@ import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
 
-import ru.santaev.clipboardtranslator.TranslatorApp;
 import ru.santaev.clipboardtranslator.db.AppDatabase;
 import ru.santaev.clipboardtranslator.db.dao.TranslationDao;
 import ru.santaev.clipboardtranslator.db.entity.Translation;
-import ru.santaev.clipboardtranslator.util.NotificationHelper;
 import ru.santaev.clipboardtranslator.util.RxHelper;
 
 public class HistoryViewModel extends ViewModel {
@@ -43,8 +41,15 @@ public class HistoryViewModel extends ViewModel {
     }
 
     public void removeItem(Translation translation) {
-        RxHelper.make(() -> {
+        RxHelper.runOnIoThread(() -> {
             translationDao.delete(translation);
+            return null;
+        }, Throwable::printStackTrace, null, null);
+    }
+
+    public void clearHistory() {
+        RxHelper.runOnIoThread(() -> {
+            translationDao.deleteAll();
             return null;
         }, Throwable::printStackTrace, null, null);
     }
