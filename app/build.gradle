@@ -10,7 +10,7 @@ android {
         applicationId "com.santaev.myclipboard"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 9
+        versionCode 11
         versionName "2.0-beta1"
         testInstrumentationRunner "ru.santaev.clipboardtranslator.MockTestRunner"
 
@@ -23,7 +23,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     dataBinding {
         enabled true
     }
