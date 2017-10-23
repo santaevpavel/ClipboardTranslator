@@ -9,8 +9,8 @@
     <string name="fragment_history_item_clear">Очистить историю</string>
     <string name="action_settings">Настройки</string>
     <string name="app_notification_title">@string/app_name</string>
-    <string name="app_notification_content_text">Перевод с буфера обмена включена</string>
-    <string name="translate_notification_title">Перевод с буфера обмена</string>
+    <string name="app_notification_content_text">Перевод из буфера обмена включен</string>
+    <string name="translate_notification_title">Перевод из буфера обмена</string>
     <string name="choose_lang_activity_title">Выберите язык</string>
     <string name="translate_notification_translating">Идет перевод \"%s\"</string>
     <string name="translate_notification_failed">Не удалось перевести текст</string>
@@ -30,4 +30,8 @@
     <string name="settings_item_feedback_subtitle">Написать разработчику</string>
     <string name="settings_item_rate_title">Оценить приложение</string>
     <string name="settings_item_rate_subtitle">Нажмите чтобы открыть Google Play</string>
+    <string name="translate_clipboard_hint_title">Перевод с буфера обмена</string>
+    <string name="translate_clipboard_hint_message">Вы можете переводить текст просто скопировав его. Для этого включите сервис перевода из буфера обмена.</string>
+    <string name="translate_clipboard_button_on">Включить</string>
+    <string name="translate_clipboard_button_off">Выключить</string>
 </resources>

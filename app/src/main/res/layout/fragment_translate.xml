@@ -230,7 +230,7 @@
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Перевод с буфера обмена"
+                        android:text="@string/translate_clipboard_hint_title"
                         android:textStyle="bold"
                         android:textSize="@dimen/text_size_large"
                         android:textColor="@color/textColorBlackLight"/>
@@ -239,7 +239,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Вы можете переводить текст просто скопировав его. Для этого включите сервис перевода с буфера обмена."
+                        android:text="@string/translate_clipboard_hint_message"
                         android:textSize="@dimen/text_size_normal"
                         android:textColor="@color/textColorGray"
                         android:id="@+id/appCompatTextView" />
@@ -254,7 +254,7 @@
                             android:id="@+id/start_service"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Включить"
+                            android:text="@string/translate_clipboard_button_on"
                             android:paddingLeft="12dp"
                             android:paddingRight="12dp"
                             android:textAllCaps="true"
@@ -266,7 +266,7 @@
                             android:id="@+id/stop_service"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Выключить"
+                            android:text="@string/translate_clipboard_button_off"
                             android:layout_marginLeft="8dp"
                             android:layout_marginRight="8dp"
                             android:textAllCaps="true"
