@@ -1,9 +1,11 @@
 package ru.santaev.clipboardtranslator;
 
 
+import java.util.List;
+
+import io.reactivex.Flowable;
 import io.reactivex.Single;
-import ru.santaev.clipboardtranslator.api.TranslateRequest;
-import ru.santaev.clipboardtranslator.api.TranslateResponse;
+import ru.santaev.clipboardtranslator.db.entity.Language;
 import ru.santaev.clipboardtranslator.model.IDataModel;
 
 public class TestTranslatorApp extends TranslatorApp{
@@ -12,9 +14,15 @@ public class TestTranslatorApp extends TranslatorApp{
     protected IDataModel buildDataModel() {
         return new IDataModel() {
             @Override
-            public Single<TranslateResponse> translate(TranslateRequest request) {
+            public Single<TranslateResponse> translate(Language origin, Language target, String text) {
                 return null;
             }
+
+            @Override
+            public Flowable<List<Language>> getLanguages() {
+                return null;
+            }
+
         };
     }
 }

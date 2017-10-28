@@ -26,6 +26,7 @@ public class SettingsActivity extends LifecycleActivity {
     private SettingsItem settingsItemFeedback;
     private SettingsItem settingsItemRate;
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

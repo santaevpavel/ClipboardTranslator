@@ -102,7 +102,9 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
 
     private void initClipboardListener(){
         clipboardManager = (ClipboardManager) getSystemService(Application.CLIPBOARD_SERVICE);
-        clipboardManager.addPrimaryClipChangedListener(this);
+        if (clipboardManager != null) {
+            clipboardManager.addPrimaryClipChangedListener(this);
+        }
     }
 
     private void releaseClipboardListener(){
@@ -119,12 +121,16 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
 
         Notification notification = NotificationHelper.buildAppNotification(getApplicationContext(), langText);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Application.NOTIFICATION_SERVICE);
-        notificationManager.notify(SERVICE_NOTIFICATION_ID, notification);
+        if (notificationManager != null) {
+            notificationManager.notify(SERVICE_NOTIFICATION_ID, notification);
+        }
     }
 
     private void hideAppNotification(){
         NotificationManager notificationManager = (NotificationManager) getSystemService(Application.NOTIFICATION_SERVICE);
-        notificationManager.cancel(SERVICE_NOTIFICATION_ID);
+        if (notificationManager != null) {
+            notificationManager.cancel(SERVICE_NOTIFICATION_ID);
+        }
     }
 
     @Override
@@ -158,9 +164,9 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
                 .map(translateResponse -> new Pair<>(translateResponse, translateResponse.targetText))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(translateResponse -> showNotification(translateResponse.second, langText, id, true), throwable -> {
-                    showNotification(getString(R.string.translate_notification_failed), langText, id, false);
-                });
+                .subscribe(translateResponse -> showNotification(translateResponse.second, langText, id, true),
+                        throwable -> showNotification(getString(R.string.translate_notification_failed),
+                                langText, id, false));
     }
 
     private void showNotification(String text, String langText, int id, boolean enableCopyButton) {
@@ -175,7 +181,9 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
             }
 
             NotificationManager notificationManager = (NotificationManager) getSystemService(Application.NOTIFICATION_SERVICE);
-            notificationManager.notify(id, notification);
+            if (notificationManager != null) {
+                notificationManager.notify(id, notification);
+            }
         } else {
             Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         }
