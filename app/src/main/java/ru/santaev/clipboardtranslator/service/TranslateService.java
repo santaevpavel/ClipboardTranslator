@@ -4,10 +4,15 @@ import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.util.Pair;
@@ -29,14 +34,35 @@ import ru.santaev.clipboardtranslator.util.settings.AppPreference;
 import ru.santaev.clipboardtranslator.util.settings.ISettings;
 
 public class TranslateService extends Service implements ClipboardManager.OnPrimaryClipChangedListener, SharedPreferences.OnSharedPreferenceChangeListener {
+    public static final String CLIPBOARD_DATA_LABEL = "LabelNotTranslate";
 
     private static final String TAG = "TranslateService";
     private static final int SERVICE_NOTIFICATION_ID = -1;
+    private static final String ACTION_COPY = "ru.santaev.clipboardtranslator.service.ActionCopy";
     private ClipboardManager clipboardManager;
     private IClipboardFilter filter;
     private ITranslationSettingsProvider translationSettingsProvider;
     private IDataModel dataModel;
     private ISettings settings;
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (ACTION_COPY.equals(intent.getAction())) {
+                Log.d(TAG, "onReceiveBroadcast");
+                Bundle extras = intent.getExtras();
+                if (extras != null) {
+                    String text = extras.getString(NotificationHelper.KEY_TEXT, null);
+                    if (text != null) {
+                        ClipData clipData = new ClipData(CLIPBOARD_DATA_LABEL,
+                                new String[]{ClipDescription.MIMETYPE_TEXT_PLAIN}, new ClipData.Item(text));
+                        clipboardManager.setPrimaryClip(clipData);
+                        Toast.makeText(context.getApplicationContext(), R.string.toast_text_copied, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }
+    };
 
     public TranslateService() {
     }
@@ -57,6 +83,7 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
         settings = AppPreference.getInstance();
         AppPreference.getAppSharedPreference().registerOnSharedPreferenceChangeListener(this);
         dataModel = TranslatorApp.getInstance().getDataModel();
+        registerReceiver(broadcastReceiver, new IntentFilter(ACTION_COPY));
 
         initClipboardListener();
         showAppNotification();
@@ -69,6 +96,7 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
         hideAppNotification();
         releaseClipboardListener();
         AppPreference.getAppSharedPreference().unregisterOnSharedPreferenceChangeListener(this);
+        unregisterReceiver(broadcastReceiver);
         dataModel = null;
     }
 
@@ -124,20 +152,28 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
         String langText = String.format("%s-%s", originLang.getCode().toUpperCase(),
                 targetLang.getCode().toUpperCase());
         showNotification(String.format(getString(R.string.translate_notification_translating), text),
-                langText, id);
+                langText, id, false);
 
         dataModel.translate(originLang, targetLang, text)
                 .map(translateResponse -> new Pair<>(translateResponse, translateResponse.targetText))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(translateResponse -> showNotification(translateResponse.second, langText, id), throwable -> {
-                    showNotification(getString(R.string.translate_notification_failed), langText, id);
+                .subscribe(translateResponse -> showNotification(translateResponse.second, langText, id, true), throwable -> {
+                    showNotification(getString(R.string.translate_notification_failed), langText, id, false);
                 });
     }
 
-    private void showNotification(String text, String langText, int id){
+    private void showNotification(String text, String langText, int id, boolean enableCopyButton) {
         if (ISettings.NOTIFICATION_TYPE_PUSH == settings.getNotificationType()) {
-            Notification notification = NotificationHelper.buildTranslateNotification(getApplicationContext(), text, langText);
+            Notification notification;
+            if (enableCopyButton && settings.isNotificationButtonEnabled()) {
+                notification = NotificationHelper.buildTranslateNotification(getApplicationContext(),
+                        text, langText, 0, ACTION_COPY);
+            } else {
+                notification = NotificationHelper.buildTranslateNotification(getApplicationContext(),
+                        text, langText);
+            }
+
             NotificationManager notificationManager = (NotificationManager) getSystemService(Application.NOTIFICATION_SERVICE);
             notificationManager.notify(id, notification);
         } else {

@@ -18,11 +18,11 @@ import ru.santaev.clipboardtranslator.util.settings.ISettings;
 
 public class SettingsActivity extends LifecycleActivity {
 
-
     private ISettings settings;
     private ActivitySettingsBinding binding;
 
-    private ListSettingsItem settingsItemNotif;
+    private ListSettingsItem settingsItemNotificationType;
+    private ListSettingsItem settingsItemNotificationCopyButton;
     private SettingsItem settingsItemFeedback;
     private SettingsItem settingsItemRate;
 
@@ -54,11 +54,17 @@ public class SettingsActivity extends LifecycleActivity {
     }
 
     private void initSettings() {
-        settingsItemNotif = new ListSettingsItem(this, R.string.settings_item_notif_title,
-                R.array.settings_item_notif_text, R.array.settings_item_notif_value,
+        settingsItemNotificationType = new ListSettingsItem(this, R.string.settings_item_notif_title,
+                R.array.settings_item_notification_type_text, R.array.settings_item_notification_type_value,
                 settings::setNotificationType, settings::getNotificationType);
-        binding.itemNotif.setItem(settingsItemNotif);
-        binding.itemNotif.getRoot().setOnClickListener((v) -> settingsItemNotif.onClick());
+        binding.itemNotif.setItem(settingsItemNotificationType);
+        binding.itemNotif.getRoot().setOnClickListener((v) -> settingsItemNotificationType.onClick());
+
+        settingsItemNotificationCopyButton = new ListSettingsItem(this, R.string.settings_item_notif_btn_title,
+                R.array.settings_item_notification_btn_text, R.array.settings_item_notification_btn_value,
+                value -> settings.setNotificationButtonEnabled(value != 0), () -> settings.isNotificationButtonEnabled() ? 1 : 0);
+        binding.itemNotifCopyButton.setItem(settingsItemNotificationCopyButton);
+        binding.itemNotifCopyButton.getRoot().setOnClickListener((v) -> settingsItemNotificationCopyButton.onClick());
 
         settingsItemFeedback = new SettingsItem(getString(R.string.settings_item_feedback_title),
                 getString(R.string.settings_item_feedback_subtitle));

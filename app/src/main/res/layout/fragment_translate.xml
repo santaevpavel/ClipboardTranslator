@@ -154,6 +154,7 @@
                         android:layout_marginRight="4dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="24dp"
+                        android:textIsSelectable="true"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintHorizontal_bias="0.0" />
@@ -258,7 +259,6 @@
                             android:paddingLeft="12dp"
                             android:paddingRight="12dp"
                             android:textAllCaps="true"
-                            android:textStyle="bold"
                             android:textColor="@color/colorWhite"/>
 
                         <android.support.v7.widget.AppCompatButton
@@ -270,7 +270,6 @@
                             android:layout_marginLeft="8dp"
                             android:layout_marginRight="8dp"
                             android:textAllCaps="true"
-                            android:textStyle="bold"
                             android:paddingLeft="8dp"
                             android:paddingRight="8dp"
                             android:textColor="@color/colorAccent"/>
