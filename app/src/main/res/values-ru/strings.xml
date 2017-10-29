@@ -9,8 +9,8 @@
     <string name="fragment_history_item_clear">Очистить историю</string>
     <string name="action_settings">Настройки</string>
     <string name="app_notification_title">@string/app_name</string>
-    <string name="app_notification_content_text">Перевод с буфера обмена включена</string>
-    <string name="translate_notification_title">Перевод с буфера обмена</string>
+    <string name="app_notification_content_text">Перевод из буфера обмена включен</string>
+    <string name="translate_notification_title">Перевод из буфера обмена</string>
     <string name="choose_lang_activity_title">Выберите язык</string>
     <string name="translate_notification_translating">Идет перевод \"%s\"</string>
     <string name="translate_notification_failed">Не удалось перевести текст</string>
@@ -22,12 +22,23 @@
     <string name="settings_activity_title">Настройки</string>
 
     <string name="settings_item_notif_title">Уведомления при переводе</string>
-    <string name="settings_item_notif_push">Панель уведомлений</string>
-    <string name="settings_item_notif_toast">Всплывающее сообщение</string>
+    <string name="settings_item_notification_type_push">Панель уведомлений</string>
+    <string name="settings_item_notification_type_toast">Всплывающее сообщение</string>
     <string name="settings_section_general">Общие</string>
     <string name="settings_section_other">Другое</string>
     <string name="settings_item_feedback_title">Оставить отзыв</string>
     <string name="settings_item_feedback_subtitle">Написать разработчику</string>
     <string name="settings_item_rate_title">Оценить приложение</string>
     <string name="settings_item_rate_subtitle">Нажмите чтобы открыть Google Play</string>
+    <string name="translate_clipboard_hint_title">Перевод с буфера обмена</string>
+    <string name="translate_clipboard_hint_message">Вы можете переводить текст просто скопировав его. Для этого включите сервис перевода из буфера обмена.</string>
+    <string name="translate_clipboard_button_on">Включить</string>
+    <string name="translate_clipboard_button_off">Выключить</string>
+    <string name="notification_button_copy">Скопировать</string>
+    <string name="toast_text_copied">Текст скопирован</string>
+    <string name="settings_item_notif_btn_title">Кнопка копирования в уведомлении</string>
+    <string name="settings_item_notification_button_enabled">Показывать</string>
+    <string name="settings_item_notification_button_disabled">Скрывать</string>
+    <string name="translate_edit_text_hint">Введите текст</string>
+    <string name="settings_item_build_title">Версия приложения</string>
 </resources>

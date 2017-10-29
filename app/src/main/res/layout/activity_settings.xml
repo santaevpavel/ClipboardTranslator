@@ -44,6 +44,10 @@
                 android:id="@+id/item_notif"
                 layout="@layout/settings_simple_item_layout" />
 
+            <include
+                android:id="@+id/item_notif_copy_button"
+                layout="@layout/settings_simple_item_layout" />
+
             <android.support.v7.widget.AppCompatTextView
                 style="@style/TextSectionStyle"
                 android:layout_width="match_parent"
@@ -60,6 +64,10 @@
 
             <include
                 android:id="@+id/item_rate"
+                layout="@layout/settings_simple_item_layout" />
+
+            <include
+                android:id="@+id/item_build_version"
                 layout="@layout/settings_simple_item_layout" />
 
         </LinearLayout>

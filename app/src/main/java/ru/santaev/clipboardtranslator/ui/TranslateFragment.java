@@ -8,7 +8,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -122,7 +121,7 @@ public class TranslateFragment extends LifecycleFragment {
 
         viewModel.getProgress().observe(this, progress -> {
             if (null != binding) {
-                if (progress) {
+                if (progress != null && progress) {
                     binding.translateLayout.setVisibility(View.VISIBLE);
                 }
                 binding.translateProgress.setVisibility(progress ? View.VISIBLE : View.INVISIBLE);
@@ -130,19 +129,19 @@ public class TranslateFragment extends LifecycleFragment {
         });
 
         viewModel.getOriginLang().observe(this, language -> {
-            if (null != binding) {
+            if (null != binding && language != null) {
                 binding.originLangText.setText(language.getName());
             }
         });
 
         viewModel.getTargetLang().observe(this, language -> {
-            if (null != binding) {
+            if (null != binding && language != null) {
                 binding.targetLangText.setText(language.getName());
             }
         });
 
         viewModel.getFailed().observe(this, isFailed -> {
-            if (null != binding) {
+            if (null != binding && isFailed != null) {
                 binding.retry.setVisibility(isFailed ? View.VISIBLE : View.GONE);
                 binding.translatedByYandex.setVisibility(isFailed ? View.GONE : View.VISIBLE);
             }
@@ -173,8 +172,6 @@ public class TranslateFragment extends LifecycleFragment {
     }
 
     private void enableAnimation() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            binding.rootLinear.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
-        }
+        binding.rootLinear.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
     }
 }

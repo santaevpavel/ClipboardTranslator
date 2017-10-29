@@ -2,11 +2,6 @@ package ru.santaev.clipboardtranslator;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-
-import io.reactivex.Single;
-import ru.santaev.clipboardtranslator.api.TranslateResponse;
-import ru.santaev.clipboardtranslator.model.IDataModel;
 import ru.santaev.clipboardtranslator.viewmodel.TranslateViewModel;
 
 public class TranslateViewModelTest {
@@ -15,7 +10,7 @@ public class TranslateViewModelTest {
 
     @Test
     public void test() throws Exception {
-        IDataModel dataModel = request -> {
+        /*IDataModel dataModel = request -> {
             TranslateResponse item = new TranslateResponse();
             item.setLang("ru");
             item.setCode(200);
@@ -30,7 +25,7 @@ public class TranslateViewModelTest {
             item.setText(text);
 
             return Single.just(item);
-        };
+        };*/
 
         TranslateViewModel viewModel = new TranslateViewModel(dataModel);
         viewModel.onOriginTextChanged(TEST_SRC);

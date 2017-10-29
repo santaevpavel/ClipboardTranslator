@@ -3,11 +3,15 @@ package ru.santaev.clipboardtranslator.ui;
 import android.arch.lifecycle.LifecycleActivity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import java.util.Locale;
 
 import ru.santaev.clipboardtranslator.R;
 import ru.santaev.clipboardtranslator.databinding.ActivitySettingsBinding;
@@ -18,14 +22,16 @@ import ru.santaev.clipboardtranslator.util.settings.ISettings;
 
 public class SettingsActivity extends LifecycleActivity {
 
-
     private ISettings settings;
     private ActivitySettingsBinding binding;
 
-    private ListSettingsItem settingsItemNotif;
+    private ListSettingsItem settingsItemNotificationType;
+    private ListSettingsItem settingsItemNotificationCopyButton;
     private SettingsItem settingsItemFeedback;
     private SettingsItem settingsItemRate;
+    private SettingsItem settingsItemBuildVersion;
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,11 +60,17 @@ public class SettingsActivity extends LifecycleActivity {
     }
 
     private void initSettings() {
-        settingsItemNotif = new ListSettingsItem(this, R.string.settings_item_notif_title,
-                R.array.settings_item_notif_text, R.array.settings_item_notif_value,
+        settingsItemNotificationType = new ListSettingsItem(this, R.string.settings_item_notif_title,
+                R.array.settings_item_notification_type_text, R.array.settings_item_notification_type_value,
                 settings::setNotificationType, settings::getNotificationType);
-        binding.itemNotif.setItem(settingsItemNotif);
-        binding.itemNotif.getRoot().setOnClickListener((v) -> settingsItemNotif.onClick());
+        binding.itemNotif.setItem(settingsItemNotificationType);
+        binding.itemNotif.getRoot().setOnClickListener((v) -> settingsItemNotificationType.onClick());
+
+        settingsItemNotificationCopyButton = new ListSettingsItem(this, R.string.settings_item_notif_btn_title,
+                R.array.settings_item_notification_btn_text, R.array.settings_item_notification_btn_value,
+                value -> settings.setNotificationButtonEnabled(value != 0), () -> settings.isNotificationButtonEnabled() ? 1 : 0);
+        binding.itemNotifCopyButton.setItem(settingsItemNotificationCopyButton);
+        binding.itemNotifCopyButton.getRoot().setOnClickListener((v) -> settingsItemNotificationCopyButton.onClick());
 
         settingsItemFeedback = new SettingsItem(getString(R.string.settings_item_feedback_title),
                 getString(R.string.settings_item_feedback_subtitle));
@@ -70,6 +82,20 @@ public class SettingsActivity extends LifecycleActivity {
         binding.itemRate.setItem(settingsItemRate);
         binding.itemRate.getRoot().setOnClickListener((v) -> launchGooglePLay());
 
+        settingsItemBuildVersion = new SettingsItem(getString(R.string.settings_item_build_title),
+                getBuildVersion());
+        binding.itemBuildVersion.setItem(settingsItemBuildVersion);
+    }
+
+    private String getBuildVersion() {
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String versionName = pInfo.versionName;
+            return String.format(Locale.ENGLISH, "%s (%d)", versionName, pInfo.versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "-";
     }
 
     private void launchGooglePLay() {

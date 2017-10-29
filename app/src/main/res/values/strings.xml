@@ -23,12 +23,23 @@
     <string name="settings_activity_title">Settings</string>
 
     <string name="settings_item_notif_title">Translate notification</string>
-    <string name="settings_item_notif_push">Status bar</string>
-    <string name="settings_item_notif_toast">Toast notification</string>
+    <string name="settings_item_notification_type_push">Status bar</string>
+    <string name="settings_item_notification_type_toast">Toast notification</string>
+    <string name="settings_item_notif_btn_title">Copy button in notification</string>
+    <string name="settings_item_notification_button_enabled">Enable</string>
+    <string name="settings_item_notification_button_disabled">Disable</string>
     <string name="settings_section_general">General</string>
     <string name="settings_section_other">Other</string>
     <string name="settings_item_feedback_title">Give feedback</string>
     <string name="settings_item_feedback_subtitle">Write to developer</string>
     <string name="settings_item_rate_title">Rate app</string>
     <string name="settings_item_rate_subtitle">Click to go Google Play</string>
+    <string name="settings_item_build_title">App\'s version</string>
+    <string name="translate_clipboard_hint_title">Translate from clipboard</string>
+    <string name="translate_clipboard_hint_message">To translate text from clipboard enable translation service by click button \'enable\'.</string>
+    <string name="translate_clipboard_button_on">Enable</string>
+    <string name="translate_clipboard_button_off">Disable</string>
+    <string name="notification_button_copy">Copy</string>
+    <string name="toast_text_copied">Text has been copied</string>
+    <string name="translate_edit_text_hint">Type text</string>
 </resources>

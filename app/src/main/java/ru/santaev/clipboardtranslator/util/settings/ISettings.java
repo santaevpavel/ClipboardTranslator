@@ -9,4 +9,7 @@ public interface ISettings {
 
     void setNotificationType(int type);
 
+    boolean isNotificationButtonEnabled();
+
+    void setNotificationButtonEnabled(boolean enabled);
 }
