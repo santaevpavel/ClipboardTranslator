@@ -9,8 +9,8 @@ android {
         applicationId "com.santaev.myclipboard"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 11
-        versionName "2.0-beta1"
+        versionCode 12
+        versionName "2.0"
         testInstrumentationRunner "ru.santaev.clipboardtranslator.MockTestRunner"
 
         buildConfigField "String", "YANDEX_TRANSLATE_API_KEY", "\"" + API_KEY + "\""
