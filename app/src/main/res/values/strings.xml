@@ -34,6 +34,7 @@
     <string name="settings_item_feedback_subtitle">Write to developer</string>
     <string name="settings_item_rate_title">Rate app</string>
     <string name="settings_item_rate_subtitle">Click to go Google Play</string>
+    <string name="settings_item_build_title">App\'s version</string>
     <string name="translate_clipboard_hint_title">Translate from clipboard</string>
     <string name="translate_clipboard_hint_message">To translate text from clipboard enable translation service by click button \'enable\'.</string>
     <string name="translate_clipboard_button_on">Enable</string>

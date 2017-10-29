@@ -3,11 +3,15 @@ package ru.santaev.clipboardtranslator.ui;
 import android.arch.lifecycle.LifecycleActivity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import java.util.Locale;
 
 import ru.santaev.clipboardtranslator.R;
 import ru.santaev.clipboardtranslator.databinding.ActivitySettingsBinding;
@@ -25,6 +29,7 @@ public class SettingsActivity extends LifecycleActivity {
     private ListSettingsItem settingsItemNotificationCopyButton;
     private SettingsItem settingsItemFeedback;
     private SettingsItem settingsItemRate;
+    private SettingsItem settingsItemBuildVersion;
 
     @SuppressWarnings("ConstantConditions")
     @Override
@@ -77,6 +82,20 @@ public class SettingsActivity extends LifecycleActivity {
         binding.itemRate.setItem(settingsItemRate);
         binding.itemRate.getRoot().setOnClickListener((v) -> launchGooglePLay());
 
+        settingsItemBuildVersion = new SettingsItem(getString(R.string.settings_item_build_title),
+                getBuildVersion());
+        binding.itemBuildVersion.setItem(settingsItemBuildVersion);
+    }
+
+    private String getBuildVersion() {
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String versionName = pInfo.versionName;
+            return String.format(Locale.ENGLISH, "%s (%d)", versionName, pInfo.versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "-";
     }
 
     private void launchGooglePLay() {
