@@ -17,8 +17,14 @@ import ru.santaev.clipboardtranslator.R;
 import ru.santaev.clipboardtranslator.databinding.ActivitySettingsBinding;
 import ru.santaev.clipboardtranslator.ui.settings.ListSettingsItem;
 import ru.santaev.clipboardtranslator.ui.settings.SettingsItem;
+import ru.santaev.clipboardtranslator.util.Analytics;
 import ru.santaev.clipboardtranslator.util.settings.AppPreference;
 import ru.santaev.clipboardtranslator.util.settings.ISettings;
+
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_SETTINGS_COPY_BUTTON;
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_SETTINGS_FEEDBACK;
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_SETTINGS_NOTIFICATION_TYPE;
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_SETTINGS_RATE;
 
 public class SettingsActivity extends LifecycleActivity {
 
@@ -31,11 +37,14 @@ public class SettingsActivity extends LifecycleActivity {
     private SettingsItem settingsItemRate;
     private SettingsItem settingsItemBuildVersion;
 
+    private Analytics analytics;
+
     @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        analytics = new Analytics(this);
         settings = AppPreference.getInstance();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
@@ -60,28 +69,45 @@ public class SettingsActivity extends LifecycleActivity {
     }
 
     private void initSettings() {
+        // Notification type
         settingsItemNotificationType = new ListSettingsItem(this, R.string.settings_item_notif_title,
                 R.array.settings_item_notification_type_text, R.array.settings_item_notification_type_value,
                 settings::setNotificationType, settings::getNotificationType);
         binding.itemNotif.setItem(settingsItemNotificationType);
-        binding.itemNotif.getRoot().setOnClickListener((v) -> settingsItemNotificationType.onClick());
+        binding.itemNotif.getRoot().setOnClickListener((v) -> {
+            analytics.logClickEvent(EVENT_ID_NAME_CLICK_SETTINGS_NOTIFICATION_TYPE);
+            settingsItemNotificationType.onClick();
+        });
 
+        // Copy button
         settingsItemNotificationCopyButton = new ListSettingsItem(this, R.string.settings_item_notif_btn_title,
                 R.array.settings_item_notification_btn_text, R.array.settings_item_notification_btn_value,
                 value -> settings.setNotificationButtonEnabled(value != 0), () -> settings.isNotificationButtonEnabled() ? 1 : 0);
         binding.itemNotifCopyButton.setItem(settingsItemNotificationCopyButton);
-        binding.itemNotifCopyButton.getRoot().setOnClickListener((v) -> settingsItemNotificationCopyButton.onClick());
+        binding.itemNotifCopyButton.getRoot().setOnClickListener((v) -> {
+            analytics.logClickEvent(EVENT_ID_NAME_CLICK_SETTINGS_COPY_BUTTON);
+            settingsItemNotificationCopyButton.onClick();
+        });
 
+        // Feedback
         settingsItemFeedback = new SettingsItem(getString(R.string.settings_item_feedback_title),
                 getString(R.string.settings_item_feedback_subtitle));
         binding.itemFeedback.setItem(settingsItemFeedback);
-        binding.itemFeedback.getRoot().setOnClickListener((v) -> email());
+        binding.itemFeedback.getRoot().setOnClickListener((v) -> {
+            analytics.logClickEvent(EVENT_ID_NAME_CLICK_SETTINGS_FEEDBACK);
+            email();
+        });
 
+        // Rate
         settingsItemRate = new SettingsItem(getString(R.string.settings_item_rate_title),
                 getString(R.string.settings_item_rate_subtitle));
         binding.itemRate.setItem(settingsItemRate);
-        binding.itemRate.getRoot().setOnClickListener((v) -> launchGooglePLay());
+        binding.itemRate.getRoot().setOnClickListener((v) -> {
+            analytics.logClickEvent(EVENT_ID_NAME_CLICK_SETTINGS_RATE);
+            launchGooglePLay();
+        });
 
+        // App version
         settingsItemBuildVersion = new SettingsItem(getString(R.string.settings_item_build_title),
                 getBuildVersion());
         binding.itemBuildVersion.setItem(settingsItemBuildVersion);

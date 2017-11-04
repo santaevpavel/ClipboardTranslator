@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "986763782689",
+    "firebase_url": "https://clipboardtranslator-c6f0f.firebaseio.com",
+    "project_id": "clipboardtranslator-c6f0f",
+    "storage_bucket": "clipboardtranslator-c6f0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:986763782689:android:6fd4441e80fa2316",
+        "android_client_info": {
+          "package_name": "com.santaev.myclipboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "986763782689-tuotmqjk64ulj1dsnmtb9g4eej2pes16.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbrRpRY5RSC_M00HC2OzlmWFQzKITkElQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

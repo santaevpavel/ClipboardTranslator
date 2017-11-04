@@ -22,7 +22,20 @@ import ru.santaev.clipboardtranslator.databinding.FragmentTranslateBinding;
 import ru.santaev.clipboardtranslator.db.entity.Language;
 import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider;
 import ru.santaev.clipboardtranslator.service.TranslateService;
+import ru.santaev.clipboardtranslator.util.Analytics;
 import ru.santaev.clipboardtranslator.viewmodel.TranslateViewModel;
+
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_CLEAR_TEXT;
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_OPEN_YANDEX;
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_RETRY;
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_SOURCE_LANG;
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_START_SERVICE;
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_STOP_SERVICE;
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_TARGET_LANG;
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_TRANSLATED;
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_TRANSLATE_FAILED;
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_SELECT_SOURCE_LANG;
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_SELECT_TARGET_LANG;
 
 public class TranslateFragment extends LifecycleFragment {
 
@@ -32,6 +45,8 @@ public class TranslateFragment extends LifecycleFragment {
     private TranslateViewModel viewModel;
     private FragmentTranslateBinding binding;
     private TranslateDirectionProvider translateDirectionProvider;
+
+    private Analytics analytics;
 
     public TranslateFragment() {
         // Required empty public constructor
@@ -47,6 +62,7 @@ public class TranslateFragment extends LifecycleFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        analytics = new Analytics(getActivity());
         translateDirectionProvider = new TranslateDirectionProvider();
         ViewModelFactory factory = new ViewModelFactory(TranslatorApp.getInstance().getDataModel());
         viewModel = ViewModelProviders.of(this, factory).get(TranslateViewModel.class);
@@ -75,17 +91,29 @@ public class TranslateFragment extends LifecycleFragment {
             }
         });
 
-        binding.clear.setOnClickListener(v -> binding.originTextView.setText(""));
+        binding.clear.setOnClickListener(v -> {
+            analytics.logClickEvent(EVENT_ID_NAME_CLICK_CLEAR_TEXT);
+            binding.originTextView.setText("");
+        });
 
         binding.originLangText.setOnClickListener(v -> chooseOriginLang());
 
         binding.targetLangText.setOnClickListener(v -> chooseTargetLang());
 
-        binding.startService.setOnClickListener(v -> getActivity().startService(new Intent(getContext(), TranslateService.class)));
+        binding.startService.setOnClickListener(v -> {
+            analytics.logClickEvent(EVENT_ID_NAME_CLICK_START_SERVICE);
+            getActivity().startService(new Intent(getContext(), TranslateService.class));
+        });
 
-        binding.stopService.setOnClickListener(v -> getActivity().stopService(new Intent(getContext(), TranslateService.class)));
+        binding.stopService.setOnClickListener(v -> {
+            analytics.logClickEvent(EVENT_ID_NAME_CLICK_STOP_SERVICE);
+            getActivity().stopService(new Intent(getContext(), TranslateService.class));
+        });
 
-        binding.retry.setOnClickListener(v -> viewModel.onClickRetry());
+        binding.retry.setOnClickListener(v -> {
+            analytics.logClickEvent(EVENT_ID_NAME_CLICK_RETRY);
+            viewModel.onClickRetry();
+        });
 
         binding.translatedByYandex.setOnClickListener(this::openYandexTranslate);
 
@@ -94,13 +122,18 @@ public class TranslateFragment extends LifecycleFragment {
     }
 
     private void chooseOriginLang(){
+        analytics.logClickEvent(EVENT_ID_NAME_CLICK_SOURCE_LANG);
+
         Intent intent = ChooseLanguageActivity.getIntent(getContext(),
                 viewModel.getOriginLang().getValue(),
                 viewModel.getTargetLang().getValue(), true);
+
         startActivityForResult(intent, REQUEST_CODE_ORIGIN_LANG);
     }
 
     private void chooseTargetLang(){
+        analytics.logClickEvent(EVENT_ID_NAME_CLICK_TARGET_LANG);
+
         Intent intent = ChooseLanguageActivity.getIntent(getContext(),
                 viewModel.getOriginLang().getValue(),
                 viewModel.getTargetLang().getValue(), false);
@@ -113,6 +146,7 @@ public class TranslateFragment extends LifecycleFragment {
                 if (s == null || s.isEmpty()){
                     binding.translateLayout.setVisibility(View.GONE);
                 } else {
+                    analytics.logClickEvent(EVENT_ID_NAME_TRANSLATED);
                     binding.translateLayout.setVisibility(View.VISIBLE);
                     binding.translatedTextView.setText(s);
                 }
@@ -142,6 +176,9 @@ public class TranslateFragment extends LifecycleFragment {
 
         viewModel.getFailed().observe(this, isFailed -> {
             if (null != binding && isFailed != null) {
+                if (isFailed) {
+                    analytics.logClickEvent(EVENT_ID_NAME_TRANSLATE_FAILED);
+                }
                 binding.retry.setVisibility(isFailed ? View.VISIBLE : View.GONE);
                 binding.translatedByYandex.setVisibility(isFailed ? View.GONE : View.VISIBLE);
             }
@@ -157,16 +194,19 @@ public class TranslateFragment extends LifecycleFragment {
         switch (requestCode){
             case REQUEST_CODE_ORIGIN_LANG:
                 Language lang = (Language) data.getSerializableExtra(ChooseLanguageActivity.RESULT_KEY_LANG);
+                analytics.logSelectEvent(EVENT_ID_SELECT_SOURCE_LANG + lang.getCode(), lang.getName());
                 viewModel.onOriginLangSelected(lang);
                 break;
             case REQUEST_CODE_TARGET_LANG:
                 lang = (Language) data.getSerializableExtra(ChooseLanguageActivity.RESULT_KEY_LANG);
+                analytics.logSelectEvent(EVENT_ID_SELECT_TARGET_LANG + lang.getCode(), lang.getName());
                 viewModel.onTargetLangSelected(lang);
                 break;
         }
     }
 
     private void openYandexTranslate(View view) {
+        analytics.logClickEvent(EVENT_ID_NAME_CLICK_OPEN_YANDEX);
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.yandex_translate_url)));
         startActivity(browserIntent);
     }

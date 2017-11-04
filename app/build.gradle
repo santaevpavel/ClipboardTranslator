@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
     def API_KEY = System.getenv('YANDEX_TRANSLATE_API_KEY')
@@ -9,7 +10,7 @@ android {
         applicationId "com.santaev.myclipboard"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 12
+        versionCode 14
         versionName "2.0"
         testInstrumentationRunner "ru.santaev.clipboardtranslator.MockTestRunner"
 
@@ -64,6 +65,12 @@ dependencies {
 
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
+    compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+        transitive = true
+    }
+    compile 'com.google.firebase:firebase-core:11.4.2'
+    compile 'com.google.firebase:firebase-crash:11.4.2'
+
     androidTestCompile ('android.arch.core:core-testing:' + rootProject.archLifecycleVersion){
         exclude group: 'com.android.support', module: 'support-compat'
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -72,3 +79,6 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
 }
+
+apply plugin: 'com.google.gms.google-services'
+

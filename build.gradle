@@ -3,11 +3,17 @@
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.google.gms:google-services:3.1.1' // google-services plugin
+        classpath 'io.fabric.tools:gradle:1.24.4'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+
     }
 }
 
@@ -28,10 +34,10 @@ task clean(type: Delete) {
 }
 
 ext {
-    archLifecycleVersion = "1.0.0-alpha7"
-    archRoomVersion = "1.0.0-alpha7"
+    archLifecycleVersion = "1.0.0-rc1"
+    archRoomVersion = "1.0.0-rc1"
 
-    supportLibVersion = "26.0.0"
+    supportLibVersion = "26.1.0"
     runnerVersion = "0.5"
     rulesVersion = "0.5"
 }

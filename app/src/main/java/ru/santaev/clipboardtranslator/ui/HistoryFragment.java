@@ -19,7 +19,11 @@ import android.view.ViewGroup;
 import ru.santaev.clipboardtranslator.R;
 import ru.santaev.clipboardtranslator.databinding.FragmentHistoryBinding;
 import ru.santaev.clipboardtranslator.ui.adapter.HistoryAdapter;
+import ru.santaev.clipboardtranslator.util.Analytics;
 import ru.santaev.clipboardtranslator.viewmodel.HistoryViewModel;
+
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_DELETE_ALL_HISTORY;
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_SWIPE_DELETE;
 
 
 public class HistoryFragment extends LifecycleFragment {
@@ -32,6 +36,8 @@ public class HistoryFragment extends LifecycleFragment {
     private FragmentHistoryBinding binding;
     private HistoryAdapter adapter;
 
+    private Analytics analytics;
+
     public HistoryFragment() {
         // Required empty public constructor
     }
@@ -39,6 +45,7 @@ public class HistoryFragment extends LifecycleFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        analytics = new Analytics(getActivity());
         viewModel = ViewModelProviders.of(this).get(HistoryViewModel.class);
         viewModel.getHistory().observe(this, translations -> {
             if (adapter != null){
@@ -75,6 +82,7 @@ public class HistoryFragment extends LifecycleFragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getLayoutPosition();
+                analytics.logClickEvent(EVENT_ID_NAME_CLICK_SWIPE_DELETE);
                 viewModel.removeItem(adapter.getTranslation(position));
             }
         };
@@ -96,6 +104,7 @@ public class HistoryFragment extends LifecycleFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.item_delete_all:
+                analytics.logClickEvent(EVENT_ID_NAME_CLICK_DELETE_ALL_HISTORY);
                 viewModel.clearHistory();
                 return true;
         }
