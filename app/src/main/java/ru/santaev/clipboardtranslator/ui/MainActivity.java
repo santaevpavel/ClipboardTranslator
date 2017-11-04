@@ -12,16 +12,20 @@ import android.view.MenuItem;
 
 import ru.santaev.clipboardtranslator.R;
 import ru.santaev.clipboardtranslator.databinding.ActivityMainBinding;
+import ru.santaev.clipboardtranslator.util.Analytics;
+
+import static ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_SETTINGS;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     private boolean isTablet;
     private ActivityMainBinding binding;
+    private Analytics analytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        analytics = new Analytics(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         isTablet = binding.viewPager == null;
         if (isTablet){
@@ -83,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
+                analytics.logClickEvent(EVENT_ID_NAME_CLICK_SETTINGS);
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 return true;
         }
