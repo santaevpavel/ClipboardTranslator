@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         isTablet = binding.viewPager == null;
-
         if (isTablet){
             if (savedInstanceState == null) {
                 getSupportFragmentManager()
