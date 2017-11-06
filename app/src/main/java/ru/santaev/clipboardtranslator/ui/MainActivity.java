@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             if (savedInstanceState == null) {
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .add(binding.containerTranslate.getId(), TranslateFragment.newInstance())
+                        .add(binding.containerTranslate.getId(), TranslateFragment.Companion.newInstance())
                         .add(binding.containerHistory.getId(), HistoryFragment.newInstance())
                         .commit();
             }

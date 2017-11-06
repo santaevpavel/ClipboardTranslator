@@ -40,11 +40,11 @@ class SettingsActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_settings)
 
-        setActionBar(binding.toolbar)
+        setSupportActionBar(binding.toolbar)
 
-        actionBar?.setTitle(R.string.settings_activity_title)
-        actionBar?.setHomeButtonEnabled(true)
-        actionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle(R.string.settings_activity_title)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         initSettings()
     }

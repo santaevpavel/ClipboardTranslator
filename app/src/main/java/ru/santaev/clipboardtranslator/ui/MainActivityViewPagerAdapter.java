@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class MainActivityViewPagerAdapter extends FragmentPagerAdapter{
 
-    public MainActivityViewPagerAdapter(FragmentManager fm) {
+    MainActivityViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -15,7 +15,7 @@ public class MainActivityViewPagerAdapter extends FragmentPagerAdapter{
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return TranslateFragment.newInstance();
+                return TranslateFragment.Companion.newInstance();
             case 1:
                 return HistoryFragment.newInstance();
             default:

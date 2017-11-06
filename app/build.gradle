@@ -10,7 +10,7 @@ android {
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.santaev.myclipboard"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 14
         versionName "2.0"
