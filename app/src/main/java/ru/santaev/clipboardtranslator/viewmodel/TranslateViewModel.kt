@@ -90,16 +90,20 @@ class TranslateViewModel(private val dataModel: IDataModel) : ViewModel() {
             progress.value = true
             failed.value = false
 
-            disposable = dataModel.translate(originLang.value, targetLang.value, originText)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ translateResponse ->
-                        translatedText.value = translateResponse.targetText
-                        progress.value = false
-                    }) { throwable ->
-                        translatedText.value = throwable.message
-                        progress.value = false
-                        failed.value = true
-                    }
+            originLang.value?.let { originLang ->
+                targetLang.value?.let { targetLang ->
+                    disposable = dataModel.translate(originLang, targetLang, originText)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({ translateResponse ->
+                                translatedText.value = translateResponse.targetText
+                                progress.value = false
+                            }) { throwable ->
+                                translatedText.value = throwable.message
+                                progress.value = false
+                                failed.value = true
+                            }
+                }
+            }
         }
 
         handler.postDelayed(runTranslate, TRANSLATE_DELAY_MILLIS)

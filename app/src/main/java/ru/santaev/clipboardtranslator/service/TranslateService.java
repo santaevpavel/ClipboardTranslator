@@ -161,7 +161,7 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
                 langText, id, false);
 
         dataModel.translate(originLang, targetLang, text)
-                .map(translateResponse -> new Pair<>(translateResponse, translateResponse.targetText))
+                .map(translateResponse -> new Pair<>(translateResponse, translateResponse.getTargetText()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(translateResponse -> showNotification(translateResponse.second, langText, id, true),
