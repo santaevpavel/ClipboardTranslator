@@ -41,4 +41,5 @@
     <string name="settings_item_notification_button_disabled">Скрывать</string>
     <string name="translate_edit_text_hint">Введите текст</string>
     <string name="settings_item_build_title">Версия приложения</string>
+    <string name="action_swipe_lang">Поменять местами языки</string>
 </resources>

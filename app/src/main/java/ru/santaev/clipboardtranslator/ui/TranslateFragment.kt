@@ -12,10 +12,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import ru.santaev.clipboardtranslator.R
 import ru.santaev.clipboardtranslator.TranslatorApp
 import ru.santaev.clipboardtranslator.databinding.FragmentTranslateBinding
@@ -43,6 +40,7 @@ class TranslateFragment : Fragment() {
         observeModel()
 
         activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -89,6 +87,21 @@ class TranslateFragment : Fragment() {
 
         enableAnimation()
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.translate_fragment_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item!!.itemId) {
+            R.id.action_swap_languages -> {
+                viewModel.onClickSwipeLanguages()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun chooseOriginLang() {

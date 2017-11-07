@@ -76,6 +76,13 @@ class TranslateViewModel(private val dataModel: IDataModel) : ViewModel() {
         translate()
     }
 
+    fun onClickSwipeLanguages() {
+        val lang = targetLang.value
+        targetLang.value = originLang.value
+        originLang.value = lang
+        translate()
+    }
+
     private fun translate() {
         if (originText.trim { it <= ' ' }.isEmpty()) {
             return
