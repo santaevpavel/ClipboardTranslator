@@ -107,20 +107,25 @@ class TranslateFragment : Fragment() {
     private fun chooseOriginLang() {
         analytics.logClickEvent(EVENT_ID_NAME_CLICK_SOURCE_LANG)
 
-        val intent = ChooseLanguageActivity.getIntent(context,
-                viewModel.originLang.value,
-                viewModel.targetLang.value, true)
+        val origin = viewModel.originLang.value
+        val target = viewModel.targetLang.value
 
-        startActivityForResult(intent, REQUEST_CODE_ORIGIN_LANG)
+        if (origin != null && target != null) {
+            val intent = ChooseLanguageActivity.getIntent(context, origin, target, true)
+            startActivityForResult(intent, REQUEST_CODE_ORIGIN_LANG)
+        }
     }
 
     private fun chooseTargetLang() {
         analytics.logClickEvent(EVENT_ID_NAME_CLICK_TARGET_LANG)
 
-        val intent = ChooseLanguageActivity.getIntent(context,
-                viewModel.originLang.value,
-                viewModel.targetLang.value, false)
-        startActivityForResult(intent, REQUEST_CODE_TARGET_LANG)
+        val origin = viewModel.originLang.value
+        val target = viewModel.targetLang.value
+
+        if (origin != null && target != null) {
+            val intent = ChooseLanguageActivity.getIntent(context, origin, target, false)
+            startActivityForResult(intent, REQUEST_CODE_TARGET_LANG)
+        }
     }
 
     private fun observeModel() {
