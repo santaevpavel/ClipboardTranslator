@@ -15,7 +15,6 @@
     <string name="translate_notification_translating">Идет перевод \"%s\"</string>
     <string name="translate_notification_failed">Не удалось перевести текст</string>
     <string name="choose_lang_activity_subheader_langs">Все языки</string>
-    <string name="translate_fragment_subheader_translate">Перевод</string>
     <string name="translate_fragment_subheader_extra">Дополнительно</string>
     <string name="translated_by_yandex">Переведено сервисом «Яндекс.Переводчик»</string>
     <string name="choose_lang_activity_subheader_recent">Недавно использованные языки</string>
