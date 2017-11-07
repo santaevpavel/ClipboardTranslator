@@ -7,6 +7,7 @@
     <string name="no_history_subtitle">Translate text to see history</string>
     <string name="fragment_history_item_clear">Clear history</string>
     <string name="action_settings">Settings</string>
+    <string name="action_swipe_lang">Swipe languages</string>
     <string name="app_notification_title">@string/app_name</string>
     <string name="app_notification_content_text">Translate from clipboard is enabled</string>
     <string name="translate_notification_title">Translate from clipboard</string>
@@ -16,7 +17,6 @@
     <string name="translate_notification_failed">Translate failed</string>
     <string name="choose_lang_activity_subheader_langs">Languages</string>
     <string name="choose_lang_activity_subheader_recent">Recent languages</string>
-    <string name="translate_fragment_subheader_translate">Translate</string>
     <string name="translate_fragment_subheader_extra">Extra</string>
     <string name="yandex_translate_url" translatable="false">http://translate.yandex.ru/</string>
     <string name="translated_by_yandex">Translated by service \"Yandex.Translate\"</string>

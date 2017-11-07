@@ -15,7 +15,6 @@
     <string name="translate_notification_translating">Идет перевод \"%s\"</string>
     <string name="translate_notification_failed">Не удалось перевести текст</string>
     <string name="choose_lang_activity_subheader_langs">Все языки</string>
-    <string name="translate_fragment_subheader_translate">Перевод</string>
     <string name="translate_fragment_subheader_extra">Дополнительно</string>
     <string name="translated_by_yandex">Переведено сервисом «Яндекс.Переводчик»</string>
     <string name="choose_lang_activity_subheader_recent">Недавно использованные языки</string>
@@ -41,4 +40,5 @@
     <string name="settings_item_notification_button_disabled">Скрывать</string>
     <string name="translate_edit_text_hint">Введите текст</string>
     <string name="settings_item_build_title">Версия приложения</string>
+    <string name="action_swipe_lang">Поменять местами языки</string>
 </resources>

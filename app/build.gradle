@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
+apply plugin: 'kotlin-kapt'
 
 android {
     def API_KEY = System.getenv('YANDEX_TRANSLATE_API_KEY')
@@ -8,10 +10,10 @@ android {
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.santaev.myclipboard"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 27
-        versionCode 14
-        versionName "2.0"
+        versionCode 15
+        versionName "2.1"
         testInstrumentationRunner "ru.santaev.clipboardtranslator.MockTestRunner"
 
         buildConfigField "String", "YANDEX_TRANSLATE_API_KEY", "\"" + API_KEY + "\""
@@ -47,6 +49,8 @@ dependencies {
 
     annotationProcessor "android.arch.lifecycle:compiler:" + rootProject.archLifecycleVersion
     annotationProcessor "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
+    kapt "android.arch.lifecycle:compiler:" + rootProject.archLifecycleVersion
+    kapt "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
 
     androidTestCompile 'com.android.support:support-annotations:' + rootProject.supportLibVersion
     androidTestCompile 'com.android.support.test:runner:' + rootProject.runnerVersion
@@ -78,6 +82,8 @@ dependencies {
     }
 
     testCompile 'junit:junit:4.12'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    kapt "com.android.databinding:compiler:$android_plugin_version"
 }
 
 apply plugin: 'com.google.gms.google-services'

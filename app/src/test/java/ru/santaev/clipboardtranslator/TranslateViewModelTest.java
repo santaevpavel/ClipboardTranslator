@@ -2,8 +2,6 @@ package ru.santaev.clipboardtranslator;
 
 import org.junit.Test;
 
-import ru.santaev.clipboardtranslator.viewmodel.TranslateViewModel;
-
 public class TranslateViewModelTest {
 
     public static final String TEST_SRC = "Тест";
@@ -27,8 +25,8 @@ public class TranslateViewModelTest {
             return Single.just(item);
         };*/
 
-        TranslateViewModel viewModel = new TranslateViewModel(dataModel);
-        viewModel.onOriginTextChanged(TEST_SRC);
+        //TranslateViewModel viewModel = new TranslateViewModel(dataModel);
+        //viewModel.onOriginTextChanged(TEST_SRC);
 
         /*String value = LiveDataUtil.getValue(viewModel.getTranslatedText());
         assertEquals(value, "Test1");*/
