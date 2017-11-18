@@ -37,7 +37,7 @@ public class ApiService implements IApiService{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Call<TranslateResponse> call = api.translate(request.originText, request.lang, API_KEY);
+            Call<TranslateResponse> call = api.translate(request.getOriginText(), request.getLang(), API_KEY);
             return makeRequest(call);
         });
     }
