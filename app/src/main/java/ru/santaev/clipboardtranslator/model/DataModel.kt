@@ -17,7 +17,7 @@ class DataModel(private val apiService: IApiService) : IDataModel {
     private var lastTranslation: Translation? = null
 
     override val languages: Flowable<List<Language>>
-        get() = languageRepository.languages
+        get() = languageRepository.getLanguages()
 
     override fun translate(originLang: Language, targetLang: Language,
                            originText: String): Single<IDataModel.TranslateResponse> {
@@ -27,7 +27,7 @@ class DataModel(private val apiService: IApiService) : IDataModel {
 
         return apiService.translate(request)
                 .map { response ->
-                    val targetText = if (response.text.size == 0) "" else response.text[0]
+                    val targetText = response.text?.get(0) ?: ""
                     saveTransition(originText, targetText, originLang, targetLang)
                     IDataModel.TranslateResponse(targetText)
                 }.subscribeOn(Schedulers.io())

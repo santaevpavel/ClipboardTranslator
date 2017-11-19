@@ -7,7 +7,9 @@ import android.content.Context;
 import ru.santaev.clipboardtranslator.api.ApiService;
 import ru.santaev.clipboardtranslator.db.AppDatabase;
 import ru.santaev.clipboardtranslator.model.DataModel;
+import ru.santaev.clipboardtranslator.model.HistoryDataModel;
 import ru.santaev.clipboardtranslator.model.IDataModel;
+import ru.santaev.clipboardtranslator.model.IHistoryDataModel;
 
 public class TranslatorApp extends Application{
 
@@ -22,6 +24,7 @@ public class TranslatorApp extends Application{
     }
 
     private IDataModel dataModel;
+    private IHistoryDataModel historyDataModel;
 
     @Override
     public void onCreate() {
@@ -30,14 +33,23 @@ public class TranslatorApp extends Application{
         AppDatabase.init(getAppContext());
 
         dataModel = buildDataModel();
+        historyDataModel = buildHistoryDataModel();
     }
 
     public IDataModel getDataModel() {
         return dataModel;
     }
 
+    public IHistoryDataModel getHistoryDataModel() {
+        return historyDataModel;
+    }
+
     protected IDataModel buildDataModel(){
         return new DataModel(new ApiService());
+    }
+
+    protected IHistoryDataModel buildHistoryDataModel() {
+        return new HistoryDataModel();
     }
 
 }

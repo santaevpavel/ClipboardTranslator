@@ -21,6 +21,7 @@ import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider
 import ru.santaev.clipboardtranslator.service.TranslateService
 import ru.santaev.clipboardtranslator.util.Analytics
 import ru.santaev.clipboardtranslator.util.Analytics.*
+import ru.santaev.clipboardtranslator.viewmodel.MainActivityViewModel
 import ru.santaev.clipboardtranslator.viewmodel.TranslateViewModel
 
 class TranslateFragment : Fragment() {
@@ -35,6 +36,7 @@ class TranslateFragment : Fragment() {
         super.onCreate(savedInstanceState)
         analytics = Analytics(activity)
         translateDirectionProvider = TranslateDirectionProvider()
+
         val factory = ViewModelFactory(TranslatorApp.getInstance().dataModel)
         viewModel = ViewModelProviders.of(this, factory).get(TranslateViewModel::class.java)
         observeModel()
@@ -86,6 +88,14 @@ class TranslateFragment : Fragment() {
         binding.translatedByYandex.setOnClickListener({ openYandexTranslate() })
 
         enableAnimation()
+
+        val activityViewModel = ViewModelProviders.of(activity).get(MainActivityViewModel::class.java)
+        activityViewModel.sharedText?.let {
+            if (savedInstanceState == null) {
+                onIncomingText(it)
+            }
+        }
+
         return binding.root
     }
 
@@ -102,6 +112,11 @@ class TranslateFragment : Fragment() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun onIncomingText(textFromIntent: String) {
+        binding.originTextView.text.clear()
+        binding.originTextView.text.insert(0, textFromIntent)
     }
 
     private fun chooseOriginLang() {
