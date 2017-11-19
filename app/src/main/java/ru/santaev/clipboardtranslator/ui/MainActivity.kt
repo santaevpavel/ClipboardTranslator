@@ -1,5 +1,6 @@
 package ru.santaev.clipboardtranslator.ui
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -14,15 +15,18 @@ import ru.santaev.clipboardtranslator.databinding.ActivityMainBinding
 import ru.santaev.clipboardtranslator.util.Analytics
 
 import ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_SETTINGS
+import ru.santaev.clipboardtranslator.viewmodel.MainActivityViewModel
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     private var isTablet: Boolean = false
     private lateinit var analytics: Analytics
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
         analytics = Analytics(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         isTablet = binding.viewPager == null
@@ -53,6 +57,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 override fun onPageScrollStateChanged(state: Int) {}
             })
         }
+
+        handleIncomingText(intent)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -77,5 +83,27 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             }
         }
         return false
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleIncomingText(intent, true)
+    }
+
+    private fun handleIncomingText(intent: Intent, isNewIntent: Boolean = false) {
+        if (intent.action == Intent.ACTION_SEND && intent.type == "text/plain") {
+            val textFromIntent = intent.getStringExtra(Intent.EXTRA_TEXT) ?: return
+            viewModel.sharedText = textFromIntent
+            if (isNewIntent) {
+                val translateFragment = supportFragmentManager.findFragmentByTag(
+                        makeFragmentName(binding.viewPager!!.id, 0)) as? TranslateFragment
+                translateFragment?.onIncomingText(textFromIntent)
+            }
+        }
+
+    }
+
+    private fun makeFragmentName(viewPagerId: Int, index: Int): String {
+        return "android:switcher:$viewPagerId:$index"
     }
 }
