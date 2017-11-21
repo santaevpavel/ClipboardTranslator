@@ -2,6 +2,7 @@ package ru.santaev.clipboardtranslator;
 
 
 import android.app.Application;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import ru.santaev.clipboardtranslator.api.ApiService;
@@ -25,19 +26,24 @@ public class TranslatorApp extends Application{
 
     private IDataModel dataModel;
     private IHistoryDataModel historyDataModel;
+    private AppDatabase appDatabase;
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
-        AppDatabase.init(getAppContext());
 
+        appDatabase = buildDatabase();
         dataModel = buildDataModel();
         historyDataModel = buildHistoryDataModel();
     }
 
     public IDataModel getDataModel() {
         return dataModel;
+    }
+
+    public AppDatabase getDatabase() {
+        return appDatabase;
     }
 
     public IHistoryDataModel getHistoryDataModel() {
@@ -52,4 +58,8 @@ public class TranslatorApp extends Application{
         return new HistoryDataModel();
     }
 
+    protected AppDatabase buildDatabase() {
+        return Room.databaseBuilder(TranslatorApp.getAppContext(), AppDatabase.class, AppDatabase.DB_NAME)
+                .build();
+    }
 }
