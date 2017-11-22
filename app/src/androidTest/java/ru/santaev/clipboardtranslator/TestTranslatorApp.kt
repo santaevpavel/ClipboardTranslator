@@ -2,10 +2,10 @@ package ru.santaev.clipboardtranslator
 
 
 import android.arch.persistence.room.Room
+import ru.santaev.clipboardtranslator.api.mock.MockApiService
 import ru.santaev.clipboardtranslator.db.AppDatabase
 import ru.santaev.clipboardtranslator.model.DataModel
 import ru.santaev.clipboardtranslator.model.IDataModel
-import ru.santaev.clipboardtranslator.test_models.MockApiService
 
 
 class TestTranslatorApp : TranslatorApp() {
@@ -15,7 +15,7 @@ class TestTranslatorApp : TranslatorApp() {
     }
 
     override fun buildDatabase(): AppDatabase {
-        return Room.inMemoryDatabaseBuilder(getAppContext(), AppDatabase::class.java)
+        return Room.inMemoryDatabaseBuilder(appContext, AppDatabase::class.java)
                 .allowMainThreadQueries()
                 .build()
     }

@@ -36,7 +36,7 @@ class ChooseLanguageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         extractArguments()
 
-        viewModel = ViewModelProviders.of(this, ViewModelFactory(TranslatorApp.getInstance().dataModel))
+        viewModel = ViewModelProviders.of(this, ViewModelFactory(TranslatorApp.instance.dataModel))
                 .get(ChooseLanguageViewModel::class.java)
         appPreference = AppPreference.getInstance()
 

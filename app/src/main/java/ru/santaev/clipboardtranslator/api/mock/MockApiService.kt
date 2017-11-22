@@ -1,4 +1,4 @@
-package ru.santaev.clipboardtranslator.test_models
+package ru.santaev.clipboardtranslator.api.mock
 
 import io.reactivex.Single
 import ru.santaev.clipboardtranslator.api.IApiService
@@ -18,7 +18,7 @@ class MockApiService : IApiService {
             "текст 1" -> "text 1 " + postfix
             "текст 2" -> "text 2 " + postfix
             "текст 3" -> "text 3 " + postfix
-            else -> "unknown"
+            else -> "translated text '${request.originText} 'from ${request.originLang} to ${request.targetLang}"
         })
         return Single.just(response)
     }

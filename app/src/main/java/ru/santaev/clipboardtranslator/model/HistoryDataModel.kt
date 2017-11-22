@@ -10,12 +10,11 @@ import ru.santaev.clipboardtranslator.util.RxHelper
 class HistoryDataModel : IHistoryDataModel {
 
     override val translationHistory: Flowable<List<Translation>>
-        get() = translationDao.translations
-                .subscribeOn(Schedulers.io())
-    private val translationDao = TranslatorApp.getInstance().database.translationDao
+        get() = translationDao.translations.subscribeOn(Schedulers.io())
+    private val translationDao = TranslatorApp.instance.database.translationDao
 
     override fun removeTranslation(translation: Translation) {
-        Observable.fromCallable { translationDao.delete(translation) }
+        Observable.fromCallable { translationDao?.delete(translation) }
                 .compose(RxHelper.getAsyncTransformer())
                 .subscribe()
     }

@@ -41,8 +41,8 @@ class DataModel(private val apiService: IApiService) : IDataModel {
 
         lastTranslation?.let {
             if (finalOriginText.contains(it.textSource)) {
-                val savedTranslation = TranslatorApp.getInstance().database
-                        .translationDao.getTranslationSync(it.id)
+                val savedTranslation = TranslatorApp.instance.database
+                        .translationDao?.getTranslationSync(it.id)
                 if (savedTranslation != null) {
                     newTranslation.id = it.id
                 }
@@ -50,7 +50,7 @@ class DataModel(private val apiService: IApiService) : IDataModel {
         }
         lastTranslation = newTranslation
 
-        val id = TranslatorApp.getInstance().database.translationDao.insert(lastTranslation)
-        lastTranslation?.id = id
+        val id = TranslatorApp.instance.database.translationDao?.insert(lastTranslation)
+        id?.let { lastTranslation?.id = it }
     }
 }

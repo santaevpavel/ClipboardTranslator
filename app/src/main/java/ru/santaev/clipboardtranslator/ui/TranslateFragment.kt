@@ -37,7 +37,7 @@ class TranslateFragment : Fragment() {
         analytics = Analytics(activity)
         translateDirectionProvider = TranslateDirectionProvider()
 
-        val factory = ViewModelFactory(TranslatorApp.getInstance().dataModel)
+        val factory = ViewModelFactory(TranslatorApp.instance.dataModel)
         viewModel = ViewModelProviders.of(this, factory).get(TranslateViewModel::class.java)
         observeModel()
 

@@ -29,7 +29,7 @@ class HistoryFragment : Fragment() {
         super.onCreate(savedInstanceState)
         analytics = Analytics(activity)
 
-        val factory = ViewModelFactory(TranslatorApp.getInstance().historyDataModel)
+        val factory = ViewModelFactory(TranslatorApp.instance.historyDataModel)
         viewModel = ViewModelProviders.of(this, factory).get(HistoryViewModel::class.java)
         setHasOptionsMenu(true)
     }

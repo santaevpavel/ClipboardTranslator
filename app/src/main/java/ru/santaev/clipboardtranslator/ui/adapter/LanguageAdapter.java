@@ -80,7 +80,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
             viewHolder.binding.text.setText(language.getName());
 
             int color = isSupported ? R.color.textColorGrayDark : R.color.textColorGrayLight;
-            Resources resources = TranslatorApp.getAppContext().getResources();
+            Resources resources = TranslatorApp.Companion.getAppContext().getResources();
             viewHolder.binding.text.setTextColor(ResourcesCompat.getColor(resources, color, null));
 
             viewHolder.binding.getRoot().setOnClickListener(v -> {

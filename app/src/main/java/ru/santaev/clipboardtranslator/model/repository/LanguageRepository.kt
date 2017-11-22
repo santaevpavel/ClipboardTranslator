@@ -12,7 +12,7 @@ import ru.santaev.clipboardtranslator.db.entity.Language
 class LanguageRepository(private val apiService: IApiService) {
 
     private var languages: Flowable<List<Language>>? = null
-    private val languageDao: LanguageDao = TranslatorApp.getInstance().database.languageDao
+    private val languageDao: LanguageDao = TranslatorApp.instance.database.languageDao
 
     fun getLanguages(): Flowable<List<Language>> {
         loadLanguages()

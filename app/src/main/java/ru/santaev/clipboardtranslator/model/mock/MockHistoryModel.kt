@@ -1,4 +1,4 @@
-package ru.santaev.clipboardtranslator.test_models
+package ru.santaev.clipboardtranslator.model.mock
 
 import io.reactivex.Flowable
 import ru.santaev.clipboardtranslator.db.entity.Translation
@@ -11,7 +11,7 @@ class MockHistoryModel : IHistoryDataModel {
         get() = Flowable.just(store)
 
     override fun removeTranslation(translation: Translation) {
-        store.removeIf({ t -> t.id == translation.id })
+        //store.removeIf({ t -> t.id == translation.id })
     }
 
     override fun deleteAll() {
