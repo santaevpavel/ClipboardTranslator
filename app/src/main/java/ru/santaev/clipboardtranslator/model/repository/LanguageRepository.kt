@@ -1,7 +1,6 @@
 package ru.santaev.clipboardtranslator.model.repository
 
 import io.reactivex.Flowable
-import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import ru.santaev.clipboardtranslator.TranslatorApp
 import ru.santaev.clipboardtranslator.api.IApiService
@@ -29,7 +28,7 @@ class LanguageRepository(private val apiService: IApiService) {
     }
 
     private fun loadLanguages() {
-        Single.fromCallable { apiService.languages }
+        apiService.languages
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::onLoadLanguages, { it.printStackTrace() })
     }

@@ -6,5 +6,5 @@ public interface IApiService {
 
     Single<TranslateResponse> translate(TranslateRequest request);
 
-    LanguagesResponse getLanguages();
+    Single<LanguagesResponse> getLanguages();
 }

@@ -1,7 +1,7 @@
 package ru.santaev.clipboardtranslator.api;
 
 
-import retrofit2.Call;
+import io.reactivex.Single;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -16,11 +16,11 @@ public interface YandexApi {
 
     @FormUrlEncoded
     @POST("api/v1.5/tr.json/translate")
-    Call<TranslateResponse> translate(@Field("text") String text,
-                                      @Field("lang") String lang,
-                                      @Field("key") String apiKey);
+    Single<TranslateResponse> translate(@Field("text") String text,
+                                        @Field("lang") String lang,
+                                        @Field("key") String apiKey);
 
     @GET("api/v1.5/tr.json/getLangs")
-    Call<LanguagesResponse> getLangs(@Query("key") String apiKey,
-                                     @Query("ui") String uiLang);
+    Single<LanguagesResponse> getLangs(@Query("key") String apiKey,
+                                       @Query("ui") String uiLang);
 }

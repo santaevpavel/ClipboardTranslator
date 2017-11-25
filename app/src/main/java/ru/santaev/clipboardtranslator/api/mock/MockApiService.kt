@@ -23,7 +23,7 @@ class MockApiService : IApiService {
         return Single.just(response)
     }
 
-    override fun getLanguages(): LanguagesResponse {
+    override fun getLanguages(): Single<LanguagesResponse>? {
         val response = LanguagesResponse()
         response.directions = arrayListOf()
         response.languages = mapOf(
@@ -32,6 +32,6 @@ class MockApiService : IApiService {
                 Pair("c#", "си шарп"),
                 Pair("c++", "си плюс плюс")
         )
-        return response
+        return Single.just(response)
     }
 }
