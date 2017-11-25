@@ -14,8 +14,8 @@ import ru.santaev.clipboardtranslator.TranslatorApp
 import ru.santaev.clipboardtranslator.databinding.FragmentHistoryBinding
 import ru.santaev.clipboardtranslator.ui.adapter.HistoryAdapter
 import ru.santaev.clipboardtranslator.util.Analytics
-import ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_DELETE_ALL_HISTORY
-import ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_SWIPE_DELETE
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_DELETE_ALL_HISTORY
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_SWIPE_DELETE
 import ru.santaev.clipboardtranslator.viewmodel.HistoryViewModel
 
 class HistoryFragment : Fragment() {

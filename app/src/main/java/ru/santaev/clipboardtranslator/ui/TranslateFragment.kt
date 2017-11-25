@@ -20,7 +20,17 @@ import ru.santaev.clipboardtranslator.db.entity.Language
 import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider
 import ru.santaev.clipboardtranslator.service.TranslateService
 import ru.santaev.clipboardtranslator.util.Analytics
-import ru.santaev.clipboardtranslator.util.Analytics.*
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_CLEAR_TEXT
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_OPEN_YANDEX
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_RETRY
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_SOURCE_LANG
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_START_SERVICE
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_STOP_SERVICE
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_TARGET_LANG
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_TRANSLATED
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_TRANSLATE_FAILED
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_SELECT_SOURCE_LANG
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_SELECT_TARGET_LANG
 import ru.santaev.clipboardtranslator.viewmodel.MainActivityViewModel
 import ru.santaev.clipboardtranslator.viewmodel.TranslateViewModel
 

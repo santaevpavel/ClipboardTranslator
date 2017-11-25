@@ -14,7 +14,10 @@ import ru.santaev.clipboardtranslator.databinding.ActivitySettingsBinding
 import ru.santaev.clipboardtranslator.ui.settings.ListSettingsItem
 import ru.santaev.clipboardtranslator.ui.settings.SettingsItem
 import ru.santaev.clipboardtranslator.util.Analytics
-import ru.santaev.clipboardtranslator.util.Analytics.*
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_SETTINGS_COPY_BUTTON
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_SETTINGS_FEEDBACK
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_SETTINGS_NOTIFICATION_TYPE
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_SETTINGS_RATE
 import ru.santaev.clipboardtranslator.util.settings.AppPreference
 import ru.santaev.clipboardtranslator.util.settings.ISettings
 import java.util.*
