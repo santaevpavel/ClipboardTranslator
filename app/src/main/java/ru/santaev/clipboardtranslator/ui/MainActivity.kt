@@ -14,7 +14,7 @@ import ru.santaev.clipboardtranslator.R
 import ru.santaev.clipboardtranslator.databinding.ActivityMainBinding
 import ru.santaev.clipboardtranslator.util.Analytics
 
-import ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_SETTINGS
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_SETTINGS
 import ru.santaev.clipboardtranslator.viewmodel.MainActivityViewModel
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {

@@ -36,7 +36,7 @@ class ChooseLanguageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         extractArguments()
 
-        viewModel = ViewModelProviders.of(this, ViewModelFactory(TranslatorApp.getInstance().dataModel))
+        viewModel = ViewModelProviders.of(this, ViewModelFactory(TranslatorApp.instance.dataModel))
                 .get(ChooseLanguageViewModel::class.java)
         appPreference = AppPreference.getInstance()
 
@@ -96,7 +96,7 @@ class ChooseLanguageActivity : AppCompatActivity() {
         binding.list.layoutManager = LinearLayoutManager(this)
         binding.list.adapter = adapter
 
-        adapter.setListener { translation ->
+        adapter.listener = { translation ->
             addLangToRecent(translation)
             val data = Intent()
             data.putExtra(RESULT_KEY_LANG, translation)

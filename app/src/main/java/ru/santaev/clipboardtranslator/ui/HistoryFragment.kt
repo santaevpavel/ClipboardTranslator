@@ -14,8 +14,8 @@ import ru.santaev.clipboardtranslator.TranslatorApp
 import ru.santaev.clipboardtranslator.databinding.FragmentHistoryBinding
 import ru.santaev.clipboardtranslator.ui.adapter.HistoryAdapter
 import ru.santaev.clipboardtranslator.util.Analytics
-import ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_DELETE_ALL_HISTORY
-import ru.santaev.clipboardtranslator.util.Analytics.EVENT_ID_NAME_CLICK_SWIPE_DELETE
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_DELETE_ALL_HISTORY
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_SWIPE_DELETE
 import ru.santaev.clipboardtranslator.viewmodel.HistoryViewModel
 
 class HistoryFragment : Fragment() {
@@ -29,7 +29,7 @@ class HistoryFragment : Fragment() {
         super.onCreate(savedInstanceState)
         analytics = Analytics(activity)
 
-        val factory = ViewModelFactory(TranslatorApp.getInstance().historyDataModel)
+        val factory = ViewModelFactory(TranslatorApp.instance.historyDataModel)
         viewModel = ViewModelProviders.of(this, factory).get(HistoryViewModel::class.java)
         setHasOptionsMenu(true)
     }
@@ -40,7 +40,7 @@ class HistoryFragment : Fragment() {
         adapter = HistoryAdapter(null)
         binding.historyList.adapter = adapter
         binding.historyList.layoutManager = LinearLayoutManager(activity)
-        adapter.setListener(viewModel::onClickedItem)
+        adapter.listener = viewModel::onClickedItem
         val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,

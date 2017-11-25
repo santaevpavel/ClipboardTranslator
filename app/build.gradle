@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
     def API_KEY = System.getenv('YANDEX_TRANSLATE_API_KEY')
+    def isMockApiService = false
 
     compileSdkVersion 27
     buildToolsVersion '26.0.2'
@@ -17,6 +18,7 @@ android {
         testInstrumentationRunner "ru.santaev.clipboardtranslator.MockTestRunner"
 
         buildConfigField "String", "YANDEX_TRANSLATE_API_KEY", "\"" + API_KEY + "\""
+        buildConfigField "boolean", "MOCK", "false"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -28,25 +30,38 @@ android {
     dataBinding {
         enabled true
     }
+
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+
+    flavorDimensions "api"
+
+    productFlavors {
+        real {
+            isMockApiService = false
+            buildConfigField "boolean", "MOCK", "false"
+            dimension "api"
+        }
+        mock {
+            isMockApiService = true
+            buildConfigField "boolean", "MOCK", "true"
+            dimension "api"
+        }
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
-    compile group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.1.0'
-    compile group: 'com.squareup.okhttp', name: 'okhttp', version: '2.7.5'
-
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.okhttp:okhttp:2.7.5'
     compile 'android.arch.lifecycle:extensions:' + rootProject.archLifecycleVersion
     compile 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
     compile 'android.arch.persistence.room:rxjava2:' + rootProject.archRoomVersion
-
     annotationProcessor "android.arch.lifecycle:compiler:" + rootProject.archLifecycleVersion
     annotationProcessor "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
     kapt "android.arch.lifecycle:compiler:" + rootProject.archLifecycleVersion
@@ -55,35 +70,36 @@ dependencies {
     androidTestCompile 'com.android.support:support-annotations:' + rootProject.supportLibVersion
     androidTestCompile 'com.android.support.test:runner:' + rootProject.runnerVersion
     androidTestCompile 'com.android.support.test:rules:' + rootProject.rulesVersion
-
     compile 'com.android.support:appcompat-v7:' + rootProject.supportLibVersion
     compile 'com.android.support:support-v4:' + rootProject.supportLibVersion
     compile 'com.android.support:cardview-v7:' + rootProject.supportLibVersion
     compile 'com.android.support:design:' + rootProject.supportLibVersion
     compile 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.0.1'
-
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
-
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-
     compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true
     }
     compile 'com.google.firebase:firebase-core:11.4.2'
     compile 'com.google.firebase:firebase-crash:11.4.2'
-
-    androidTestCompile ('android.arch.core:core-testing:' + rootProject.archLifecycleVersion){
+    androidTestCompile('android.arch.core:core-testing:' + rootProject.archLifecycleVersion) {
         exclude group: 'com.android.support', module: 'support-compat'
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-core-utils'
     }
-
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     kapt "com.android.databinding:compiler:$android_plugin_version"
+    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'

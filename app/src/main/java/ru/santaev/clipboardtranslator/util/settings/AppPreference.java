@@ -17,7 +17,7 @@ import ru.santaev.clipboardtranslator.service.uitl.ITranslationSettingsProvider;
 
 public class AppPreference implements ITranslationSettingsProvider, ISettings {
 
-    public static final String APP_PREF = "APP_PREF";
+    private static final String APP_PREF = "APP_PREF";
 
     public static final String KEY_ORIGIN_LANG_NAME = "KEY_ORIGIN_LANG_NAME";
     public static final String KEY_ORIGIN_LANG_CODE = "KEY_ORIGIN_LANG_CODE";
@@ -30,7 +30,7 @@ public class AppPreference implements ITranslationSettingsProvider, ISettings {
     private SharedPreferences sharedPreferences;
 
     public static SharedPreferences getAppSharedPreference(){
-        return TranslatorApp.getAppContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
+        return TranslatorApp.Companion.getAppContext().getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
     }
 
     public static AppPreference getInstance(){
