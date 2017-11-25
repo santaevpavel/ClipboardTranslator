@@ -28,7 +28,7 @@ class LanguageRepository(private val apiService: IApiService) {
     }
 
     private fun loadLanguages() {
-        apiService.languages
+        apiService.getLanguages()
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::onLoadLanguages, { it.printStackTrace() })
     }

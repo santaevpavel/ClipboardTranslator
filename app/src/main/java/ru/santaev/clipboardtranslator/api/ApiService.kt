@@ -7,8 +7,8 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.santaev.clipboardtranslator.api.YandexApi.API_KEY
-import ru.santaev.clipboardtranslator.api.YandexApi.SERVER_URL
+import ru.santaev.clipboardtranslator.api.YandexApi.Companion.API_KEY
+import ru.santaev.clipboardtranslator.api.YandexApi.Companion.SERVER_URL
 import java.io.IOException
 import java.net.SocketTimeoutException
 

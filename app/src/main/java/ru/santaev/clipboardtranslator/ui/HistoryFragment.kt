@@ -40,7 +40,7 @@ class HistoryFragment : Fragment() {
         adapter = HistoryAdapter(null)
         binding.historyList.adapter = adapter
         binding.historyList.layoutManager = LinearLayoutManager(activity)
-        adapter.setListener(viewModel::onClickedItem)
+        adapter.listener = viewModel::onClickedItem
         val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,

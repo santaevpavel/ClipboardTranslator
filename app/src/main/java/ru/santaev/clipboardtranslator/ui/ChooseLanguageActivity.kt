@@ -96,7 +96,7 @@ class ChooseLanguageActivity : AppCompatActivity() {
         binding.list.layoutManager = LinearLayoutManager(this)
         binding.list.adapter = adapter
 
-        adapter.setListener { translation ->
+        adapter.listener = { translation ->
             addLangToRecent(translation)
             val data = Intent()
             data.putExtra(RESULT_KEY_LANG, translation)
