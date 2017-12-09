@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import java.util.Random;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import ru.santaev.clipboardtranslator.R;
@@ -39,10 +41,13 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
     private static final String TAG = "TranslateService";
     private static final int SERVICE_NOTIFICATION_ID = -1;
     private static final String ACTION_COPY = "ru.santaev.clipboardtranslator.service.ActionCopy";
+
+    @Inject
+    IDataModel dataModel;
+
     private ClipboardManager clipboardManager;
     private IClipboardFilter filter;
     private ITranslationSettingsProvider translationSettingsProvider;
-    private IDataModel dataModel;
     private ISettings settings;
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -75,13 +80,14 @@ public class TranslateService extends Service implements ClipboardManager.OnPrim
     @Override
     public void onCreate() {
         super.onCreate();
+        TranslatorApp.getInstance().getAppComponent().inject(this);
+
         Log.d(TAG, "onCreate");
 
         filter = new ClipboardFilter();
         translationSettingsProvider =  AppPreference.getInstance();
         settings = AppPreference.getInstance();
         AppPreference.getAppSharedPreference().registerOnSharedPreferenceChangeListener(this);
-        dataModel = TranslatorApp.getInstance().getDataModel();
         registerReceiver(broadcastReceiver, new IntentFilter(ACTION_COPY));
 
         initClipboardListener();

@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import ru.santaev.clipboardtranslator.R
-import ru.santaev.clipboardtranslator.TranslatorApp
 import ru.santaev.clipboardtranslator.databinding.ActivityChooseLanguageBinding
 import ru.santaev.clipboardtranslator.db.entity.Language
 import ru.santaev.clipboardtranslator.ui.adapter.LanguageAdapter
@@ -36,8 +35,7 @@ class ChooseLanguageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         extractArguments()
 
-        viewModel = ViewModelProviders.of(this, ViewModelFactory(TranslatorApp.instance.dataModel))
-                .get(ChooseLanguageViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ChooseLanguageViewModel::class.java)
         appPreference = AppPreference.getInstance()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_choose_language)

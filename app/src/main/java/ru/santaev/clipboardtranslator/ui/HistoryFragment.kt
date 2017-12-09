@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.*
 import ru.santaev.clipboardtranslator.R
-import ru.santaev.clipboardtranslator.TranslatorApp
 import ru.santaev.clipboardtranslator.databinding.FragmentHistoryBinding
 import ru.santaev.clipboardtranslator.ui.adapter.HistoryAdapter
 import ru.santaev.clipboardtranslator.util.Analytics
@@ -29,8 +28,7 @@ class HistoryFragment : Fragment() {
         super.onCreate(savedInstanceState)
         analytics = Analytics(activity)
 
-        val factory = ViewModelFactory(TranslatorApp.instance.historyDataModel)
-        viewModel = ViewModelProviders.of(this, factory).get(HistoryViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(HistoryViewModel::class.java)
         setHasOptionsMenu(true)
     }
 
