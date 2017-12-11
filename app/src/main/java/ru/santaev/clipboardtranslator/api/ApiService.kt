@@ -11,6 +11,7 @@ import ru.santaev.clipboardtranslator.api.YandexApi.Companion.API_KEY
 import ru.santaev.clipboardtranslator.api.YandexApi.Companion.SERVER_URL
 import java.io.IOException
 import java.net.SocketTimeoutException
+import java.util.*
 
 class ApiService : IApiService {
 
@@ -33,7 +34,7 @@ class ApiService : IApiService {
     }
 
     override fun getLanguages(): Single<LanguagesResponse> {
-        return api.getLangs(API_KEY, "ru")
+        return api.getLangs(API_KEY, Locale.getDefault().language)
                 .compose(getApiTransformer())
     }
 

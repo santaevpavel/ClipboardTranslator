@@ -1,4 +1,4 @@
-package ru.santaev.clipboardtranslator.service.uitl;
+package ru.santaev.clipboardtranslator.service.util;
 
 
 import ru.santaev.clipboardtranslator.db.entity.Language;

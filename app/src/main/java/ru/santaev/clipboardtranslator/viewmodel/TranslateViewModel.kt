@@ -6,13 +6,15 @@ import android.arch.lifecycle.ViewModel
 import android.os.Handler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import ru.santaev.clipboardtranslator.TranslatorApp
 import ru.santaev.clipboardtranslator.db.entity.Language
 import ru.santaev.clipboardtranslator.model.IDataModel
 import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider
 import ru.santaev.clipboardtranslator.util.settings.AppPreference
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class TranslateViewModel(private val dataModel: IDataModel) : ViewModel() {
+class TranslateViewModel : ViewModel() {
 
     val translatedText = MutableLiveData<String>()
     val progress = MutableLiveData<Boolean>()
@@ -20,6 +22,9 @@ class TranslateViewModel(private val dataModel: IDataModel) : ViewModel() {
     val originLang = MutableLiveData<Language>()
     val targetLang = MutableLiveData<Language>()
     var originText: String = ""
+
+    @Inject
+    lateinit var dataModel: IDataModel
 
     private var handler: Handler
     private var disposable: Disposable? = null
@@ -29,6 +34,8 @@ class TranslateViewModel(private val dataModel: IDataModel) : ViewModel() {
     private val translateDirectionProvider: TranslateDirectionProvider
 
     init {
+        TranslatorApp.instance.appComponent.inject(this)
+
         translatedText.value = ""
         progress.value = false
         failed.value = false

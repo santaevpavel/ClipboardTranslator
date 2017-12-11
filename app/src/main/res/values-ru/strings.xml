@@ -41,4 +41,9 @@
     <string name="translate_edit_text_hint">Введите текст</string>
     <string name="settings_item_build_title">Версия приложения</string>
     <string name="action_swipe_lang">Поменять местами языки</string>
+    <string name="settings_item_notification_delay_five">Через 5 секунд</string>
+    <string name="settings_item_notification_delay_none">Никогда</string>
+    <string name="settings_item_notification_delay_ten">Через 10 секунд</string>
+    <string name="settings_item_notification_delay_twenty">Через 20 секунд</string>
+    <string name="settings_item_notif_delay_title">Скрывать уведомление</string>
 </resources>

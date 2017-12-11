@@ -25,51 +25,61 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <android.support.v7.widget.AppCompatTextView
-                style="@style/TextSectionStyle"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="bottom"
-                android:text="@string/settings_section_general"
-                android:textColor="@color/colorAccent"
-                app:textAllCaps="true" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <include
-                android:id="@+id/item_notif"
-                layout="@layout/settings_simple_item_layout" />
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/TextSectionStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="bottom"
+                    android:text="@string/settings_section_general"
+                    android:textColor="@color/colorAccent"
+                    app:textAllCaps="true" />
 
-            <include
-                android:id="@+id/item_notif_copy_button"
-                layout="@layout/settings_simple_item_layout" />
+                <include
+                    android:id="@+id/item_notif"
+                    layout="@layout/settings_simple_item_layout" />
 
-            <android.support.v7.widget.AppCompatTextView
-                style="@style/TextSectionStyle"
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="bottom"
-                android:text="@string/settings_section_other"
-                android:textColor="@color/colorAccent"
-                app:textAllCaps="true" />
+                <include
+                    android:id="@+id/item_notif_copy_button"
+                    layout="@layout/settings_simple_item_layout" />
 
-            <include
-                android:id="@+id/item_feedback"
-                layout="@layout/settings_simple_item_layout" />
+                <include
+                    android:id="@+id/item_notif_delay_button"
+                    layout="@layout/settings_simple_item_layout" />
 
-            <include
-                android:id="@+id/item_rate"
-                layout="@layout/settings_simple_item_layout" />
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/TextSectionStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="bottom"
+                    android:text="@string/settings_section_other"
+                    android:textColor="@color/colorAccent"
+                    app:textAllCaps="true" />
 
-            <include
-                android:id="@+id/item_build_version"
-                layout="@layout/settings_simple_item_layout" />
+                <include
+                    android:id="@+id/item_feedback"
+                    layout="@layout/settings_simple_item_layout" />
 
-        </LinearLayout>
+                <include
+                    android:id="@+id/item_rate"
+                    layout="@layout/settings_simple_item_layout" />
+
+                <include
+                    android:id="@+id/item_build_version"
+                    layout="@layout/settings_simple_item_layout" />
+
+            </LinearLayout>
+
+        </ScrollView>
     </LinearLayout>
 </layout>

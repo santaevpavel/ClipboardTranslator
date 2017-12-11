@@ -48,6 +48,7 @@ object AnalyticsConstants {
     const val EVENT_ID_NAME_CLICK_DELETE_ALL_HISTORY = "click_delete_all_history"
 
     const val EVENT_ID_NAME_CLICK_SETTINGS_NOTIFICATION_TYPE = "click_settings_notification_type"
+    const val EVENT_ID_NAME_CLICK_SETTINGS_NOTIFICATION_CLEAR_DELAY = "click_settings_notification_clear_delay"
     const val EVENT_ID_NAME_CLICK_SETTINGS_COPY_BUTTON = "click_settings_copy_button"
     const val EVENT_ID_NAME_CLICK_SETTINGS_FEEDBACK = "click_settings_feedback"
     const val EVENT_ID_NAME_CLICK_SETTINGS_RATE = "click_settings_copy_rate"

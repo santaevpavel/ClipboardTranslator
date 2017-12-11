@@ -14,7 +14,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
 import ru.santaev.clipboardtranslator.R
-import ru.santaev.clipboardtranslator.TranslatorApp
 import ru.santaev.clipboardtranslator.databinding.FragmentTranslateBinding
 import ru.santaev.clipboardtranslator.db.entity.Language
 import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider
@@ -47,8 +46,7 @@ class TranslateFragment : Fragment() {
         analytics = Analytics(activity)
         translateDirectionProvider = TranslateDirectionProvider()
 
-        val factory = ViewModelFactory(TranslatorApp.instance.dataModel)
-        viewModel = ViewModelProviders.of(this, factory).get(TranslateViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(TranslateViewModel::class.java)
         observeModel()
 
         activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
