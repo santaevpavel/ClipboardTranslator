@@ -1,4 +1,4 @@
-package ru.santaev.clipboardtranslator.service.uitl;
+package ru.santaev.clipboardtranslator.service.util;
 
 
 import android.content.ClipData;

@@ -13,7 +13,7 @@ import java.util.List;
 
 import ru.santaev.clipboardtranslator.TranslatorApp;
 import ru.santaev.clipboardtranslator.db.entity.Language;
-import ru.santaev.clipboardtranslator.service.uitl.ITranslationSettingsProvider;
+import ru.santaev.clipboardtranslator.service.util.ITranslationSettingsProvider;
 
 public class AppPreference implements ITranslationSettingsProvider, ISettings {
 
