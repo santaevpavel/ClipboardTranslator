@@ -16,6 +16,7 @@ import ru.santaev.clipboardtranslator.ui.settings.SettingsItem
 import ru.santaev.clipboardtranslator.util.Analytics
 import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_SETTINGS_COPY_BUTTON
 import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_SETTINGS_FEEDBACK
+import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_SETTINGS_NOTIFICATION_CLEAR_DELAY
 import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_SETTINGS_NOTIFICATION_TYPE
 import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_SETTINGS_RATE
 import ru.santaev.clipboardtranslator.util.settings.AppPreference
@@ -28,6 +29,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
 
     private lateinit var settingsItemNotificationType: ListSettingsItem
+    private lateinit var settingsItemNotificationClearDelay: ListSettingsItem
     private lateinit var settingsItemNotificationCopyButton: ListSettingsItem
     private lateinit var settingsItemFeedback: SettingsItem
     private lateinit var settingsItemRate: SettingsItem
@@ -69,6 +71,17 @@ class SettingsActivity : AppCompatActivity() {
         binding.itemNotif?.root?.setOnClickListener { v ->
             analytics.logClickEvent(EVENT_ID_NAME_CLICK_SETTINGS_NOTIFICATION_TYPE)
             settingsItemNotificationType.onClick()
+        }
+
+        // Notification clear delay
+        settingsItemNotificationClearDelay = ListSettingsItem(this, R.string.settings_item_notif_delay_title,
+                R.array.settings_item_notification_clear_delay_text, R.array.settings_item_notification_clear_delay_value,
+                ListSettingsItem.ISettingsPropertySetter { settings.notificationClearDelay = it },
+                ListSettingsItem.ISettingsPropertyGetter { settings.notificationClearDelay })
+        binding.itemNotifDelayButton?.item = settingsItemNotificationClearDelay
+        binding.itemNotifDelayButton?.root?.setOnClickListener { v ->
+            analytics.logClickEvent(EVENT_ID_NAME_CLICK_SETTINGS_NOTIFICATION_CLEAR_DELAY)
+            settingsItemNotificationClearDelay.onClick()
         }
 
         // Copy button

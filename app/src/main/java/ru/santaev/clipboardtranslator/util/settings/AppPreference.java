@@ -26,6 +26,7 @@ public class AppPreference implements ITranslationSettingsProvider, ISettings {
     public static final String KEY_LAST_USER_LANGUAGES = "KEY_LAST_USER_LANGUAGES";
     public static final String KEY_NOTIFICATION_TYPE = "KEY_NOTIFICATION_TYPE";
     public static final String KEY_NOTIFICATION_BTN = "KEY_NOTIFICATION_BTN";
+    public static final String KEY_NOTIFICATION_CLEAR_DELAY = "KEY_NOTIFICATION_CLEAR_DELAY";
 
     private SharedPreferences sharedPreferences;
 
@@ -122,6 +123,18 @@ public class AppPreference implements ITranslationSettingsProvider, ISettings {
     public void setNotificationButtonEnabled(boolean enabled) {
         sharedPreferences.edit()
                 .putBoolean(KEY_NOTIFICATION_BTN, enabled)
+                .apply();
+    }
+
+    @Override
+    public int getNotificationClearDelay() {
+        return sharedPreferences.getInt(KEY_NOTIFICATION_CLEAR_DELAY, ISettings.NOTIFICATION_DELAY_NONE);
+    }
+
+    @Override
+    public void setNotificationClearDelay(int delay) {
+        sharedPreferences.edit()
+                .putInt(KEY_NOTIFICATION_CLEAR_DELAY, delay)
                 .apply();
     }
 }

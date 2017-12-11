@@ -23,8 +23,13 @@
     <string name="settings_activity_title">Settings</string>
 
     <string name="settings_item_notif_title">Translate notification</string>
+    <string name="settings_item_notif_delay_title">Hide notification</string>
     <string name="settings_item_notification_type_push">Status bar</string>
     <string name="settings_item_notification_type_toast">Toast notification</string>
+    <string name="settings_item_notification_delay_none">Never</string>
+    <string name="settings_item_notification_delay_five">After 5 seconds</string>
+    <string name="settings_item_notification_delay_ten">After 10 seconds</string>
+    <string name="settings_item_notification_delay_twenty">After 20 seconds</string>
     <string name="settings_item_notif_btn_title">Copy button in notification</string>
     <string name="settings_item_notification_button_enabled">Enable</string>
     <string name="settings_item_notification_button_disabled">Disable</string>

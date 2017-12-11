@@ -6,5 +6,5 @@ import android.content.ClipDescription;
 
 public interface IClipboardFilter {
 
-    boolean filter(ClipData.Item item, ClipDescription clipDescription);
+    boolean apply(ClipData.Item item, ClipDescription clipDescription);
 }
