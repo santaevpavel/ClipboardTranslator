@@ -13,8 +13,8 @@ android {
         applicationId "com.santaev.myclipboard"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 16
-        versionName "2.2"
+        versionCode 17
+        versionName "2.3"
         testInstrumentationRunner "ru.santaev.clipboardtranslator.MockTestRunner"
 
         buildConfigField "String", "YANDEX_TRANSLATE_API_KEY", "\"" + API_KEY + "\""
