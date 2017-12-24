@@ -87,6 +87,10 @@ class TranslateViewModel : ViewModel() {
         val lang = targetLang.value
         targetLang.value = originLang.value
         originLang.value = lang
+
+        appPreference.originLang = originLang.value
+        appPreference.targetLang = targetLang.value
+
         translate()
     }
 
