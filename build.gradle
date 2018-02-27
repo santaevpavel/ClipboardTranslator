@@ -9,6 +9,7 @@ buildscript {
         maven {
             url 'https://maven.fabric.io/public'
         }
+        google()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$android_plugin_version"
