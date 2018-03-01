@@ -13,6 +13,9 @@ import ru.santaev.clipboardtranslator.model.DataModel
 import ru.santaev.clipboardtranslator.model.HistoryDataModel
 import ru.santaev.clipboardtranslator.model.IDataModel
 import ru.santaev.clipboardtranslator.model.IHistoryDataModel
+import ru.santaev.clipboardtranslator.model.repository.ILanguageRepository
+import ru.santaev.clipboardtranslator.model.repository.LanguageRepository
+import ru.santaev.clipboardtranslator.model.repository.database.IAppDatabase
 import javax.inject.Singleton
 
 
@@ -32,19 +35,29 @@ class AppModule(private val appContext: Context, private val mockApiService: Boo
 
     @Provides
     @Singleton
-    fun provideDataModel(apiService: IApiService, appDatabase: AppDatabase): IDataModel {
-        return DataModel(apiService, appDatabase)
+    fun provideDataModel(
+            apiService: IApiService,
+            appDatabase: IAppDatabase,
+            languageRepository: ILanguageRepository
+    ): IDataModel {
+        return DataModel(apiService, appDatabase, languageRepository)
     }
 
     @Provides
     @Singleton
-    fun provideHistoryDataModel(appDatabase: AppDatabase): IHistoryDataModel {
-        return HistoryDataModel(appDatabase.translationDao)
+    fun provideHistoryDataModel(appDatabase: IAppDatabase): IHistoryDataModel {
+        return HistoryDataModel(appDatabase.getTranslationDao())
     }
 
     @Provides
     @Singleton
-    fun provideDatabase(): AppDatabase {
+    fun provideLanguageRepository(appDatabase: IAppDatabase, apiService: IApiService): ILanguageRepository {
+        return LanguageRepository(appDatabase.getLanguageDao(), apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDatabase(): IAppDatabase {
         return Room.databaseBuilder(
                 TranslatorApp.appContext,
                 AppDatabase::class.java,

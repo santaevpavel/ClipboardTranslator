@@ -13,7 +13,7 @@ import ru.santaev.clipboardtranslator.db.entity.Language;
 import ru.santaev.clipboardtranslator.db.entity.LanguageContract;
 
 @Dao
-public interface LanguageDao {
+public interface ILanguageDao {
 
     @Query("SELECT * FROM " + LanguageContract.TABLE_NAME + " WHERE id=:id")
     Single<Language> getLanguage(long id);

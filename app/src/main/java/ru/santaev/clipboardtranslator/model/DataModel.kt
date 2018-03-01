@@ -6,21 +6,21 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import ru.santaev.clipboardtranslator.api.IApiService
 import ru.santaev.clipboardtranslator.api.TranslateRequest
-import ru.santaev.clipboardtranslator.db.AppDatabase
 import ru.santaev.clipboardtranslator.db.entity.Language
 import ru.santaev.clipboardtranslator.db.entity.Translation
-import ru.santaev.clipboardtranslator.model.repository.LanguageRepository
+import ru.santaev.clipboardtranslator.model.repository.ILanguageRepository
+import ru.santaev.clipboardtranslator.model.repository.database.IAppDatabase
 
 class DataModel(
         private val apiService: IApiService,
-        private var appDatabase: AppDatabase
+        private val appDatabase: IAppDatabase,
+        private val languageDao: ILanguageRepository
 ) : IDataModel {
 
-    private val languageRepository: LanguageRepository = LanguageRepository(appDatabase, apiService)
     private var lastTranslation: Translation? = null
 
     override val languages: Flowable<List<Language>>
-        get() = languageRepository.getLanguages()
+        get() = languageDao.getLanguages()
 
     override fun translate(originLang: Language, targetLang: Language,
                            originText: String): Single<IDataModel.TranslateResponse> {
@@ -45,7 +45,7 @@ class DataModel(
         lastTranslation?.let {
             if (finalOriginText.contains(it.textSource)) {
                 val savedTranslation = appDatabase
-                        .translationDao?.getTranslationSync(it.id)
+                        .getTranslationDao().getTranslationSync(it.id)
                 if (savedTranslation != null) {
                     newTranslation.id = it.id
                 }
@@ -53,7 +53,7 @@ class DataModel(
         }
         lastTranslation = newTranslation
 
-        val id = appDatabase.translationDao?.insert(lastTranslation)
-        id?.let { lastTranslation?.id = it }
+        val id = appDatabase.getTranslationDao().insert(lastTranslation)
+        id.let { lastTranslation?.id = it }
     }
 }

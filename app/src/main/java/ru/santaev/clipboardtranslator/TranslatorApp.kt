@@ -28,7 +28,8 @@ open class TranslatorApp : Application() {
 
     companion object {
 
-        @JvmStatic lateinit var instance: TranslatorApp
+        @JvmStatic
+        lateinit var instance: TranslatorApp
             private set
 
         val appContext: Context

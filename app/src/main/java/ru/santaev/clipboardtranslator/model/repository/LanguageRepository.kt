@@ -4,19 +4,17 @@ import io.reactivex.Flowable
 import io.reactivex.schedulers.Schedulers
 import ru.santaev.clipboardtranslator.api.IApiService
 import ru.santaev.clipboardtranslator.api.LanguagesResponse
-import ru.santaev.clipboardtranslator.db.AppDatabase
-import ru.santaev.clipboardtranslator.db.dao.LanguageDao
+import ru.santaev.clipboardtranslator.db.dao.ILanguageDao
 import ru.santaev.clipboardtranslator.db.entity.Language
 
 class LanguageRepository(
-        appDatabase: AppDatabase,
+        private val languageDao: ILanguageDao,
         private val apiService: IApiService
-) {
+) : ILanguageRepository {
 
     private var languages: Flowable<List<Language>>? = null
-    private val languageDao: LanguageDao = appDatabase.languageDao
 
-    fun getLanguages(): Flowable<List<Language>> {
+    override fun getLanguages(): Flowable<List<Language>> {
         loadLanguages()
 
         languages.let {
