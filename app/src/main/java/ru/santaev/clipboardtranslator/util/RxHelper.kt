@@ -1,5 +1,6 @@
 package ru.santaev.clipboardtranslator.util
 
+import io.reactivex.CompletableTransformer
 import io.reactivex.FlowableTransformer
 import io.reactivex.ObservableTransformer
 import io.reactivex.SingleTransformer
@@ -25,6 +26,13 @@ object RxHelper {
 
     fun <T> getSingleTransformer(): SingleTransformer<T, T> {
         return SingleTransformer { upstream ->
+            upstream.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+        }
+    }
+
+    fun getCompletableTransformer(): CompletableTransformer {
+        return CompletableTransformer { upstream ->
             upstream.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
         }

@@ -25,16 +25,25 @@ class HistoryViewModel : ViewModel() {
                 .subscribe({ (history as MutableLiveData).setValue(it) })
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun onClickedItem(translation: TranslationDto) {
     }
 
     fun removeItem(translation: TranslationDto) {
-        //dataModel.removeTranslation(translation)
-        //        .subscribe()
+        UseCaseFactory
+                .instance
+                .getDeleteHistoryUseCase()
+                .delete(translation)
+                .compose(RxHelper.getCompletableTransformer())
+                .subscribe()
     }
 
     fun clearHistory() {
-        //dataModel.deleteAll()
-        //        .subscribe()
+        UseCaseFactory
+                .instance
+                .getDeleteHistoryUseCase()
+                .deleteAll()
+                .compose(RxHelper.getCompletableTransformer())
+                .subscribe()
     }
 }
