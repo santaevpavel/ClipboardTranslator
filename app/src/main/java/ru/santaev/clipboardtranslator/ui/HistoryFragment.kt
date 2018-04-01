@@ -32,9 +32,9 @@ class HistoryFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater!!, R.layout.fragment_history, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
         adapter = HistoryAdapter(null)
         binding.historyList.adapter = adapter
         binding.historyList.layoutManager = LinearLayoutManager(activity)
@@ -82,11 +82,9 @@ class HistoryFragment : Fragment() {
             if (translations != null && !translations.isEmpty()) {
                 adapter.setTranslations(translations)
                 adapter.notifyDataSetChanged()
-                binding.historyList.visibility = View.VISIBLE
-                binding.emptyLayout.visibility = View.INVISIBLE
+                binding.isEmpty = false
             } else {
-                binding.historyList.visibility = View.INVISIBLE
-                binding.emptyLayout.visibility = View.VISIBLE
+                binding.isEmpty = true
             }
         })
     }

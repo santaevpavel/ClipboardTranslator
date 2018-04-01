@@ -3,6 +3,7 @@
 
     <dimen name="card_view_elevation">1.5dp</dimen>
 
+    <dimen name="text_size_extra_large">24sp</dimen>
     <dimen name="text_size_large">18sp</dimen>
     <dimen name="text_size_normal">16sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
