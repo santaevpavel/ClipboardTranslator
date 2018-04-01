@@ -19,7 +19,8 @@ class UseCaseFactory(
                 sourceLanguage = sourceLanguage,
                 targetLanguage = targetLanguage,
                 text = text,
-                apiService = gatewayFactory.getApiService()
+                apiService = gatewayFactory.getApiService(),
+                translationRepository = repositoryFactory.getTranslationRepository()
         )
     }
 
