@@ -5,22 +5,22 @@ import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.example.santaev.domain.dto.TranslationDto
 import ru.santaev.clipboardtranslator.R
 import ru.santaev.clipboardtranslator.databinding.HistoryItemLayoutBinding
-import ru.santaev.clipboardtranslator.db.entity.Translation
 import java.util.*
 
-class HistoryAdapter(translations: List<Translation>?) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
+class HistoryAdapter(translations: List<TranslationDto>?) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
     private var translations: MutableList<TranslateView>? = null
-    var listener: ((Translation) -> Unit)? = null
+    var listener: ((TranslationDto) -> Unit)? = null
 
     init {
         setHasStableIds(true)
         setTranslations(translations)
     }
 
-    fun setTranslations(translations: List<Translation>?) {
+    fun setTranslations(translations: List<TranslationDto>?) {
         this.translations = ArrayList()
         if (translations == null) {
             return
@@ -30,7 +30,7 @@ class HistoryAdapter(translations: List<Translation>?) : RecyclerView.Adapter<Hi
                 .forEach { this.translations?.add(it) }
     }
 
-    fun getTranslation(pos: Int): Translation {
+    fun getTranslation(pos: Int): TranslationDto {
         return translations!![pos].translation
     }
 
@@ -48,8 +48,8 @@ class HistoryAdapter(translations: List<Translation>?) : RecyclerView.Adapter<Hi
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         val model = translations!![position]
-        holder.binding.originText.text = model.translation.textSource
-        holder.binding.targetText.text = model.translation.textTarget
+        holder.binding.originText.text = model.translation.sourceText
+        holder.binding.targetText.text = model.translation.targetText
         holder.binding.lang.text = buildLangText(model.translation)
 
         holder.binding.isExpanded = model.isExpanded
@@ -67,14 +67,15 @@ class HistoryAdapter(translations: List<Translation>?) : RecyclerView.Adapter<Hi
         return if (translations == null) 0 else translations!!.size
     }
 
-    private fun buildLangText(translation: Translation): String {
-        return translation.langSource.toUpperCase() +
-                "-" + translation.langTarget.toUpperCase()
+    private fun buildLangText(translation: TranslationDto): String {
+        return translation.run {
+            "${sourceLangCode.toUpperCase()}-${targetLangCode.toUpperCase()}"
+        }
     }
 
     inner class HistoryViewHolder(var binding: HistoryItemLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
-    internal inner class TranslateView(var translation: Translation) {
+    internal inner class TranslateView(var translation: TranslationDto) {
         var isExpanded: Boolean = false
 
         init {

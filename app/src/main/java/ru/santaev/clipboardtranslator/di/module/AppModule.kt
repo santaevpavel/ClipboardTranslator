@@ -2,19 +2,13 @@ package ru.santaev.clipboardtranslator.di.module
 
 import android.arch.persistence.room.Room
 import android.content.Context
+import com.example.santaev.domain.api.IApiService
 import dagger.Module
 import dagger.Provides
 import ru.santaev.clipboardtranslator.TranslatorApp
 import ru.santaev.clipboardtranslator.api.ApiService
-import ru.santaev.clipboardtranslator.api.IApiService
 import ru.santaev.clipboardtranslator.api.mock.MockApiService
 import ru.santaev.clipboardtranslator.db.AppDatabase
-import ru.santaev.clipboardtranslator.model.DataModel
-import ru.santaev.clipboardtranslator.model.HistoryDataModel
-import ru.santaev.clipboardtranslator.model.IDataModel
-import ru.santaev.clipboardtranslator.model.IHistoryDataModel
-import ru.santaev.clipboardtranslator.model.repository.ILanguageRepository
-import ru.santaev.clipboardtranslator.model.repository.LanguageRepository
 import ru.santaev.clipboardtranslator.model.repository.database.IAppDatabase
 import javax.inject.Singleton
 
@@ -33,20 +27,21 @@ class AppModule(private val appContext: Context, private val mockApiService: Boo
         return if (mockApiService) MockApiService() else ApiService()
     }
 
+    /*
     @Provides
     @Singleton
     fun provideDataModel(
             apiService: IApiService,
-            appDatabase: IAppDatabase,
+            translationRepository: ITranslationRepository,
             languageRepository: ILanguageRepository
     ): IDataModel {
-        return DataModel(apiService, appDatabase, languageRepository)
+        return DataModel(apiService, translationRepository, languageRepository)
     }
 
     @Provides
     @Singleton
-    fun provideHistoryDataModel(appDatabase: IAppDatabase): IHistoryDataModel {
-        return HistoryDataModel(appDatabase.getTranslationDao())
+    fun provideHistoryDataModel(translationRepository: ITranslationRepository): IHistoryDataModel {
+        return HistoryDataModel(translationRepository)
     }
 
     @Provides
@@ -55,6 +50,12 @@ class AppModule(private val appContext: Context, private val mockApiService: Boo
         return LanguageRepository(appDatabase.getLanguageDao(), apiService)
     }
 
+    @Provides
+    @Singleton
+    fun provideTranslationRepository(appDatabase: IAppDatabase): ITranslationRepository {
+        return TranslationRepository(appDatabase.getTranslationDao())
+    }
+*/
     @Provides
     @Singleton
     fun provideDatabase(): IAppDatabase {

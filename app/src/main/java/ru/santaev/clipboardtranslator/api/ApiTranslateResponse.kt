@@ -4,7 +4,8 @@ package ru.santaev.clipboardtranslator.api
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-class TranslateResponse {
+
+class ApiTranslateResponse {
 
     @SerializedName("code")
     var code: Int = 0

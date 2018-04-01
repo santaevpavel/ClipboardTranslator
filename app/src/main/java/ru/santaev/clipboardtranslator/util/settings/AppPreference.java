@@ -3,7 +3,9 @@ package ru.santaev.clipboardtranslator.util.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 
+import com.example.santaev.domain.dto.LanguageDto;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -42,14 +44,14 @@ public class AppPreference implements ITranslationSettingsProvider, ISettings {
         this.sharedPreferences = sharedPreferences;
     }
 
-    public void setOriginLang(Language lang){
+    public void setOriginLang(LanguageDto lang) {
         sharedPreferences.edit()
                 .putString(KEY_ORIGIN_LANG_NAME, lang.getName())
                 .putString(KEY_ORIGIN_LANG_CODE, lang.getCode())
                 .apply();
     }
 
-    public void setTargetLang(Language lang){
+    public void setTargetLang(LanguageDto lang) {
         sharedPreferences.edit()
                 .putString(KEY_TARGET_LANG_NAME, lang.getName())
                 .putString(KEY_TARGET_LANG_CODE, lang.getCode())
@@ -79,25 +81,27 @@ public class AppPreference implements ITranslationSettingsProvider, ISettings {
     }
 
 
+    @NonNull
     @Override
-    public Language getOriginLang() {
+    public LanguageDto getOriginLang() {
         String code = sharedPreferences.getString(KEY_ORIGIN_LANG_CODE, null);
         String name = sharedPreferences.getString(KEY_ORIGIN_LANG_NAME, null);
         if (code != null && name != null) {
-            return new Language(code, name);
+            return new LanguageDto(0, code, name);
         } else {
-            return new Language("ru", "Русский");
+            return new LanguageDto(0, "Русский", "ru");
         }
     }
 
+    @NonNull
     @Override
-    public Language getTargetLang() {
+    public LanguageDto getTargetLang() {
         String code = sharedPreferences.getString(KEY_TARGET_LANG_CODE, null);
         String name = sharedPreferences.getString(KEY_TARGET_LANG_NAME, null);
         if (code != null && name != null) {
-            return new Language(code, name);
+            return new LanguageDto(0, code, name);
         } else {
-            return new Language("en", "Английский");
+            return new LanguageDto(0, "Английский", "en");
         }
     }
 

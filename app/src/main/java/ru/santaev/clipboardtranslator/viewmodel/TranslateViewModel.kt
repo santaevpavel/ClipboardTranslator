@@ -3,49 +3,36 @@ package ru.santaev.clipboardtranslator.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.os.Handler
+import com.example.santaev.domain.dto.LanguageDto
+import com.example.santaev.domain.factory.UseCaseFactory
+import com.example.santaev.domain.usecase.TranslateUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import ru.santaev.clipboardtranslator.TranslatorApp
-import ru.santaev.clipboardtranslator.db.entity.Language
-import ru.santaev.clipboardtranslator.model.IDataModel
-import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider
+import io.reactivex.schedulers.Schedulers
 import ru.santaev.clipboardtranslator.util.settings.AppPreference
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 class TranslateViewModel : ViewModel() {
 
     val translatedText = MutableLiveData<String>()
     val progress = MutableLiveData<Boolean>()
     val failed = MutableLiveData<Boolean>()
-    val originLang = MutableLiveData<Language>()
-    val targetLang = MutableLiveData<Language>()
+    val sourceLanguage = MutableLiveData<LanguageDto>()
+    val targetLanguage = MutableLiveData<LanguageDto>()
     var originText: String = ""
 
-    @Inject
-    lateinit var dataModel: IDataModel
-
-    private var handler: Handler
     private var disposable: Disposable? = null
-    private var runTranslate: Runnable? = null
 
     private val appPreference: AppPreference
-    private val translateDirectionProvider: TranslateDirectionProvider
 
     init {
-        TranslatorApp.instance.appComponent.inject(this)
-
         translatedText.value = ""
         progress.value = false
         failed.value = false
         appPreference = AppPreference.getInstance()
-        translateDirectionProvider = TranslateDirectionProvider()
 
-        originLang.value = appPreference.originLang
-        targetLang.value = appPreference.targetLang
-
-        handler = Handler()
+        sourceLanguage.value = appPreference.originLang
+        targetLanguage.value = appPreference.targetLang
     }
 
     fun onOriginTextChanged(text: String) {
@@ -53,30 +40,26 @@ class TranslateViewModel : ViewModel() {
         translate()
     }
 
-    fun onOriginLangSelected(lang: Language): Boolean {
-        val oldLang = originLang.value
-        originLang.value = lang
+    fun onOriginLangSelected(lang: LanguageDto): Boolean {
+        val oldLang = sourceLanguage.value
+        sourceLanguage.value = lang
         appPreference.originLang = lang
 
-        val support = translateDirectionProvider.isSupportTranslate(lang, targetLang.value)
-
-        if (lang !== oldLang && support) {
+        if (lang !== oldLang) {
             translate()
         }
-        return support
+        return true
     }
 
-    fun onTargetLangSelected(lang: Language): Boolean {
-        val oldLang = targetLang.value
-        targetLang.value = lang
+    fun onTargetLangSelected(lang: LanguageDto): Boolean {
+        val oldLang = targetLanguage.value
+        targetLanguage.value = lang
         appPreference.targetLang = lang
 
-        val support = translateDirectionProvider.isSupportTranslate(originLang.value, lang)
-
-        if (lang !== oldLang && support) {
+        if (lang !== oldLang) {
             translate()
         }
-        return support
+        return true
     }
 
     fun onClickRetry() {
@@ -84,55 +67,62 @@ class TranslateViewModel : ViewModel() {
     }
 
     fun onClickSwipeLanguages() {
-        val lang = targetLang.value
-        targetLang.value = originLang.value
-        originLang.value = lang
+        val lang = targetLanguage.value
+        targetLanguage.value = sourceLanguage.value
+        sourceLanguage.value = lang
 
-        appPreference.originLang = originLang.value
-        appPreference.targetLang = targetLang.value
+        appPreference.originLang = sourceLanguage.value
+        appPreference.targetLang = targetLanguage.value
 
         translate()
     }
 
     private fun translate() {
-        if (originText.trim { it <= ' ' }.isEmpty()) {
-            return
-        }
+        if (originText.trim { it <= ' ' }.isEmpty()) return
+
+        val sourceLang = sourceLanguage.value ?: return
+        val targetLang = targetLanguage.value ?: return
+
+        progress.value = true
+        failed.value = false
+
         disposable?.dispose()
 
-        if (runTranslate != null) {
-            handler.removeCallbacks(runTranslate)
-        }
+        UseCaseFactory
+                .instance
+                .getTranslateFactory(
+                        sourceLang,
+                        targetLang,
+                        originText
+                )
+                .execute()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { response -> onTextTranslated(response) },
+                        { onTranslateFailed() }
+                )
+    }
 
-        runTranslate = Runnable {
-            progress.value = true
-            failed.value = false
-
-            originLang.value?.let { originLang ->
-                targetLang.value?.let { targetLang ->
-                    disposable = dataModel.translate(originLang, targetLang, originText)
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({ translateResponse ->
-                                translatedText.value = translateResponse.targetText
-                                progress.value = false
-                            }) { throwable ->
-                                translatedText.value = throwable.message
-                                progress.value = false
-                                failed.value = true
-                            }
-                }
+    private fun onTextTranslated(response: TranslateUseCase.Response) {
+        when (response) {
+            is TranslateUseCase.Response.Success -> {
+                translatedText.value = response.targetText
+                progress.value = false
             }
+            is TranslateUseCase.Response.Error -> onTranslateFailed()
         }
+    }
 
-        handler.postDelayed(runTranslate, TRANSLATE_DELAY_MILLIS)
+    private fun onTranslateFailed() {
+        translatedText.value = "Error"
+        progress.value = false
+        failed.value = true
     }
 
     override fun onCleared() {
         super.onCleared()
         disposable?.dispose()
-        runTranslate?.let {
-            handler.removeCallbacks(runTranslate)
-        }
     }
 
     companion object {

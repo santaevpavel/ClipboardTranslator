@@ -1,9 +1,9 @@
 package ru.santaev.clipboardtranslator.api
 
-
 import com.google.gson.annotations.SerializedName
 
-class LanguagesResponse {
+
+class ApiLanguagesResponse {
 
     @SerializedName("dirs")
     var directions: List<String>? = null

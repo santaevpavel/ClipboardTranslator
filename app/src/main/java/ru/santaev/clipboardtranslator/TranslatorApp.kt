@@ -3,6 +3,7 @@ package ru.santaev.clipboardtranslator
 
 import android.app.Application
 import android.content.Context
+import com.example.santaev.domain.factory.IGatewayFactory
 import ru.santaev.clipboardtranslator.di.AppComponent
 import ru.santaev.clipboardtranslator.di.DaggerAppComponent
 import ru.santaev.clipboardtranslator.di.module.AppModule
@@ -18,6 +19,12 @@ open class TranslatorApp : Application() {
         instance = this
 
         appComponent = buildComponent()
+
+        IGatewayFactory.setGatewayFactory(GatewayFactory(
+                appComponent.getDatabase().getLanguageDao(),
+                appComponent.getDatabase().getTranslationDao(),
+                appComponent.getApiService()
+        ))
     }
 
     protected open fun buildComponent(): AppComponent {

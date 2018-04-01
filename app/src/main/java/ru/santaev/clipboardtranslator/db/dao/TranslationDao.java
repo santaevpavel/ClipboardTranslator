@@ -14,7 +14,7 @@ import ru.santaev.clipboardtranslator.db.entity.Translation;
 import ru.santaev.clipboardtranslator.db.entity.TranslationContract;
 
 @Dao
-public interface ITranslationDao {
+public interface TranslationDao {
 
     @Query("SELECT * FROM " + TranslationContract.TABLE_NAME + " WHERE id=:id")
     Translation getTranslationSync(long id);
