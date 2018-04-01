@@ -6,16 +6,11 @@ import com.example.santaev.domain.repository.ITranslationRepository
 import com.example.santaev.domain.usecase.TranslateUseCase
 import io.reactivex.Single
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
 import ru.santaev.clipboardtranslator.domain.MockApiService
 
 class TranslateUseCaseTest {
-
-    @Before
-    fun setUp() {
-    }
 
     @Test
     fun execute() {

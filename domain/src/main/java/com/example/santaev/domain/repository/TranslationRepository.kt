@@ -30,7 +30,7 @@ class TranslationRepository(
                 } else {
                     translation
                 }
-                translationDao.insert(translation).also { id ->
+                translationDao.insert(toUpdate).also { id ->
                     this.lastTranslation = toUpdate.copy(id = id)
                 }
             })
@@ -57,7 +57,7 @@ class TranslationRepository(
         return lastTranslation?.let { last ->
             last.sourceLangCode == translation.sourceLangCode
                     && last.targetLangCode == translation.targetLangCode
-                    && translation.sourceText.contains(translation.sourceText)
+                    && translation.sourceText.contains(last.sourceText)
         } ?: false
     }
 }
