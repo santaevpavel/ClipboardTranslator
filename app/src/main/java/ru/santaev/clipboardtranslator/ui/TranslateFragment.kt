@@ -107,9 +107,9 @@ class TranslateFragment : Fragment() {
         return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.translate_fragment_menu, menu)
+        inflater.inflate(R.menu.translate_fragment_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

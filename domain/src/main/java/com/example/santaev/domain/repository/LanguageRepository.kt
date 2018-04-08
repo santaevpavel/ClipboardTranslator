@@ -7,7 +7,7 @@ import com.example.santaev.domain.dto.LanguageDto
 import io.reactivex.Flowable
 import io.reactivex.schedulers.Schedulers
 
-class LanguageRepository(
+internal class LanguageRepository(
         private val languageDao: ILanguageDao,
         private val apiService: IApiService
 ) : ILanguageRepository {

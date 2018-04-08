@@ -7,7 +7,7 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 
 
-class TranslationRepository(
+internal class TranslationRepository(
         private val translationDao: ITranslationDao
 ) : ITranslationRepository {
 
