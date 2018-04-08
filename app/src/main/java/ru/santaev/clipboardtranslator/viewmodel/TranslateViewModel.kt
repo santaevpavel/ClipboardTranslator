@@ -7,7 +7,7 @@ import com.example.santaev.domain.dto.LanguageDto
 import com.example.santaev.domain.factory.UseCaseFactory
 import com.example.santaev.domain.usecase.TranslateUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import ru.santaev.clipboardtranslator.util.settings.AppPreference
 import java.util.concurrent.TimeUnit
@@ -20,9 +20,7 @@ class TranslateViewModel : ViewModel() {
     val sourceLanguage = MutableLiveData<LanguageDto>()
     val targetLanguage = MutableLiveData<LanguageDto>()
     var originText: String = ""
-
-    private var disposable: Disposable? = null
-
+    private var compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val appPreference: AppPreference
 
     init {
@@ -86,9 +84,9 @@ class TranslateViewModel : ViewModel() {
         progress.value = true
         failed.value = false
 
-        disposable?.dispose()
+        compositeDisposable.dispose()
 
-        UseCaseFactory
+        val disposable = UseCaseFactory
                 .instance
                 .getTranslateFactory(
                         sourceLang,
@@ -102,6 +100,7 @@ class TranslateViewModel : ViewModel() {
                         { response -> onTextTranslated(response) },
                         { onTranslateFailed() }
                 )
+        compositeDisposable.addAll(disposable)
     }
 
     private fun onTextTranslated(response: TranslateUseCase.Response) {
@@ -122,7 +121,7 @@ class TranslateViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        disposable?.dispose()
+        compositeDisposable.dispose()
     }
 
     companion object {
