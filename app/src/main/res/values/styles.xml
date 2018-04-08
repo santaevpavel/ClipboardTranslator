@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@color/textColorBlackLight</item>
+        <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
     <style name="TextSectionStyle">
