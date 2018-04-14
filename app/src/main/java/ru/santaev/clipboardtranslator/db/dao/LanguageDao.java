@@ -14,9 +14,6 @@ import ru.santaev.clipboardtranslator.db.entity.LanguageContract;
 @Dao
 public interface LanguageDao {
 
-   /* @Query("SELECT * FROM " + LanguageContract.TABLE_NAME + " WHERE id=:id")
-    Single<Language> getLanguage(long id);*/
-
     @Query("SELECT * FROM " + LanguageContract.TABLE_NAME + " ORDER BY " + LanguageContract.NAME + " ASC")
     Flowable<List<Language>> getLanguages();
 

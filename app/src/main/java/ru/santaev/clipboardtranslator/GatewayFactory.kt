@@ -25,7 +25,7 @@ class GatewayFactory(
             return languageDao
                     .languages
                     .map { list ->
-                        list.map { LanguageDto(it.id, it.name, it.code) }
+                        list.map { LanguageDto(it.id, it.name!!, it.code!!) }
                     }
         }
 
@@ -60,11 +60,24 @@ class GatewayFactory(
 }
 
 private fun Translation.toDto(): TranslationDto {
-    return TranslationDto(id, langSource, langTarget, textSource, textTarget)
+    return TranslationDto(
+            id,
+            emptyIfNull(langSource),
+            emptyIfNull(langTarget),
+            emptyIfNull(textSource),
+            emptyIfNull(textTarget)
+    )
 }
 
 private fun TranslationDto.toDbEntity(): Translation {
-    val translation = Translation(sourceLangCode, targetLangCode, sourceText, targetText)
+    val translation = Translation(
+            sourceLangCode,
+            targetLangCode,
+            sourceText,
+            targetText
+    )
     translation.id = id
     return translation
 }
+
+private fun emptyIfNull(string: String?): String = string ?: ""
