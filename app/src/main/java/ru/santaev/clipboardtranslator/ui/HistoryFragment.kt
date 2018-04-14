@@ -6,7 +6,6 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.*
 import ru.santaev.clipboardtranslator.R
@@ -39,19 +38,11 @@ class HistoryFragment : Fragment() {
         binding.historyList.adapter = adapter
         binding.historyList.layoutManager = LinearLayoutManager(activity)
         adapter.listener = viewModel::onClickedItem
-        val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
-                                target: RecyclerView.ViewHolder): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.layoutPosition
-                analytics.logClickEvent(EVENT_ID_NAME_CLICK_SWIPE_DELETE)
-                viewModel.removeItem(adapter.getTranslation(position))
-            }
-        }
+        val simpleItemTouchCallback = HistoryAdapter.RecyclerViewCallback(
+                onSwipedListener = { position ->
+                    analytics.logClickEvent(EVENT_ID_NAME_CLICK_SWIPE_DELETE)
+                    viewModel.removeItem(adapter.getTranslation(position))
+                })
 
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(binding.historyList)
