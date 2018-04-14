@@ -9,18 +9,21 @@ import com.example.santaev.domain.usecase.TranslateUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import ru.santaev.clipboardtranslator.util.ILoggable
+import ru.santaev.clipboardtranslator.util.RxHelper
 import ru.santaev.clipboardtranslator.util.settings.AppPreference
 import java.util.concurrent.TimeUnit
 
-class TranslateViewModel : ViewModel() {
+class TranslateViewModel : ViewModel(), ILoggable {
 
     val translatedText = MutableLiveData<String>()
     val progress = MutableLiveData<Boolean>()
     val failed = MutableLiveData<Boolean>()
-    val sourceLanguage = MutableLiveData<LanguageDto>()
-    val targetLanguage = MutableLiveData<LanguageDto>()
+    val sourceLanguage = MutableLiveData<LanguageDto?>()
+    val targetLanguage = MutableLiveData<LanguageDto?>()
     var originText: String = ""
     private var translateDisposable: Disposable? = null
+    private var languagesDisposable: Disposable? = null
     private val appPreference: AppPreference
 
     init {
@@ -29,8 +32,15 @@ class TranslateViewModel : ViewModel() {
         failed.value = false
         appPreference = AppPreference.getInstance()
 
-        sourceLanguage.value = appPreference.originLang
-        targetLanguage.value = appPreference.targetLang
+        val storedSourceLanguage = appPreference.originLang
+        val storedTargetLanguage = appPreference.targetLang
+
+        if (storedSourceLanguage == null || storedTargetLanguage == null) {
+            loadLanguages()
+        } else {
+            sourceLanguage.value = storedSourceLanguage
+            targetLanguage.value = storedTargetLanguage
+        }
     }
 
     fun onOriginTextChanged(text: String) {
@@ -43,7 +53,7 @@ class TranslateViewModel : ViewModel() {
         sourceLanguage.value = lang
         appPreference.originLang = lang
 
-        if (lang !== oldLang) {
+        if (lang != oldLang) {
             translate()
         }
         return true
@@ -54,7 +64,7 @@ class TranslateViewModel : ViewModel() {
         targetLanguage.value = lang
         appPreference.targetLang = lang
 
-        if (lang !== oldLang) {
+        if (lang != oldLang) {
             translate()
         }
         return true
@@ -73,6 +83,12 @@ class TranslateViewModel : ViewModel() {
         appPreference.targetLang = targetLanguage.value
 
         translate()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        translateDisposable?.dispose()
+        languagesDisposable?.dispose()
     }
 
     private fun translate() {
@@ -118,9 +134,29 @@ class TranslateViewModel : ViewModel() {
         failed.value = true
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        translateDisposable?.dispose()
+    private fun loadLanguages() {
+        languagesDisposable = UseCaseFactory
+                .instance
+                .getGetLanguagesUseCase()
+                .execute()
+                .filter { it.isNotEmpty() }
+                .firstOrError()
+                .compose(RxHelper.getSingleTransformer())
+                .subscribe(
+                        { languages -> setSourceAndTargetLanguages(languages) },
+                        { error -> log("Unable to load languages", error) }
+                )
+    }
+
+    private fun setSourceAndTargetLanguages(languages: List<LanguageDto>) {
+        if (languages.isNotEmpty()) {
+            val sourceLanguageDto = languages.firstOrNull { it.code == "en" } ?: languages.first()
+            val targetLanguageDto = languages.firstOrNull { it.code == "ru" } ?: languages.first()
+            sourceLanguage.value = sourceLanguageDto
+            targetLanguage.value = targetLanguageDto
+            appPreference.originLang = sourceLanguageDto
+            appPreference.targetLang = targetLanguageDto
+        }
     }
 
     companion object {

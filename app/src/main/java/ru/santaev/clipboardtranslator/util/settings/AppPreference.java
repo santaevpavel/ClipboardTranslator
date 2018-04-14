@@ -3,7 +3,7 @@ package ru.santaev.clipboardtranslator.util.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.example.santaev.domain.dto.LanguageDto;
 import com.google.gson.Gson;
@@ -81,27 +81,27 @@ public class AppPreference implements ITranslationSettingsProvider, ISettings {
     }
 
 
-    @NonNull
+    @Nullable
     @Override
     public LanguageDto getOriginLang() {
         String code = sharedPreferences.getString(KEY_ORIGIN_LANG_CODE, null);
         String name = sharedPreferences.getString(KEY_ORIGIN_LANG_NAME, null);
         if (code != null && name != null) {
-            return new LanguageDto(0, code, name);
+            return new LanguageDto(0, name, code);
         } else {
-            return new LanguageDto(0, "Русский", "ru");
+            return null;
         }
     }
 
-    @NonNull
+    @Nullable
     @Override
     public LanguageDto getTargetLang() {
         String code = sharedPreferences.getString(KEY_TARGET_LANG_CODE, null);
         String name = sharedPreferences.getString(KEY_TARGET_LANG_NAME, null);
         if (code != null && name != null) {
-            return new LanguageDto(0, code, name);
+            return new LanguageDto(0, name, code);
         } else {
-            return new LanguageDto(0, "Английский", "en");
+            return null;
         }
     }
 

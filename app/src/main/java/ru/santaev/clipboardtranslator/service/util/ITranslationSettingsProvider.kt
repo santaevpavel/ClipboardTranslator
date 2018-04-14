@@ -5,7 +5,7 @@ import com.example.santaev.domain.dto.LanguageDto
 
 interface ITranslationSettingsProvider {
 
-    var originLang: LanguageDto
+    var originLang: LanguageDto?
 
-    var targetLang: LanguageDto
+    var targetLang: LanguageDto?
 }

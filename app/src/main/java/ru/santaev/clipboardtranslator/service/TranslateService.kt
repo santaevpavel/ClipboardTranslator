@@ -15,6 +15,7 @@ import ru.santaev.clipboardtranslator.R
 import ru.santaev.clipboardtranslator.service.util.ClipboardFilter
 import ru.santaev.clipboardtranslator.service.util.IClipboardFilter
 import ru.santaev.clipboardtranslator.service.util.ITranslationSettingsProvider
+import ru.santaev.clipboardtranslator.util.ILoggable
 import ru.santaev.clipboardtranslator.util.NotificationHelper
 import ru.santaev.clipboardtranslator.util.RxHelper
 import ru.santaev.clipboardtranslator.util.settings.AppPreference
@@ -22,9 +23,10 @@ import ru.santaev.clipboardtranslator.util.settings.ISettings
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class TranslateService : Service(), ClipboardManager.OnPrimaryClipChangedListener,
-        SharedPreferences.OnSharedPreferenceChangeListener {
-
+class TranslateService : Service(),
+        ClipboardManager.OnPrimaryClipChangedListener,
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        ILoggable {
     private lateinit var clipboardManager: ClipboardManager
     private lateinit var filter: IClipboardFilter
     private lateinit var translationSettingsProvider: ITranslationSettingsProvider
@@ -91,8 +93,8 @@ class TranslateService : Service(), ClipboardManager.OnPrimaryClipChangedListene
     }
 
     private fun showAppNotification() {
-        val originLang = translationSettingsProvider.originLang.code
-        val targetLang = translationSettingsProvider.targetLang.code
+        val originLang = translationSettingsProvider.originLang?.code ?: "?"
+        val targetLang = translationSettingsProvider.targetLang?.code ?: "?"
 
         val langText = String.format(getString(R.string.translate_notification_lang_text),
                 originLang.toUpperCase(), targetLang.toUpperCase())
@@ -108,21 +110,25 @@ class TranslateService : Service(), ClipboardManager.OnPrimaryClipChangedListene
     }
 
     override fun onPrimaryClipChanged() {
-        Log.d(TAG, "onPrimaryClipChanged")
+        log("onPrimaryClipChanged")
         val clipData = clipboardManager.primaryClip
         if (clipData != null && clipData.itemCount > 0) {
             val item = clipData.getItemAt(0)
             val text = item.text
             if (text != null && filter.apply(item, clipData.description)) {
-                Log.d(TAG, "onPrimaryClipChanged text = " + text)
-                translate(text.toString())
+                log("onPrimaryClipChanged text = $text")
+                try {
+                    translate(text.toString())
+                } catch (e: IllegalStateException) {
+                    log("Error while translate", e)
+                }
             }
         }
     }
 
     private fun translate(text: String) {
-        val originLang = translationSettingsProvider.originLang
-        val targetLang = translationSettingsProvider.targetLang
+        val originLang = translationSettingsProvider.originLang ?: throw IllegalStateException("Source language is null")
+        val targetLang = translationSettingsProvider.targetLang ?: throw IllegalStateException("Target language is null")
         val id = currentNotificationId++
         val langText = String.format("%s-%s", originLang.code.toUpperCase(),
                 targetLang.code.toUpperCase())
