@@ -11,11 +11,11 @@ interface YandexApi {
     @POST("api/v1.5/tr.json/translate")
     fun translate(@Field("text") text: String,
                   @Field("lang") lang: String,
-                  @Field("key") apiKey: String): Single<TranslateResponse>
+                  @Field("key") apiKey: String): Single<ApiTranslateResponse>
 
     @GET("api/v1.5/tr.json/getLangs")
     fun getLangs(@Query("key") apiKey: String,
-                 @Query("ui") uiLang: String): Single<LanguagesResponse>
+                 @Query("ui") uiLang: String): Single<ApiLanguagesResponse>
 
     companion object {
 

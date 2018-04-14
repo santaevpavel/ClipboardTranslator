@@ -13,10 +13,9 @@ import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
+import com.example.santaev.domain.dto.LanguageDto
 import ru.santaev.clipboardtranslator.R
 import ru.santaev.clipboardtranslator.databinding.FragmentTranslateBinding
-import ru.santaev.clipboardtranslator.db.entity.Language
-import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider
 import ru.santaev.clipboardtranslator.service.TranslateService
 import ru.santaev.clipboardtranslator.util.Analytics
 import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_CLEAR_TEXT
@@ -37,14 +36,12 @@ class TranslateFragment : Fragment() {
 
     private lateinit var viewModel: TranslateViewModel
     private lateinit var binding: FragmentTranslateBinding
-    private lateinit var translateDirectionProvider: TranslateDirectionProvider
 
     private lateinit var analytics: Analytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         analytics = Analytics(activity)
-        translateDirectionProvider = TranslateDirectionProvider()
 
         viewModel = ViewModelProviders.of(this).get(TranslateViewModel::class.java)
         observeModel()
@@ -53,10 +50,10 @@ class TranslateFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater!!, R.layout.fragment_translate, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_translate, container, false)
 
         binding.originTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -107,9 +104,9 @@ class TranslateFragment : Fragment() {
         return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.translate_fragment_menu, menu)
+        inflater.inflate(R.menu.translate_fragment_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -130,8 +127,8 @@ class TranslateFragment : Fragment() {
     private fun chooseOriginLang() {
         analytics.logClickEvent(EVENT_ID_NAME_CLICK_SOURCE_LANG)
 
-        val origin = viewModel.originLang.value
-        val target = viewModel.targetLang.value
+        val origin = viewModel.sourceLanguage.value
+        val target = viewModel.targetLanguage.value
 
         if (origin != null && target != null) {
             val intent = ChooseLanguageActivity.getIntent(context, origin, target, true)
@@ -142,8 +139,8 @@ class TranslateFragment : Fragment() {
     private fun chooseTargetLang() {
         analytics.logClickEvent(EVENT_ID_NAME_CLICK_TARGET_LANG)
 
-        val origin = viewModel.originLang.value
-        val target = viewModel.targetLang.value
+        val origin = viewModel.sourceLanguage.value
+        val target = viewModel.targetLanguage.value
 
         if (origin != null && target != null) {
             val intent = ChooseLanguageActivity.getIntent(context, origin, target, false)
@@ -172,13 +169,13 @@ class TranslateFragment : Fragment() {
 
         })
 
-        viewModel.originLang.observe(this, Observer { language ->
+        viewModel.sourceLanguage.observe(this, Observer { language ->
             language?.let {
                 binding.originLangText.text = language.name
             }
         })
 
-        viewModel.targetLang.observe(this, Observer { language ->
+        viewModel.targetLanguage.observe(this, Observer { language ->
             language?.let {
                 binding.targetLangText.text = language.name
             }
@@ -201,14 +198,14 @@ class TranslateFragment : Fragment() {
         }
         when (requestCode) {
             REQUEST_CODE_ORIGIN_LANG -> {
-                val lang = (data?.getSerializableExtra(ChooseLanguageActivity.RESULT_KEY_LANG)) as? Language
+                val lang = (data?.getSerializableExtra(ChooseLanguageActivity.RESULT_KEY_LANG)) as? LanguageDto
                 lang?.let {
                     analytics.logSelectEvent(EVENT_ID_SELECT_SOURCE_LANG + lang.code, lang.name)
                     viewModel.onOriginLangSelected(lang)
                 }
             }
             REQUEST_CODE_TARGET_LANG -> {
-                val lang = data?.getSerializableExtra(ChooseLanguageActivity.RESULT_KEY_LANG) as? Language
+                val lang = data?.getSerializableExtra(ChooseLanguageActivity.RESULT_KEY_LANG) as? LanguageDto
                 lang?.let {
                     analytics.logSelectEvent(EVENT_ID_SELECT_TARGET_LANG + lang.code, lang.name)
                     viewModel.onTargetLangSelected(lang)

@@ -3,33 +3,33 @@ package ru.santaev.clipboardtranslator.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.example.santaev.domain.dto.LanguageDto
+import com.example.santaev.domain.factory.UseCaseFactory
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import ru.santaev.clipboardtranslator.TranslatorApp
-import ru.santaev.clipboardtranslator.db.entity.Language
-import ru.santaev.clipboardtranslator.model.IDataModel
+import ru.santaev.clipboardtranslator.util.RxHelper
 import java.util.*
-import javax.inject.Inject
 
 class ChooseLanguageViewModel() : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
-    val languages = MutableLiveData<List<Language>>()
-    @Inject lateinit var dataModel: IDataModel
+    val languages = MutableLiveData<List<LanguageDto>>()
 
     init {
-        TranslatorApp.instance.appComponent.inject(this)
-
         this.languages.value = ArrayList()
 
-        compositeDisposable.add(dataModel.languages
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ this.onLanguagesChanged(it) }))
+        val disposable = UseCaseFactory
+                .instance
+                .getGetLanguagesUseCase()
+                .execute()
+                .compose(RxHelper.getFlowableTransformer())
+                .subscribe(
+                        { onLanguagesChanged(it) },
+                        { onLanguagesChanged(listOf()) }
+                )
+        compositeDisposable.add(disposable)
     }
 
-    private fun onLanguagesChanged(languages: List<Language>) {
+    private fun onLanguagesChanged(languages: List<LanguageDto>) {
         this.languages.postValue(languages)
     }
 

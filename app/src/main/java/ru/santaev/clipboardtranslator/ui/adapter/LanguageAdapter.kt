@@ -7,16 +7,19 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.santaev.domain.dto.LanguageDto
 import ru.santaev.clipboardtranslator.R
 import ru.santaev.clipboardtranslator.TranslatorApp
 import ru.santaev.clipboardtranslator.databinding.LanguageItemLayoutBinding
 import ru.santaev.clipboardtranslator.databinding.LanguageSectionItemLayoutBinding
-import ru.santaev.clipboardtranslator.db.entity.Language
 
-class LanguageAdapter(private val recentLanguages: List<Language>, private val languages: List<Language>?,
-                      private val unsupportedLanguages: List<Language>) : RecyclerView.Adapter<LanguageAdapter.ViewHolder>() {
+class LanguageAdapter(
+        private val recentLanguages: List<LanguageDto>,
+        private val languages: List<LanguageDto>?,
+        private val unsupportedLanguages: List<LanguageDto>
+) : RecyclerView.Adapter<LanguageAdapter.ViewHolder>() {
 
-    var listener: ((Language) -> Unit)? = null
+    var listener: ((LanguageDto) -> Unit)? = null
     private var hasHeaders = false
 
     init {
@@ -95,7 +98,7 @@ class LanguageAdapter(private val recentLanguages: List<Language>, private val l
         }
     }
 
-    private fun getLangByPos(position: Int): Language {
+    private fun getLangByPos(position: Int): LanguageDto {
         return if (position < languages!!.size)
             languages[position]
         else

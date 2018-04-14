@@ -8,29 +8,25 @@ import android.content.*
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
-import android.util.Pair
 import android.widget.Toast
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.example.santaev.domain.factory.UseCaseFactory
+import com.example.santaev.domain.usecase.TranslateUseCase
 import ru.santaev.clipboardtranslator.R
-import ru.santaev.clipboardtranslator.TranslatorApp
-import ru.santaev.clipboardtranslator.model.IDataModel
 import ru.santaev.clipboardtranslator.service.util.ClipboardFilter
 import ru.santaev.clipboardtranslator.service.util.IClipboardFilter
 import ru.santaev.clipboardtranslator.service.util.ITranslationSettingsProvider
+import ru.santaev.clipboardtranslator.util.ILoggable
 import ru.santaev.clipboardtranslator.util.NotificationHelper
+import ru.santaev.clipboardtranslator.util.RxHelper
 import ru.santaev.clipboardtranslator.util.settings.AppPreference
 import ru.santaev.clipboardtranslator.util.settings.ISettings
 import java.util.*
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
-class TranslateService : Service(), ClipboardManager.OnPrimaryClipChangedListener,
-        SharedPreferences.OnSharedPreferenceChangeListener {
-
-    @Inject
-    internal lateinit var dataModel: IDataModel
-
+class TranslateService : Service(),
+        ClipboardManager.OnPrimaryClipChangedListener,
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        ILoggable {
     private lateinit var clipboardManager: ClipboardManager
     private lateinit var filter: IClipboardFilter
     private lateinit var translationSettingsProvider: ITranslationSettingsProvider
@@ -63,7 +59,6 @@ class TranslateService : Service(), ClipboardManager.OnPrimaryClipChangedListene
 
     override fun onCreate() {
         super.onCreate()
-        TranslatorApp.instance.appComponent.inject(this)
 
         Log.d(TAG, "onCreate")
 
@@ -98,8 +93,8 @@ class TranslateService : Service(), ClipboardManager.OnPrimaryClipChangedListene
     }
 
     private fun showAppNotification() {
-        val originLang = translationSettingsProvider.originLang.code
-        val targetLang = translationSettingsProvider.targetLang.code
+        val originLang = translationSettingsProvider.originLang?.code ?: "?"
+        val targetLang = translationSettingsProvider.targetLang?.code ?: "?"
 
         val langText = String.format(getString(R.string.translate_notification_lang_text),
                 originLang.toUpperCase(), targetLang.toUpperCase())
@@ -115,43 +110,67 @@ class TranslateService : Service(), ClipboardManager.OnPrimaryClipChangedListene
     }
 
     override fun onPrimaryClipChanged() {
-        Log.d(TAG, "onPrimaryClipChanged")
+        log("onPrimaryClipChanged")
         val clipData = clipboardManager.primaryClip
         if (clipData != null && clipData.itemCount > 0) {
             val item = clipData.getItemAt(0)
             val text = item.text
             if (text != null && filter.apply(item, clipData.description)) {
-                Log.d(TAG, "onPrimaryClipChanged text = " + text)
-                translate(text.toString())
+                log("onPrimaryClipChanged text = $text")
+                try {
+                    translate(text.toString())
+                } catch (e: IllegalStateException) {
+                    log("Error while translate", e)
+                }
             }
         }
     }
 
     private fun translate(text: String) {
-        val originLang = translationSettingsProvider.originLang
-        val targetLang = translationSettingsProvider.targetLang
+        val originLang = translationSettingsProvider.originLang ?: throw IllegalStateException("Source language is null")
+        val targetLang = translationSettingsProvider.targetLang ?: throw IllegalStateException("Target language is null")
         val id = currentNotificationId++
         val langText = String.format("%s-%s", originLang.code.toUpperCase(),
                 targetLang.code.toUpperCase())
 
         showNotification(String.format(getString(R.string.translate_notification_translating), text), langText, id, false)
 
-        dataModel.translate(originLang, targetLang, text)
-                .map { translateResponse ->
-                    Pair<IDataModel.TranslateResponse, String>(translateResponse, translateResponse.targetText)
-                }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ translateResponse ->
-                    registerNotification(id)
-                    showNotification(translateResponse.second, langText, id, true)
-                }
-                ) { throwable ->
-                    Log.d(TAG, throwable.message)
-                    registerNotification(id)
-                    showNotification(getString(R.string.translate_notification_failed), langText, id, false)
-                }
+        UseCaseFactory
+                .instance
+                .getTranslateFactory(
+                        originLang,
+                        targetLang,
+                        text
+                )
+                .execute()
+                .compose(RxHelper.getSingleTransformer())
+                .subscribe(
+                        { response -> onTextTranslated(response, id, langText) },
+                        { error -> onTranslateFailed(error, id, langText) }
+                )
     }
+
+    private fun onTextTranslated(response: TranslateUseCase.Response, id: Int, langText: String) {
+        when (response) {
+            is TranslateUseCase.Response.Success -> {
+                registerNotification(id)
+                showNotification(
+                        text = response.targetText,
+                        langText = langText,
+                        id = id,
+                        enableCopyButton = true
+                )
+            }
+            is TranslateUseCase.Response.Error -> onTranslateFailed(null, id, langText)
+        }
+    }
+
+    private fun onTranslateFailed(error: Throwable?, id: Int, langText: String) {
+        error?.let { Log.d(TAG, it.message) }
+        registerNotification(id)
+        showNotification(getString(R.string.translate_notification_failed), langText, id, false)
+    }
+
 
     private fun registerNotification(id: Int) {
         val delay = when (settings.notificationClearDelay) {

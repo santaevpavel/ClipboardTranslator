@@ -1,6 +1,11 @@
 package ru.santaev.clipboardtranslator.api
 
 
+import com.example.santaev.domain.api.IApiService
+import com.example.santaev.domain.api.LanguagesResponseDto
+import com.example.santaev.domain.api.TranslateRequestDto
+import com.example.santaev.domain.api.TranslateResponseDto
+import com.example.santaev.domain.dto.LanguageDto
 import io.reactivex.Single
 import io.reactivex.SingleTransformer
 import okhttp3.OkHttpClient
@@ -28,14 +33,32 @@ class ApiService : IApiService {
         api = retrofit.create(YandexApi::class.java)
     }
 
-    override fun translate(request: TranslateRequest): Single<TranslateResponse> {
-        return api.translate(request.originText, request.lang, API_KEY)
+    override fun translate(request: TranslateRequestDto): Single<TranslateResponseDto> {
+        val languagesParam = "${request.originLang.code}-${request.targetLang.code}"
+        return api.translate(
+                request.originText,
+                languagesParam,
+                API_KEY
+        )
                 .compose(getApiTransformer())
+                .map { response ->
+                    val text = checkNotNull(response.text)
+                    TranslateResponseDto(0, request.targetLang, text)
+                }
     }
 
-    override fun getLanguages(): Single<LanguagesResponse> {
-        return api.getLangs(API_KEY, Locale.getDefault().language)
-                .compose(getApiTransformer())
+
+    override fun getLanguages(): Single<LanguagesResponseDto> {
+        return api.getLangs(
+                API_KEY,
+                Locale.getDefault().language
+        ).compose(getApiTransformer())
+                .map { response ->
+                    val directions = checkNotNull(response.directions)
+                    val languagesRaw = checkNotNull(response.languages)
+                    val languages = languagesRaw.map { LanguageDto(0, it.key, it.value) }
+                    LanguagesResponseDto(directions, languages)
+                }
     }
 
     private fun <T> getApiTransformer(): SingleTransformer<T, T> {

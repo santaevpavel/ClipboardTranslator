@@ -8,6 +8,8 @@
 
     <color name="dividerColor">#28000000</color>
 
+    <color name="red">#e53935</color>
+
     <color name="textColorBlackLight">#1e1e1e</color>
     <color name="textColorGrayDark">#313131</color>
     <color name="textColorGray">#5f5f5f</color>

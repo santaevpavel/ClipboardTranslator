@@ -10,9 +10,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
+import com.example.santaev.domain.dto.LanguageDto
 import ru.santaev.clipboardtranslator.R
 import ru.santaev.clipboardtranslator.databinding.ActivityChooseLanguageBinding
-import ru.santaev.clipboardtranslator.db.entity.Language
 import ru.santaev.clipboardtranslator.ui.adapter.LanguageAdapter
 import ru.santaev.clipboardtranslator.util.settings.AppPreference
 import ru.santaev.clipboardtranslator.viewmodel.ChooseLanguageViewModel
@@ -21,13 +21,12 @@ import java.util.*
 class ChooseLanguageActivity : AppCompatActivity() {
 
     private lateinit var viewModel: ChooseLanguageViewModel
-
     private lateinit var binding: ActivityChooseLanguageBinding
     private lateinit var adapter: LanguageAdapter
     private lateinit var appPreference: AppPreference
-    private var languages: List<Language>? = null
-    private var langOrigin: Language? = null
-    private var langTarget: Language? = null
+    private var languages: List<LanguageDto>? = null
+    private var langOrigin: LanguageDto? = null
+    private var langTarget: LanguageDto? = null
     private var chooseOrigin: Boolean = false
 
 
@@ -66,14 +65,14 @@ class ChooseLanguageActivity : AppCompatActivity() {
     }
 
     private fun extractArguments() {
-        langOrigin = intent.getSerializableExtra(ARG_KEY_LANG_ORIGIN) as Language
-        langTarget = intent.getSerializableExtra(ARG_KEY_LANG_TARGET) as Language
+        langOrigin = intent.getSerializableExtra(ARG_KEY_LANG_ORIGIN) as LanguageDto
+        langTarget = intent.getSerializableExtra(ARG_KEY_LANG_TARGET) as LanguageDto
         chooseOrigin = intent.getBooleanExtra(ARG_KEY_CHOOSE_ORIGIN, true)
     }
 
     private fun initAdapter() {
-        val supportedList: List<Language>?
-        val unsupportedList: MutableList<Language>
+        val supportedList: List<LanguageDto>?
+        val unsupportedList: MutableList<LanguageDto>
 
         /*TranslateDirectionProvider translateDirectionProvider = new TranslateDirectionProvider();
 
@@ -87,7 +86,7 @@ class ChooseLanguageActivity : AppCompatActivity() {
         unsupportedList = ArrayList()
         unsupportedList.removeAll(supportedList!!)
 
-        val recentLanguages = appPreference.lastUsedLanguages
+        val recentLanguages = arrayListOf<LanguageDto>()//appPreference.lastUsedLanguages TODO
 
         adapter = LanguageAdapter(recentLanguages, supportedList, unsupportedList)
 
@@ -103,15 +102,16 @@ class ChooseLanguageActivity : AppCompatActivity() {
         }
     }
 
-    private fun addLangToRecent(language: Language) {
-        val recentLanguages = appPreference.lastUsedLanguages
+    private fun addLangToRecent(language: LanguageDto) {
+        // TODO
+        /*val recentLanguages = appPreference.lastUsedLanguages
         if (!recentLanguages.contains(language)) {
             if (RECENT_LANGUAGES_MAX_SIZE <= recentLanguages.size) {
                 recentLanguages.removeAt(recentLanguages.size - 1)
             }
             recentLanguages.add(0, language)
             appPreference.lastUsedLanguages = recentLanguages
-        }
+        }*/
     }
 
     companion object {
@@ -123,7 +123,7 @@ class ChooseLanguageActivity : AppCompatActivity() {
 
         val RECENT_LANGUAGES_MAX_SIZE = 3
 
-        fun getIntent(context: Context, origin: Language, target: Language,
+        fun getIntent(context: Context, origin: LanguageDto, target: LanguageDto,
                       chooseOrigin: Boolean): Intent {
             val intent = Intent(context, ChooseLanguageActivity::class.java)
             intent.putExtra(ARG_KEY_LANG_ORIGIN, origin)

@@ -1,4 +1,14 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="isEmpty"
+            type="Boolean" />
+    </data>
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -10,7 +20,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/history_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="@{isEmpty ? View.INVISIBLE : View.VISIBLE, default=`visible`}" />
 
         <LinearLayout
             android:id="@+id/empty_layout"
@@ -18,8 +29,9 @@
             android:animateLayoutChanges="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
+            android:orientation="vertical"
+            android:visibility="@{isEmpty ? View.VISIBLE : View.INVISIBLE, default=`invisible`}"
+            tools:visibility="visible">
 
             <android.support.v7.widget.AppCompatImageView
                 android:layout_width="128dp"
@@ -35,7 +47,7 @@
                 android:text="@string/there_is_no_history"
                 android:layout_gravity="center"
                 android:textColor="@color/textColorGrayDark"
-                android:textSize="24sp" />
+                android:textSize="@dimen/text_size_large" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -43,7 +55,7 @@
                 android:layout_gravity="center"
                 android:text="@string/no_history_subtitle"
                 android:textColor="@color/textColorGrayLight"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_small"
                 android:id="@+id/appCompatTextView2" />
 
         </LinearLayout>

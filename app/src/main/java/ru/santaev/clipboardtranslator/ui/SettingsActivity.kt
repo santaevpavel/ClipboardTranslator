@@ -63,10 +63,14 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun initSettings() {
         // Notification type
-        settingsItemNotificationType = ListSettingsItem(this, R.string.settings_item_notif_title,
-                R.array.settings_item_notification_type_text, R.array.settings_item_notification_type_value,
-                ListSettingsItem.ISettingsPropertySetter { settings.notificationType = it },
-                ListSettingsItem.ISettingsPropertyGetter { settings.notificationType })
+        settingsItemNotificationType = ListSettingsItem(
+                R.string.settings_item_notif_title,
+                R.array.settings_item_notification_type_value,
+                this,
+                R.array.settings_item_notification_type_text,
+                { settings.notificationType = it },
+                { settings.notificationType }
+        )
         binding.itemNotif?.item = settingsItemNotificationType
         binding.itemNotif?.root?.setOnClickListener { v ->
             analytics.logClickEvent(EVENT_ID_NAME_CLICK_SETTINGS_NOTIFICATION_TYPE)
@@ -74,10 +78,14 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         // Notification clear delay
-        settingsItemNotificationClearDelay = ListSettingsItem(this, R.string.settings_item_notif_delay_title,
-                R.array.settings_item_notification_clear_delay_text, R.array.settings_item_notification_clear_delay_value,
-                ListSettingsItem.ISettingsPropertySetter { settings.notificationClearDelay = it },
-                ListSettingsItem.ISettingsPropertyGetter { settings.notificationClearDelay })
+        settingsItemNotificationClearDelay = ListSettingsItem(
+                R.string.settings_item_notif_delay_title,
+                R.array.settings_item_notification_clear_delay_value,
+                this,
+                R.array.settings_item_notification_clear_delay_text,
+                { settings.notificationClearDelay = it },
+                { settings.notificationClearDelay }
+        )
         binding.itemNotifDelayButton?.item = settingsItemNotificationClearDelay
         binding.itemNotifDelayButton?.root?.setOnClickListener { v ->
             analytics.logClickEvent(EVENT_ID_NAME_CLICK_SETTINGS_NOTIFICATION_CLEAR_DELAY)
@@ -85,11 +93,15 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         // Copy button
-        settingsItemNotificationCopyButton = ListSettingsItem(this, R.string.settings_item_notif_btn_title,
-                R.array.settings_item_notification_btn_text, R.array.settings_item_notification_btn_value,
-                { value -> settings.isNotificationButtonEnabled = value != 0 }) { if (settings.isNotificationButtonEnabled) 1 else 0 }
+        settingsItemNotificationCopyButton = ListSettingsItem(
+                R.string.settings_item_notif_btn_title,
+                R.array.settings_item_notification_btn_value,
+                this,
+                R.array.settings_item_notification_btn_text,
+                { value -> settings.isNotificationButtonEnabled = value != 0 }
+        ) { if (settings.isNotificationButtonEnabled) 1 else 0 }
         binding.itemNotifCopyButton?.item = settingsItemNotificationCopyButton
-        binding.itemNotifCopyButton?.root?.setOnClickListener { v ->
+        binding.itemNotifCopyButton?.root?.setOnClickListener {
             analytics.logClickEvent(EVENT_ID_NAME_CLICK_SETTINGS_COPY_BUTTON)
             settingsItemNotificationCopyButton.onClick()
         }
@@ -98,7 +110,7 @@ class SettingsActivity : AppCompatActivity() {
         settingsItemFeedback = SettingsItem(getString(R.string.settings_item_feedback_title),
                 getString(R.string.settings_item_feedback_subtitle))
         binding.itemFeedback?.item = settingsItemFeedback
-        binding.itemFeedback?.root?.setOnClickListener { v ->
+        binding.itemFeedback?.root?.setOnClickListener {
             analytics.logClickEvent(EVENT_ID_NAME_CLICK_SETTINGS_FEEDBACK)
             email()
         }

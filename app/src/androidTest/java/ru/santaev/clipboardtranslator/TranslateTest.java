@@ -25,7 +25,7 @@ public class TranslateTest {
     @Test
     public void test() throws Exception {
        /* IDataModel dataModel = request -> {
-            TranslateResponse item = new TranslateResponse();
+            Response item = new Response();
             item.setLang("ru");
             item.setCode(200);
 

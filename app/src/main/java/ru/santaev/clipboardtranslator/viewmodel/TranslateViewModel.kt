@@ -3,49 +3,44 @@ package ru.santaev.clipboardtranslator.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.os.Handler
+import com.example.santaev.domain.dto.LanguageDto
+import com.example.santaev.domain.factory.UseCaseFactory
+import com.example.santaev.domain.usecase.TranslateUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import ru.santaev.clipboardtranslator.TranslatorApp
-import ru.santaev.clipboardtranslator.db.entity.Language
-import ru.santaev.clipboardtranslator.model.IDataModel
-import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider
+import io.reactivex.schedulers.Schedulers
+import ru.santaev.clipboardtranslator.util.ILoggable
+import ru.santaev.clipboardtranslator.util.RxHelper
 import ru.santaev.clipboardtranslator.util.settings.AppPreference
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
-class TranslateViewModel : ViewModel() {
+class TranslateViewModel : ViewModel(), ILoggable {
 
     val translatedText = MutableLiveData<String>()
     val progress = MutableLiveData<Boolean>()
     val failed = MutableLiveData<Boolean>()
-    val originLang = MutableLiveData<Language>()
-    val targetLang = MutableLiveData<Language>()
+    val sourceLanguage = MutableLiveData<LanguageDto?>()
+    val targetLanguage = MutableLiveData<LanguageDto?>()
     var originText: String = ""
-
-    @Inject
-    lateinit var dataModel: IDataModel
-
-    private var handler: Handler
-    private var disposable: Disposable? = null
-    private var runTranslate: Runnable? = null
-
+    private var translateDisposable: Disposable? = null
+    private var languagesDisposable: Disposable? = null
     private val appPreference: AppPreference
-    private val translateDirectionProvider: TranslateDirectionProvider
 
     init {
-        TranslatorApp.instance.appComponent.inject(this)
-
         translatedText.value = ""
         progress.value = false
         failed.value = false
         appPreference = AppPreference.getInstance()
-        translateDirectionProvider = TranslateDirectionProvider()
 
-        originLang.value = appPreference.originLang
-        targetLang.value = appPreference.targetLang
+        val storedSourceLanguage = appPreference.originLang
+        val storedTargetLanguage = appPreference.targetLang
 
-        handler = Handler()
+        if (storedSourceLanguage == null || storedTargetLanguage == null) {
+            loadLanguages()
+        } else {
+            sourceLanguage.value = storedSourceLanguage
+            targetLanguage.value = storedTargetLanguage
+        }
     }
 
     fun onOriginTextChanged(text: String) {
@@ -53,30 +48,26 @@ class TranslateViewModel : ViewModel() {
         translate()
     }
 
-    fun onOriginLangSelected(lang: Language): Boolean {
-        val oldLang = originLang.value
-        originLang.value = lang
+    fun onOriginLangSelected(lang: LanguageDto): Boolean {
+        val oldLang = sourceLanguage.value
+        sourceLanguage.value = lang
         appPreference.originLang = lang
 
-        val support = translateDirectionProvider.isSupportTranslate(lang, targetLang.value)
-
-        if (lang !== oldLang && support) {
+        if (lang != oldLang) {
             translate()
         }
-        return support
+        return true
     }
 
-    fun onTargetLangSelected(lang: Language): Boolean {
-        val oldLang = targetLang.value
-        targetLang.value = lang
+    fun onTargetLangSelected(lang: LanguageDto): Boolean {
+        val oldLang = targetLanguage.value
+        targetLanguage.value = lang
         appPreference.targetLang = lang
 
-        val support = translateDirectionProvider.isSupportTranslate(originLang.value, lang)
-
-        if (lang !== oldLang && support) {
+        if (lang != oldLang) {
             translate()
         }
-        return support
+        return true
     }
 
     fun onClickRetry() {
@@ -84,50 +75,87 @@ class TranslateViewModel : ViewModel() {
     }
 
     fun onClickSwipeLanguages() {
-        val lang = targetLang.value
-        targetLang.value = originLang.value
-        originLang.value = lang
+        val lang = targetLanguage.value
+        targetLanguage.value = sourceLanguage.value
+        sourceLanguage.value = lang
+
+        appPreference.originLang = sourceLanguage.value
+        appPreference.targetLang = targetLanguage.value
+
         translate()
-    }
-
-    private fun translate() {
-        if (originText.trim { it <= ' ' }.isEmpty()) {
-            return
-        }
-        disposable?.dispose()
-
-        if (runTranslate != null) {
-            handler.removeCallbacks(runTranslate)
-        }
-
-        runTranslate = Runnable {
-            progress.value = true
-            failed.value = false
-
-            originLang.value?.let { originLang ->
-                targetLang.value?.let { targetLang ->
-                    disposable = dataModel.translate(originLang, targetLang, originText)
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({ translateResponse ->
-                                translatedText.value = translateResponse.targetText
-                                progress.value = false
-                            }) { throwable ->
-                                translatedText.value = throwable.message
-                                progress.value = false
-                                failed.value = true
-                            }
-                }
-            }
-        }
-
-        handler.postDelayed(runTranslate, TRANSLATE_DELAY_MILLIS)
     }
 
     override fun onCleared() {
         super.onCleared()
-        disposable?.dispose()
-        runTranslate?.let {
-            handler.removeCallbacks(runTranslate)
+        translateDisposable?.dispose()
+        languagesDisposable?.dispose()
+    }
+
+    private fun translate() {
+        if (originText.trim { it <= ' ' }.isEmpty()) return
+
+        val sourceLang = sourceLanguage.value ?: return
+        val targetLang = targetLanguage.value ?: return
+
+        progress.value = true
+        failed.value = false
+
+        translateDisposable?.dispose()
+
+        translateDisposable = UseCaseFactory
+                .instance
+                .getTranslateFactory(
+                        sourceLang,
+                        targetLang,
+                        originText
+                )
+                .execute()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { response -> onTextTranslated(response) },
+                        { onTranslateFailed() }
+                )
+    }
+
+    private fun onTextTranslated(response: TranslateUseCase.Response) {
+        when (response) {
+            is TranslateUseCase.Response.Success -> {
+                translatedText.value = response.targetText
+                progress.value = false
+            }
+            is TranslateUseCase.Response.Error -> onTranslateFailed()
+        }
+    }
+
+    private fun onTranslateFailed() {
+        translatedText.value = "Error"
+        progress.value = false
+        failed.value = true
+    }
+
+    private fun loadLanguages() {
+        languagesDisposable = UseCaseFactory
+                .instance
+                .getGetLanguagesUseCase()
+                .execute()
+                .filter { it.isNotEmpty() }
+                .firstOrError()
+                .compose(RxHelper.getSingleTransformer())
+                .subscribe(
+                        { languages -> setSourceAndTargetLanguages(languages) },
+                        { error -> log("Unable to load languages", error) }
+                )
+    }
+
+    private fun setSourceAndTargetLanguages(languages: List<LanguageDto>) {
+        if (languages.isNotEmpty()) {
+            val sourceLanguageDto = languages.firstOrNull { it.code == "en" } ?: languages.first()
+            val targetLanguageDto = languages.firstOrNull { it.code == "ru" } ?: languages.first()
+            sourceLanguage.value = sourceLanguageDto
+            targetLanguage.value = targetLanguageDto
+            appPreference.originLang = sourceLanguageDto
+            appPreference.targetLang = targetLanguageDto
         }
     }
 
