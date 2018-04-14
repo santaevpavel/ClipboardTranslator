@@ -16,7 +16,6 @@ import android.view.*
 import com.example.santaev.domain.dto.LanguageDto
 import ru.santaev.clipboardtranslator.R
 import ru.santaev.clipboardtranslator.databinding.FragmentTranslateBinding
-import ru.santaev.clipboardtranslator.model.TranslateDirectionProvider
 import ru.santaev.clipboardtranslator.service.TranslateService
 import ru.santaev.clipboardtranslator.util.Analytics
 import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_CLEAR_TEXT
@@ -37,14 +36,12 @@ class TranslateFragment : Fragment() {
 
     private lateinit var viewModel: TranslateViewModel
     private lateinit var binding: FragmentTranslateBinding
-    private lateinit var translateDirectionProvider: TranslateDirectionProvider
 
     private lateinit var analytics: Analytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         analytics = Analytics(activity)
-        translateDirectionProvider = TranslateDirectionProvider()
 
         viewModel = ViewModelProviders.of(this).get(TranslateViewModel::class.java)
         observeModel()
