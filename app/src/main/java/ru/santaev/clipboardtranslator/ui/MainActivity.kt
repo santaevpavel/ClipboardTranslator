@@ -2,11 +2,13 @@ package ru.santaev.clipboardtranslator.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.DialogInterface
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -107,6 +109,22 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private fun observeViewModel() {
         viewModel.loading.observe(this, Observer { isLoading ->
             binding.isLoading = isLoading
+        })
+
+        viewModel.languagesRequestFailed.observe(this, Observer { requestFailed ->
+            if (requestFailed == true) {
+                AlertDialog
+                        .Builder(this)
+                        .setTitle(getString(R.string.error))
+                        .setCancelable(false)
+                        .setMessage(getString(R.string.main_activity_error_load_languages))
+                        .setPositiveButton(
+                                getString(R.string.retry),
+                                { _: DialogInterface, _: Int -> viewModel.reloadLanguages() }
+                        )
+                        .setNegativeButton(getString(R.string.exit), { _: DialogInterface, _: Int -> finish() })
+                        .show()
+            }
         })
     }
 

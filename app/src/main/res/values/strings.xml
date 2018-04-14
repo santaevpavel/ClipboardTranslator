@@ -47,4 +47,8 @@
     <string name="notification_button_copy">Copy</string>
     <string name="toast_text_copied">Text has been copied</string>
     <string name="translate_edit_text_hint">Type text</string>
+    <string name="error">Error</string>
+    <string name="main_activity_error_load_languages">Unable to load languages pack</string>
+    <string name="retry">Retry</string>
+    <string name="exit">Exit</string>
 </resources>

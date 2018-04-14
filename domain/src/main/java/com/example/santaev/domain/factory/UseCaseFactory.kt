@@ -1,10 +1,7 @@
 package com.example.santaev.domain.factory
 
 import com.example.santaev.domain.dto.LanguageDto
-import com.example.santaev.domain.usecase.DeleteHistoryUseCase
-import com.example.santaev.domain.usecase.GetHistoryUseCase
-import com.example.santaev.domain.usecase.GetLanguagesUseCase
-import com.example.santaev.domain.usecase.TranslateUseCase
+import com.example.santaev.domain.usecase.*
 
 class UseCaseFactory(
         private val repositoryFactory: RepositoryFactory,
@@ -30,6 +27,8 @@ class UseCaseFactory(
     fun getGetLanguagesUseCase() = GetLanguagesUseCase(repositoryFactory.getLanguageRepository())
 
     fun getDeleteHistoryUseCase() = DeleteHistoryUseCase(repositoryFactory.getTranslationRepository())
+
+    fun getRequestLanguagesUseCase() = RequestLanguagesUseCase(repositoryFactory.getLanguageRepository())
 
     companion object {
 

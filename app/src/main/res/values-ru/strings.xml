@@ -46,4 +46,8 @@
     <string name="settings_item_notification_delay_ten">Через 10 секунд</string>
     <string name="settings_item_notification_delay_twenty">Через 20 секунд</string>
     <string name="settings_item_notif_delay_title">Скрывать уведомление</string>
+    <string name="error">Ошибка</string>
+    <string name="main_activity_error_load_languages">Не удалось загрузить пакет языков</string>
+    <string name="retry">Повторить</string>
+    <string name="exit">Выйти</string>
 </resources>
