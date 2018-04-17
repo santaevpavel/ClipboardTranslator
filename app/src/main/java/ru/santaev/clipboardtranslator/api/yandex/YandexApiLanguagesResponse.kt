@@ -1,9 +1,9 @@
-package ru.santaev.clipboardtranslator.api
+package ru.santaev.clipboardtranslator.api.yandex
 
 import com.google.gson.annotations.SerializedName
 
 
-class ApiLanguagesResponse {
+class YandexApiLanguagesResponse {
 
     @SerializedName("dirs")
     var directions: List<String>? = null

@@ -1,11 +1,11 @@
-package ru.santaev.clipboardtranslator.api
+package ru.santaev.clipboardtranslator.api.yandex
 
 
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
 
-class ApiTranslateResponse {
+class YandexApiTranslateResponse {
 
     @SerializedName("code")
     var code: Int = 0

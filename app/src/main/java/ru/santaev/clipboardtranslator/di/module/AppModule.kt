@@ -6,8 +6,8 @@ import com.example.santaev.domain.api.IApiService
 import dagger.Module
 import dagger.Provides
 import ru.santaev.clipboardtranslator.TranslatorApp
-import ru.santaev.clipboardtranslator.api.ApiService
 import ru.santaev.clipboardtranslator.api.mock.MockApiService
+import ru.santaev.clipboardtranslator.api.yandex.YandexApiService
 import ru.santaev.clipboardtranslator.db.AppDatabase
 import ru.santaev.clipboardtranslator.model.repository.database.IAppDatabase
 import javax.inject.Singleton
@@ -24,7 +24,7 @@ class AppModule(private val appContext: Context, private val mockApiService: Boo
     @Provides
     @Singleton
     fun provideApiService(): IApiService {
-        return if (mockApiService) MockApiService() else ApiService()
+        return if (mockApiService) MockApiService() else YandexApiService()
     }
 
     /*
