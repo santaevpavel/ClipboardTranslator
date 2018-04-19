@@ -57,7 +57,6 @@ class AbbyyApiTest {
 
     @Test
     fun testTranslate() {
-        testGetToken()
         val testObserver = api.translate(TranslateRequestDto(
                 originText = "Test",
                 originLang = LanguageDto(0, "", "1033"),
