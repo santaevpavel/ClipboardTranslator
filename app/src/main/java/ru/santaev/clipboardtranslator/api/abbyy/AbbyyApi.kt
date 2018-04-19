@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface AbbyyApi {
 
     @POST("api/v1.1/authenticate")
-    fun authenticate(@Header("Authorization") apiKey: String): Single<String>
+    fun authenticate(@Header("Authorization") authorization: String): Single<String>
 
     @GET("api/v1/Minicard")
     fun translate(
