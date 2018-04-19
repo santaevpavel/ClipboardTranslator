@@ -3,6 +3,8 @@ package ru.santaev.clipboardtranslator.api
 import com.example.santaev.domain.api.TranslateRequestDto
 import com.example.santaev.domain.dto.LanguageDto
 import okhttp3.OkHttpClient
+import org.junit.Assert.assertNotNull
+import org.junit.Before
 import org.junit.Test
 import ru.santaev.clipboardtranslator.api.abbyy.AbbyyApiService
 import ru.santaev.clipboardtranslator.api.abbyy.IAbbyyApiTokenKeeper
@@ -30,10 +32,15 @@ class AbbyyApiTest {
             .hostnameVerifier { _, _ -> true }
             .overrideSslSocketFactory()
             .build()
+    private lateinit var api: AbbyyApiService
+
+    @Before
+    fun setUp() {
+        api = AbbyyApiService(okHttpClient, abbyyTokenKeeper)
+    }
 
     @Test
     fun testGetToken() {
-        val api = AbbyyApiService(okHttpClient, abbyyTokenKeeper)
         val testObserver = api
                 .authenticate()
                 .test()
@@ -44,25 +51,26 @@ class AbbyyApiTest {
                 .values()
                 .first()
         println("Token = ${response.token}")
+
+        assertNotNull(response.token)
     }
 
     @Test
     fun testTranslate() {
-        val api = AbbyyApiService(okHttpClient, abbyyTokenKeeper)
-        token = ""
-
+        testGetToken()
         val testObserver = api.translate(TranslateRequestDto(
                 originText = "Test",
-                originLang = LanguageDto(0, "", ""),
-                targetLang = LanguageDto(0, "", "")
+                originLang = LanguageDto(0, "", "1033"),
+                targetLang = LanguageDto(0, "", "1049")
         )).test()
         testObserver.await(5, TimeUnit.SECONDS)
         testObserver.assertComplete()
         testObserver.assertValueCount(1)
 
         val response = testObserver.values().first()
-
         println("Response = ${response.text.first()}")
+
+        assertNotNull(response.text)
     }
 
 }

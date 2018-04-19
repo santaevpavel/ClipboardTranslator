@@ -37,7 +37,7 @@ class AbbyyApiService(
 
     fun authenticate(): Single<AbbyyApiAuthenticateResponse> {
         return api
-                .authenticate("Basic $API_KEY")
+                .authenticate(API_KEY.toBasicAuth())
                 .map { AbbyyApiAuthenticateResponse(it) }
                 .compose(getApiTransformer())
                 .map { response ->
@@ -49,7 +49,7 @@ class AbbyyApiService(
     override fun translate(request: TranslateRequestDto): Single<TranslateResponseDto> {
         val token = abbyyApiTokenKeeper.getToken() ?: ""
         return api.translate(
-                token = token,
+                token = token.toBearerAuth(),
                 text = request.originText,
                 srcLang = request.originLang.code,
                 dstLang = request.targetLang.code
@@ -83,4 +83,7 @@ class AbbyyApiService(
         return RuntimeException(msg)
     }
 
+    private fun String.toBearerAuth() = "Bearer $this"
+
+    private fun String.toBasicAuth() = "Basic $this"
 }
