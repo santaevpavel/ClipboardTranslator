@@ -16,6 +16,7 @@ import ru.santaev.clipboardtranslator.R
 import ru.santaev.clipboardtranslator.databinding.ActivityMainBinding
 import ru.santaev.clipboardtranslator.util.Analytics
 import ru.santaev.clipboardtranslator.util.AnalyticsConstants.EVENT_ID_NAME_CLICK_SETTINGS
+import ru.santaev.clipboardtranslator.util.makeViewPagerFragmentTag
 import ru.santaev.clipboardtranslator.viewmodel.MainActivityViewModel
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -74,9 +75,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
             override fun onPageSelected(position: Int) {
-                when (position) {
-                    0 -> binding.bottomNavigation.menu.findItem(R.id.item_translate)?.isChecked = true
-                    1 -> binding.bottomNavigation.menu.findItem(R.id.item_history)?.isChecked = true
+                binding.bottomNavigation.menu.apply {
+                    when (position) {
+                        0 -> findItem(R.id.item_translate)?.isChecked = true
+                        1 -> findItem(R.id.item_history)?.isChecked = true
+                    }
                 }
             }
 
@@ -95,15 +98,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             viewModel.sharedText = textFromIntent
             if (isNewIntent) {
                 val translateFragment = supportFragmentManager.findFragmentByTag(
-                        makeFragmentName(binding.viewPager.id, 0)) as? TranslateFragment
+                        makeViewPagerFragmentTag(binding.viewPager.id, 0)) as? TranslateFragment
                 translateFragment?.onIncomingText(textFromIntent)
             }
         }
 
-    }
-
-    private fun makeFragmentName(viewPagerId: Int, index: Int): String {
-        return "android:switcher:$viewPagerId:$index"
     }
 
     private fun observeViewModel() {

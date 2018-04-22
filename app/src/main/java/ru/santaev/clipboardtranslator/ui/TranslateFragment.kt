@@ -50,9 +50,11 @@ class TranslateFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_translate, container, false)
 
         binding.originTextView.addTextChangedListener(object : TextWatcher {
@@ -109,8 +111,8 @@ class TranslateFragment : Fragment() {
         inflater.inflate(R.menu.translate_fragment_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.action_swap_languages -> {
                 viewModel.onClickSwipeLanguages()
                 return true
@@ -149,36 +151,23 @@ class TranslateFragment : Fragment() {
     }
 
     private fun observeModel() {
-        viewModel.translatedText.observe(this, Observer<String?> { s ->
-            if (s?.isEmpty() != false) {
-                binding.translateLayout.visibility = View.GONE
-            } else {
+        viewModel.translatedText.observe(this, Observer<String?> { translatedText ->
+            translatedText?.let {
                 analytics.logClickEvent(EVENT_ID_NAME_TRANSLATED)
-                binding.translateLayout.visibility = View.VISIBLE
-                binding.translatedTextView.text = s
+                binding.translatedText = translatedText
             }
         })
 
         viewModel.progress.observe(this, Observer { progress ->
-            progress?.let {
-                if (progress == true) {
-                    binding.translateLayout.visibility = View.VISIBLE
-                }
-                binding.translateProgress.visibility = if (progress == true) View.VISIBLE else View.INVISIBLE
-            }
-
+            progress?.let { binding.isLoading = progress }
         })
 
         viewModel.sourceLanguage.observe(this, Observer { language ->
-            language?.let {
-                binding.originLangText.text = language.name
-            }
+            language?.let { binding.sourceLanguage = language.name }
         })
 
         viewModel.targetLanguage.observe(this, Observer { language ->
-            language?.let {
-                binding.targetLangText.text = language.name
-            }
+            language?.let { binding.targetLanguage = language.name }
         })
 
         viewModel.failed.observe(this, Observer { isFailed ->

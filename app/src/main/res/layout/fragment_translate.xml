@@ -3,6 +3,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="ru.santaev.clipboardtranslator.ui.TranslateFragment">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="sourceLanguage"
+            type="String" />
+
+        <variable
+            name="targetLanguage"
+            type="String" />
+
+        <variable
+            name="translatedText"
+            type="String" />
+
+        <variable
+            name="isLoading"
+            type="Boolean" />
+
+        <variable
+            name="isFailed"
+            type="Boolean" />
+
+    </data>
+
     <ScrollView
         android:id="@+id/main_view"
         android:layout_width="match_parent"
@@ -40,6 +66,7 @@
                         android:maxLines="1"
                         android:paddingBottom="16dp"
                         android:paddingTop="16dp"
+                        android:text="@{sourceLanguage}"
                         android:textColor="@color/textColorBlackLight"
                         android:textSize="@dimen/text_size_large"
                         android:textStyle="bold"
@@ -60,6 +87,7 @@
                         android:maxLines="1"
                         android:paddingBottom="16dp"
                         android:paddingTop="16dp"
+                        android:text="@{targetLanguage}"
                         android:textColor="@color/textColorBlackLight"
                         android:textSize="@dimen/text_size_large"
                         android:textStyle="bold"
@@ -122,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
                 android:minHeight="70dp"
-                android:visibility="visible"
+                android:visibility="@{!translatedText.isEmpty() || isLoading ? View.VISIBLE : View.GONE, default=`invisible`}"
                 app:cardBackgroundColor="@color/colorAccent"
                 app:cardCornerRadius="0dp"
                 app:cardElevation="@dimen/card_view_elevation">
@@ -136,8 +164,9 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="top|end"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginEnd="16dp"
                         android:layout_marginTop="8dp"
+                        android:visibility="@{isLoading ? View.VISIBLE : View.INVISIBLE}"
                         android:theme="@style/AppTheme.WhiteAccent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -147,14 +176,15 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginTop="24dp"
                         android:background="@null"
                         android:textColor="#fff"
                         android:textColorHint="#72ffffff"
                         android:textIsSelectable="true"
                         android:textSize="@dimen/text_size_large"
+                        android:text="@{translatedText}"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toLeftOf="@+id/translate_progress"
@@ -188,9 +218,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="top|end"
                         android:layout_marginBottom="8dp"
-                        android:layout_marginRight="8dp"
+                        android:layout_marginEnd="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="Retry"
+                        android:text="@string/retry"
                         android:textColor="#fff"
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
