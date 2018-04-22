@@ -34,6 +34,9 @@ class GatewayFactory(
                     .insertAll(languages.map { Language(it.id, it.name, it.code) })
         }
 
+        override fun deleteAll() {
+            return languageDao.deleteAll()
+        }
     }
 
     override fun getTranslationDao(): ITranslationDao = object : ITranslationDao {

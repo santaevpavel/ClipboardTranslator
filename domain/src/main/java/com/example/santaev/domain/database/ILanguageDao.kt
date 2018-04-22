@@ -9,4 +9,6 @@ interface ILanguageDao {
 
     fun insertAll(languages: List<LanguageDto>): LongArray
 
+    fun deleteAll()
+
 }

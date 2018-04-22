@@ -5,6 +5,7 @@ import com.example.santaev.domain.api.LanguagesResponseDto
 import com.example.santaev.domain.database.ILanguageDao
 import com.example.santaev.domain.dto.LanguageDto
 import com.example.santaev.domain.repository.ILanguageRepository.LanguagesState
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -29,9 +30,10 @@ internal class LanguageRepository(
 
     override fun getLanguages(): Flowable<List<LanguageDto>> {
         loadLanguages()
-
         return languageDao.getLanguages()
     }
+
+    override fun deleteAll(): Completable = Completable.fromAction { languageDao.getLanguages() }
 
     private fun loadLanguages() {
         if (languagesLoadingStatus == LanguagesState.LOADING) return
