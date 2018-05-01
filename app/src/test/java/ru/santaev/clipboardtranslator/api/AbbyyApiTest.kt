@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
+import ru.santaev.clipboardtranslator.BuildConfig
 import ru.santaev.clipboardtranslator.api.abbyy.AbbyyApiService
 import ru.santaev.clipboardtranslator.api.abbyy.IAbbyyApiTokenKeeper
 import java.security.cert.CertificateException
@@ -36,7 +37,7 @@ class AbbyyApiTest {
 
     @Before
     fun setUp() {
-        api = AbbyyApiService(okHttpClient, abbyyTokenKeeper)
+        api = AbbyyApiService.create(okHttpClient, BuildConfig.ABBYY_API_KEY, abbyyTokenKeeper)
     }
 
     @Test

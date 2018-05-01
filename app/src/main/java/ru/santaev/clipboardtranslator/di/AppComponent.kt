@@ -10,14 +10,6 @@ import javax.inject.Singleton
 @Singleton
 interface AppComponent {
 
-    /*fun inject(translateViewModel: TranslateViewModel)
-
-    fun inject(translateViewModel: HistoryViewModel)
-
-    fun inject(translateService: TranslateService)
-
-    fun inject(chooseLanguageViewModel: ChooseLanguageViewModel)*/
-
     fun getDatabase(): IAppDatabase
 
     fun getApiService(): IApiService

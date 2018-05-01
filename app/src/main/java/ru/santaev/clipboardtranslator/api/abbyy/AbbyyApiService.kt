@@ -13,32 +13,19 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import ru.santaev.clipboardtranslator.api.abbyy.AbbyyApi.Companion.API_KEY
 import ru.santaev.clipboardtranslator.api.abbyy.AbbyyApi.Companion.SERVER_URL
 import java.io.IOException
 import java.net.SocketTimeoutException
 
 class AbbyyApiService(
-        client: OkHttpClient,
+        private val api: AbbyyApi,
+        private val apiKey: String,
         private val abbyyApiTokenKeeper: IAbbyyApiTokenKeeper
 ) : IApiService {
 
-    private val api: AbbyyApi
-
-    init {
-        val retrofit = Retrofit.Builder()
-                .baseUrl(SERVER_URL)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(client)
-                .build()
-        api = retrofit.create(AbbyyApi::class.java)
-    }
-
     fun authenticate(): Single<AbbyyApiAuthenticateResponse> {
         return api
-                .authenticate(API_KEY.toBasicAuth())
+                .authenticate(apiKey.toBasicAuth())
                 .map { AbbyyApiAuthenticateResponse(it) }
                 .compose(getApiTransformer())
                 .map { response ->
@@ -98,4 +85,26 @@ class AbbyyApiService(
     private fun String.toBearerAuth() = "Bearer $this"
 
     private fun String.toBasicAuth() = "Basic $this"
+
+    companion object {
+
+        fun create(
+                client: OkHttpClient,
+                apiKey: String,
+                abbyyApiTokenKeeper: IAbbyyApiTokenKeeper
+        ): AbbyyApiService {
+            val retrofit = Retrofit.Builder()
+                    .baseUrl(SERVER_URL)
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .client(client)
+                    .build()
+            return AbbyyApiService(
+                    apiKey = apiKey,
+                    abbyyApiTokenKeeper = abbyyApiTokenKeeper,
+                    api = retrofit.create(AbbyyApi::class.java)
+            )
+        }
+    }
 }

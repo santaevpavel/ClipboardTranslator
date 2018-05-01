@@ -3,7 +3,6 @@ package ru.santaev.clipboardtranslator.api.yandex
 
 import io.reactivex.Single
 import retrofit2.http.*
-import ru.santaev.clipboardtranslator.BuildConfig
 
 interface YandexApi {
 
@@ -19,7 +18,6 @@ interface YandexApi {
 
     companion object {
 
-        val API_KEY = BuildConfig.YANDEX_TRANSLATE_API_KEY
         val SERVER_URL = "https://translate.yandex.net/"
     }
 }

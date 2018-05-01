@@ -22,7 +22,6 @@ interface AbbyyApi {
 
     companion object {
 
-        val API_KEY = "N2ZhNGRkMGEtYWY0OS00ODM5LWE1MDctOWJkMzUzNTRkODE1OjNjMWJiNjk0YmY0ODRjZjM5OWE2NmZiZjIwMjQ2YWI2"
         val SERVER_URL = "https://developers.lingvolive.com/"
     }
 }

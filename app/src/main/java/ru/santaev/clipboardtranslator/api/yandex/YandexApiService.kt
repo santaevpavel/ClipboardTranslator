@@ -12,33 +12,22 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.santaev.clipboardtranslator.api.yandex.YandexApi.Companion.API_KEY
 import ru.santaev.clipboardtranslator.api.yandex.YandexApi.Companion.SERVER_URL
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.util.*
 
-class YandexApiService : IApiService {
-
-    private val api: YandexApi
-
-    init {
-        val okHttpClient = OkHttpClient.Builder().build()
-        val retrofit = Retrofit.Builder()
-                .baseUrl(SERVER_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(okHttpClient)
-                .build()
-        api = retrofit.create(YandexApi::class.java)
-    }
+class YandexApiService(
+        private val api: YandexApi,
+        private val apiKey: String
+) : IApiService {
 
     override fun translate(request: TranslateRequestDto): Single<TranslateResponseDto> {
         val languagesParam = "${request.originLang.code}-${request.targetLang.code}"
         return api.translate(
                 request.originText,
                 languagesParam,
-                API_KEY
+                apiKey
         )
                 .compose(getApiTransformer())
                 .map { response ->
@@ -50,7 +39,7 @@ class YandexApiService : IApiService {
 
     override fun getLanguages(): Single<LanguagesResponseDto> {
         return api.getLangs(
-                API_KEY,
+                apiKey,
                 Locale.getDefault().language
         ).compose(getApiTransformer())
                 .map { response ->
@@ -79,4 +68,20 @@ class YandexApiService : IApiService {
         return RuntimeException(msg)
     }
 
+    companion object {
+
+        fun create(apiKey: String): YandexApiService {
+            val okHttpClient = OkHttpClient.Builder().build()
+            val retrofit = Retrofit.Builder()
+                    .baseUrl(SERVER_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .client(okHttpClient)
+                    .build()
+            return YandexApiService(
+                    apiKey = apiKey,
+                    api = retrofit.create(YandexApi::class.java)
+            )
+        }
+    }
 }

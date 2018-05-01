@@ -4,7 +4,8 @@ apply plugin: 'io.fabric'
 apply plugin: 'kotlin-kapt'
 
 android {
-    def API_KEY = System.getenv('YANDEX_TRANSLATE_API_KEY')
+    def YANDEX_API_KEY = System.getenv('YANDEX_TRANSLATE_API_KEY')
+    def ABBYY_API_KEY = System.getenv('ABBYY_API_KEY')
     def isMockApiService = false
 
     compileSdkVersion 27
@@ -17,7 +18,8 @@ android {
         versionName "2.3"
         testInstrumentationRunner "ru.santaev.clipboardtranslator.MockTestRunner"
 
-        buildConfigField "String", "YANDEX_TRANSLATE_API_KEY", "\"" + API_KEY + "\""
+        buildConfigField "String", "YANDEX_TRANSLATE_API_KEY", "\"" + YANDEX_API_KEY + "\""
+        buildConfigField "String", "ABBYY_API_KEY", "\"" + ABBYY_API_KEY + "\""
         buildConfigField "boolean", "MOCK", "false"
         vectorDrawables.useSupportLibrary = true
     }

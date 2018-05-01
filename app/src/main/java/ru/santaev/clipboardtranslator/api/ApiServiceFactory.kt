@@ -3,6 +3,7 @@ package ru.santaev.clipboardtranslator.api
 import android.annotation.SuppressLint
 import com.example.santaev.domain.api.IApiService
 import okhttp3.OkHttpClient
+import ru.santaev.clipboardtranslator.BuildConfig
 import ru.santaev.clipboardtranslator.api.abbyy.AbbyyApiService
 import ru.santaev.clipboardtranslator.api.abbyy.IAbbyyApiTokenKeeper
 import ru.santaev.clipboardtranslator.api.yandex.YandexApiService
@@ -14,15 +15,16 @@ import javax.net.ssl.X509TrustManager
 
 class ApiServiceFactory {
 
-    fun getYandexApiService(): IApiService = YandexApiService()
+    fun getYandexApiService(): IApiService = YandexApiService.create(apiKey = BuildConfig.YANDEX_TRANSLATE_API_KEY)
 
     fun getAbbyyApiService(): IApiService {
-        return AbbyyApiService(
+        return AbbyyApiService.create(
                 client = OkHttpClient.Builder()
                         .hostnameVerifier { _, _ -> true }
                         .overrideSslSocketFactory()
                         .build(),
-                abbyyApiTokenKeeper = ImMemoryKeeper()
+                abbyyApiTokenKeeper = ImMemoryKeeper(),
+                apiKey = BuildConfig.ABBYY_API_KEY
         )
     }
 
