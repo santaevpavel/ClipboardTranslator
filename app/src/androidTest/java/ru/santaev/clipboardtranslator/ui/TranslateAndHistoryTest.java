@@ -2,9 +2,9 @@ package ru.santaev.clipboardtranslator.ui;
 
 
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
