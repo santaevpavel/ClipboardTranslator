@@ -23,6 +23,31 @@ jobs:
           path: ~/test-results
       - store_artifacts:
           path: ~/test-results/junit
+  uiTest:
+    docker:
+      - image: circleci/android:api-28
+    steps:
+      - checkout
+      - run:
+          name: Start emulator
+          command: emulator -avd circleci-android28 -no-audio -no-window
+          background: true
+
+      - run:
+          name: Wait emulator to start
+          command:
+            adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
+      - run: ./gradlew connectedAndroidTest
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/build/androidTest-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/test-results
+      - store_artifacts:
+          path: ~/test-results/junit
   build:
     docker:
       - image: circleci/android:api-28
