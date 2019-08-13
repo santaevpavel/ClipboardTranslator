@@ -20,7 +20,7 @@ class LanguagesRepositoryTest {
 
         val error: Single<LanguagesResponseDto> = Single
                 .error<LanguagesResponseDto>(Exception())
-                .delaySubscription<LanguagesResponseDto>(100, TimeUnit.MILLISECONDS)
+                .delaySubscription(100, TimeUnit.MILLISECONDS)
         Mockito
                 .`when`(apiService.getLanguages())
                 .thenReturn(error)
@@ -42,7 +42,7 @@ class LanguagesRepositoryTest {
 
         val success: Single<LanguagesResponseDto> = Single
                 .just(LanguagesResponseDto(listOf(), listOf()))
-                .delaySubscription<LanguagesResponseDto>(100, TimeUnit.MILLISECONDS)
+                .delaySubscription(100, TimeUnit.MILLISECONDS)
         Mockito
                 .`when`(apiService.getLanguages())
                 .thenReturn(success)
@@ -64,10 +64,10 @@ class LanguagesRepositoryTest {
 
         val error: Single<LanguagesResponseDto> = Single
                 .error<LanguagesResponseDto>(Exception())
-                .delaySubscription<LanguagesResponseDto>(100, TimeUnit.MILLISECONDS)
+                .delaySubscription(100, TimeUnit.MILLISECONDS)
         val success: Single<LanguagesResponseDto> = Single
                 .just(LanguagesResponseDto(listOf(), listOf()))
-                .delaySubscription<LanguagesResponseDto>(100, TimeUnit.MILLISECONDS)
+                .delaySubscription(100, TimeUnit.MILLISECONDS)
         Mockito
                 .`when`(apiService.getLanguages())
                 .thenReturn(error)

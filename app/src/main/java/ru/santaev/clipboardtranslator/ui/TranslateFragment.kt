@@ -3,13 +3,13 @@ package ru.santaev.clipboardtranslator.ui
 
 import android.animation.LayoutTransition
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
@@ -41,12 +41,12 @@ class TranslateFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        analytics = Analytics(activity)
+        analytics = Analytics(requireContext())
 
         viewModel = ViewModelProviders.of(this).get(TranslateViewModel::class.java)
         observeModel()
 
-        activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         setHasOptionsMenu(true)
     }
 
@@ -77,12 +77,12 @@ class TranslateFragment : Fragment() {
 
         binding.startService.setOnClickListener {
             analytics.logClickEvent(EVENT_ID_NAME_CLICK_START_SERVICE)
-            activity.startService(Intent(context, TranslateService::class.java))
+            activity?.startService(Intent(context, TranslateService::class.java))
         }
 
         binding.stopService.setOnClickListener {
             analytics.logClickEvent(EVENT_ID_NAME_CLICK_STOP_SERVICE)
-            activity.stopService(Intent(context, TranslateService::class.java))
+            activity?.stopService(Intent(context, TranslateService::class.java))
         }
 
         binding.retry.setOnClickListener {
@@ -94,7 +94,7 @@ class TranslateFragment : Fragment() {
 
         enableAnimation()
 
-        val activityViewModel = ViewModelProviders.of(activity).get(MainActivityViewModel::class.java)
+        val activityViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel::class.java)
         activityViewModel.sharedText?.let {
             if (savedInstanceState == null) {
                 onIncomingText(it)
@@ -120,8 +120,8 @@ class TranslateFragment : Fragment() {
     }
 
     fun onIncomingText(textFromIntent: String) {
-        binding.originTextView.text.clear()
-        binding.originTextView.text.insert(0, textFromIntent)
+        binding.originTextView.text?.clear()
+        binding.originTextView.text?.insert(0, textFromIntent)
     }
 
     private fun chooseOriginLang() {
@@ -131,7 +131,7 @@ class TranslateFragment : Fragment() {
         val target = viewModel.targetLanguage.value
 
         if (origin != null && target != null) {
-            val intent = ChooseLanguageActivity.getIntent(context, origin, target, true)
+            val intent = ChooseLanguageActivity.getIntent(requireContext(), origin, target, true)
             startActivityForResult(intent, REQUEST_CODE_ORIGIN_LANG)
         }
     }
@@ -143,7 +143,7 @@ class TranslateFragment : Fragment() {
         val target = viewModel.targetLanguage.value
 
         if (origin != null && target != null) {
-            val intent = ChooseLanguageActivity.getIntent(context, origin, target, false)
+            val intent = ChooseLanguageActivity.getIntent(requireContext(), origin, target, false)
             startActivityForResult(intent, REQUEST_CODE_TARGET_LANG)
         }
     }

@@ -1,12 +1,12 @@
 package ru.santaev.clipboardtranslator.ui
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.*
 import ru.santaev.clipboardtranslator.R
 import ru.santaev.clipboardtranslator.databinding.FragmentHistoryBinding
@@ -25,7 +25,7 @@ class HistoryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        analytics = Analytics(activity)
+        analytics = Analytics(requireContext())
 
         viewModel = ViewModelProviders.of(this).get(HistoryViewModel::class.java)
         setHasOptionsMenu(true)
@@ -36,7 +36,7 @@ class HistoryFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
         adapter = HistoryAdapter(null)
         binding.historyList.adapter = adapter
-        binding.historyList.layoutManager = LinearLayoutManager(activity)
+        binding.historyList.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
         adapter.listener = viewModel::onClickedItem
         val simpleItemTouchCallback = HistoryAdapter.RecyclerViewCallback(
                 onSwipedListener = { position ->

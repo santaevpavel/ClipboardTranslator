@@ -1,8 +1,8 @@
 package ru.santaev.clipboardtranslator.ui.settings
 
-import android.databinding.BaseObservable
-import android.databinding.Bindable
-import android.databinding.ObservableField
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
+import androidx.databinding.ObservableField
 
 open class SettingsItem(
         title: String,

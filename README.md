@@ -1,4 +1,7 @@
 # ClipboardTranslator
+
+[![CircleCI](https://circleci.com/gh/santaevpavel/ClipboardTranslator/tree/master.svg?style=svg)](https://circleci.com/gh/santaevpavel/ClipboardTranslator/tree/master)
+
 Simple translator android application
 
 # Google Play

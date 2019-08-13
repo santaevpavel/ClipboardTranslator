@@ -7,12 +7,11 @@ android {
     def API_KEY = System.getenv('YANDEX_TRANSLATE_API_KEY')
     def isMockApiService = false
 
-    compileSdkVersion 27
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.santaev.myclipboard"
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 17
         versionName "2.3"
         testInstrumentationRunner "ru.santaev.clipboardtranslator.MockTestRunner"
@@ -20,6 +19,7 @@ android {
         buildConfigField "String", "YANDEX_TRANSLATE_API_KEY", "\"" + API_KEY + "\""
         buildConfigField "boolean", "MOCK", "false"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -57,52 +57,52 @@ kapt {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.squareup.okhttp:okhttp:2.7.5'
-    compile 'android.arch.lifecycle:extensions:' + rootProject.archLifecycleVersion
-    compile 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
-    compile 'android.arch.persistence.room:rxjava2:' + rootProject.archRoomVersion
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.okhttp:okhttp:2.7.5'
+    implementation 'android.arch.lifecycle:extensions:' + rootProject.archLifecycleVersion
+    implementation 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
+    implementation 'android.arch.persistence.room:rxjava2:' + rootProject.archRoomVersion
     annotationProcessor "android.arch.lifecycle:compiler:" + rootProject.archLifecycleVersion
     annotationProcessor "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
     kapt "android.arch.lifecycle:compiler:" + rootProject.archLifecycleVersion
     kapt "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
-    androidTestCompile 'com.android.support:support-annotations:' + rootProject.supportLibVersion
-    androidTestCompile 'com.android.support.test:runner:' + rootProject.runnerVersion
-    androidTestCompile 'com.android.support.test:rules:' + rootProject.rulesVersion
-    compile 'com.android.support:appcompat-v7:' + rootProject.supportLibVersion
-    compile 'com.android.support:support-v4:' + rootProject.supportLibVersion
-    compile 'com.android.support:cardview-v7:' + rootProject.supportLibVersion
-    compile 'com.android.support:design:' + rootProject.supportLibVersion
-    compile 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.0.1'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'io.reactivex.rxjava2:rxjava:2.1.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+    androidTestImplementation 'com.android.support:support-annotations:' + rootProject.supportLibVersion
+    androidTestImplementation 'com.android.support.test:runner:' + rootProject.runnerVersion
+    androidTestImplementation 'com.android.support.test:rules:' + rootProject.rulesVersion
+    implementation 'com.android.support:appcompat-v7:' + rootProject.supportLibVersion
+    implementation 'com.android.support:support-v4:' + rootProject.supportLibVersion
+    implementation 'com.android.support:cardview-v7:' + rootProject.supportLibVersion
+    implementation 'com.android.support:design:' + rootProject.supportLibVersion
+    implementation 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true
     }
-    compile 'com.google.firebase:firebase-core:11.4.2'
-    compile 'com.google.firebase:firebase-crash:11.4.2'
-    androidTestCompile('android.arch.core:core-testing:' + rootProject.archLifecycleVersion) {
+    implementation 'com.google.firebase:firebase-core:17.0.1'
+    implementation 'com.google.firebase:firebase-crash:16.2.1'
+    androidTestImplementation('android.arch.core:core-testing:' + rootProject.archLifecycleVersion) {
         exclude group: 'com.android.support', module: 'support-compat'
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-core-utils'
     }
-    kapt 'com.google.dagger:dagger-android-processor:2.11'
-    kapt 'com.google.dagger:dagger-compiler:2.11'
-    compile 'com.google.dagger:dagger:2.11'
-    compile 'com.google.dagger:dagger-android:2.11'
-    compile 'com.google.dagger:dagger-android-support:2.11'
-    testCompile 'junit:junit:4.12'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    kapt "com.android.databinding:compiler:$android_plugin_version"
-    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
+    kapt 'com.google.dagger:dagger-android-processor:2.21'
+    kapt 'com.google.dagger:dagger-compiler:2.21'
+    implementation 'com.google.dagger:dagger:2.21'
+    implementation 'com.google.dagger:dagger-android:2.21'
+    implementation 'com.google.dagger:dagger-android-support:2.11'
+    testImplementation 'junit:junit:4.12'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'design'

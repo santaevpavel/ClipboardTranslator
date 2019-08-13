@@ -1,9 +1,9 @@
 package ru.santaev.clipboardtranslator.ui.adapter
 
 
-import android.databinding.DataBindingUtil
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.DataBindingUtil
+import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +17,7 @@ class LanguageAdapter(
         private val recentLanguages: List<LanguageDto>,
         private val languages: List<LanguageDto>?,
         private val unsupportedLanguages: List<LanguageDto>
-) : RecyclerView.Adapter<LanguageAdapter.ViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<LanguageAdapter.ViewHolder>() {
 
     var listener: ((LanguageDto) -> Unit)? = null
     private var hasHeaders = false
@@ -106,7 +106,7 @@ class LanguageAdapter(
     }
 
 
-    open inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    open inner class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView)
 
     private inner class LanguageViewHolder
     internal constructor(internal var binding: LanguageItemLayoutBinding) : ViewHolder(binding.root)
