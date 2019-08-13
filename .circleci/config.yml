@@ -33,13 +33,15 @@ jobs:
           command: sdkmanager --list --verbose | grep system-images
       - run:
           name: Setup emulator
-          command: sdkmanager "system-images;android-28;google_apis;x86_64" && echo "no" | avdmanager create avd -n android28 -k "system-images;android-28;google_apis;x86_64"
+          command: sdkmanager "system-images;android-28;google_apis;x86_64" && echo "no" | avdmanager create avd -n test -k "system-images;android-28;google_apis;x86_64"
       - run: emulator -list-avds
       - run:
-          name: Start emulator
-          command: emulator -avd android28 -no-audio -no-window
+          name: Launch Emulator
+          command: |
+            cd ${ANDROID_HOME}/emulator;ls
+            export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib
+            emulator -avd test -no-window -noaudio -no-boot-anim -no-window -accel on
           background: true
-
       - run:
           name: Wait emulator to start
           command:
