@@ -1,6 +1,6 @@
 package ru.santaev.clipboardtranslator.di.module
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.content.Context
 import com.example.santaev.domain.api.IApiService
 import dagger.Module

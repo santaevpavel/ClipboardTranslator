@@ -1,9 +1,9 @@
 package ru.santaev.clipboardtranslator;
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule;
-import android.support.test.annotation.UiThreadTest;
-import android.support.test.rule.UiThreadTestRule;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.test.annotation.UiThreadTest;
+import androidx.test.rule.UiThreadTestRule;
+import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Rule;
 import org.junit.Test;

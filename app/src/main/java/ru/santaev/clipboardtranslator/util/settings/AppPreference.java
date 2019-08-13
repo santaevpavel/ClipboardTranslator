@@ -3,7 +3,7 @@ package ru.santaev.clipboardtranslator.util.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.example.santaev.domain.dto.LanguageDto;
 import com.google.gson.Gson;

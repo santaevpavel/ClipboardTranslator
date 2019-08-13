@@ -1,8 +1,8 @@
 package ru.santaev.clipboardtranslator.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.santaev.domain.dto.TranslationDto
 import com.example.santaev.domain.factory.UseCaseFactory
 import ru.santaev.clipboardtranslator.util.RxHelper

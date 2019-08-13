@@ -1,11 +1,11 @@
 package ru.santaev.clipboardtranslator.ui.adapter
 
 
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.graphics.Canvas
-import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.santaev.domain.dto.TranslationDto
@@ -13,7 +13,9 @@ import ru.santaev.clipboardtranslator.R
 import ru.santaev.clipboardtranslator.databinding.HistoryItemLayoutBinding
 import java.util.*
 
-class HistoryAdapter(translations: List<TranslationDto>?) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
+class HistoryAdapter(
+        translations: List<TranslationDto>?
+) : androidx.recyclerview.widget.RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
     private var translations: MutableList<TranslateView>? = null
     var listener: ((TranslationDto) -> Unit)? = null
@@ -76,26 +78,26 @@ class HistoryAdapter(translations: List<TranslationDto>?) : RecyclerView.Adapter
         }
     }
 
-    inner class HistoryViewHolder(var binding: HistoryItemLayoutBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class HistoryViewHolder(var binding: HistoryItemLayoutBinding) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root)
 
     class RecyclerViewCallback(
             private val onSwipedListener: (Int) -> Unit
     ) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        override fun onSwiped(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, direction: Int) {
             val position = viewHolder.layoutPosition
             onSwipedListener(position)
         }
 
         override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
+                recyclerView: androidx.recyclerview.widget.RecyclerView,
+                viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder,
+                target: androidx.recyclerview.widget.RecyclerView.ViewHolder
         ): Boolean {
             return false
         }
 
-        override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+        override fun onSelectedChanged(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder?, actionState: Int) {
             super.onSelectedChanged(viewHolder, actionState)
             if (viewHolder != null) {
                 val foregroundView = viewHolder.foreground
@@ -105,8 +107,8 @@ class HistoryAdapter(translations: List<TranslationDto>?) : RecyclerView.Adapter
 
         override fun onChildDrawOver(
                 c: Canvas,
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
+                recyclerView: androidx.recyclerview.widget.RecyclerView,
+                viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder,
                 dX: Float,
                 dY: Float,
                 actionState: Int,
@@ -125,15 +127,15 @@ class HistoryAdapter(translations: List<TranslationDto>?) : RecyclerView.Adapter
             ItemTouchHelper.Callback.getDefaultUIUtil().onDrawOver(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive)
         }
 
-        override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder) {
+        override fun clearView(recyclerView: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {
             val foregroundView = viewHolder.foreground
             ItemTouchHelper.Callback.getDefaultUIUtil().clearView(foregroundView)
         }
 
         override fun onChildDraw(
                 c: Canvas,
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
+                recyclerView: androidx.recyclerview.widget.RecyclerView,
+                viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder,
                 dX: Float,
                 dY: Float,
                 actionState: Int,
@@ -144,7 +146,7 @@ class HistoryAdapter(translations: List<TranslationDto>?) : RecyclerView.Adapter
                     actionState, isCurrentlyActive)
         }
 
-        private val RecyclerView.ViewHolder.foreground: CardView
+        private val androidx.recyclerview.widget.RecyclerView.ViewHolder.foreground: androidx.cardview.widget.CardView
             get() = (this as HistoryViewHolder).binding.foregroundView
     }
 

@@ -1,9 +1,9 @@
 package ru.santaev.clipboardtranslator.ui
 
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 
 class MainActivityViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
