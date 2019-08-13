@@ -62,10 +62,8 @@ workflows:
   version: 2
   test:
     jobs:
-      - lint
-      - test:
-          requires:
-            - lint
+      - uiTest
+
   deploy:
     jobs:
       - lint:
