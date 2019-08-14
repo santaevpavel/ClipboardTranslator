@@ -51,7 +51,9 @@ jobs:
       - run:
           name: List of devices
           command: adb devices
-      - run: adb shell screenrecord sdcard/test-video.mp4
+      - run:
+          name: Record video
+          command: adb shell screenrecord sdcard/test-video.mp4
           background: true
       - run: ./gradlew connectedAndroidTest
       - run:
