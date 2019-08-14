@@ -48,7 +48,9 @@ jobs:
           name: Wait emulator to start
           command:
             adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
-      - run: ./gradlew connectedAndroidTest
+      - run:
+          name: List of devices
+          command: adb devices
       - run:
           name: Save test results
           command: |
