@@ -51,16 +51,21 @@ jobs:
       - run:
           name: List of devices
           command: adb devices
+      - run: adb shell screenrecord sdcard/test-video.mp4
+          background: true
+      - run: ./gradlew connectedAndroidTest
       - run:
           name: Save test results
           command: |
             mkdir -p ~/test-results/junit/
-            find . -type f -regex ".*/build/androidTest-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+            find . -type f -regex ".*/build/androidTest/.*xml" -exec cp {} ~/test-results/junit/ \;
           when: always
+      - run: sleep 10 && adb pull sdcard/test-video.mp4
+      - run: mv test-video.mp4 video/test-video.mp4
       - store_test_results:
           path: ~/test-results
       - store_artifacts:
-          path: ~/test-results/junit
+          path: video/
   build:
     docker:
       - image: circleci/android:api-28
