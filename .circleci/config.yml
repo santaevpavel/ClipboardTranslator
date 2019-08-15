@@ -46,8 +46,9 @@ jobs:
           background: true
       - run:
           name: Wait emulator to start
-          command:
-            adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
+          command: |
+            circle-android wait-for-boot
+            adb shell input keyevent 82
       - run:
           name: List of devices
           command: adb devices
